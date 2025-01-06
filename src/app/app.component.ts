@@ -1,19 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-
-import { Foobar } from './foobar/foobar.component';
+import { RouterOutlet, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Foobar],
+  imports: [RouterOutlet, RouterLink],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
+  providers: [],
 })
 export class AppComponent implements OnInit {
-  id = '61b97ab7-e5c1-5697-8182-590fcdfe16fa';
-  title = 'NGApp';
-
-  public ngOnInit(): void {
+  constructor() {}
+  ngOnInit(): void {
     console.log('@ngOnInit');
   }
 }

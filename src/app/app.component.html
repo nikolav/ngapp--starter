@@ -1,10 +1,7 @@
-<div class="container">
-  <div class="row">
-    <div class="col-sm-6">
-      <foobar></foobar>
-    </div>
-    <div class="col-sm-6">
-      <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ex ullam nobis dolores.</p>
-    </div>
+<main class="app-main">
+  <div class="app-nav--main flex flex-wrap gap-3">
+    <a routerLink="/" class="btn">home</a>
+    <a routerLink="/app" class="btn">app</a>
   </div>
-</div>
+  <router-outlet></router-outlet>
+</main>
