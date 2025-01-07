@@ -1,14 +1,14 @@
-import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import { ApplicationConfig, provideZoneChangeDetection } from "@angular/core";
+import { provideRouter } from "@angular/router";
 
-import { routes } from './app.routes';
+import { routes } from "./app.routes";
 import {
   provideClientHydration,
   withEventReplay,
-} from '@angular/platform-browser';
+} from "@angular/platform-browser";
 
-import { AppConfigService, UseUtilsService } from './services';
-import { StoreMain } from './stores';
+import { AppConfigService, UseUtilsService, DatetimeService } from "./services";
+import { StoreMain, StoreAuth, StoreGlobalVariable } from "./stores";
 
 //
 export const appConfig: ApplicationConfig = {
@@ -18,7 +18,10 @@ export const appConfig: ApplicationConfig = {
     provideClientHydration(withEventReplay()),
     //
     UseUtilsService,
+    DatetimeService,
     AppConfigService,
     StoreMain,
+    StoreGlobalVariable,
+    StoreAuth,
   ],
 };

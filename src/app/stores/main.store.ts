@@ -1,14 +1,13 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 
 import { UseUtilsService } from '../services';
-import type { TRecordJson } from '../types';
 //
 @Injectable({
   providedIn: 'root',
 })
 export class StoreMain {
-  $$store = <TRecordJson>{};
-  constructor(private $$: UseUtilsService) {}
+  private $$: UseUtilsService = inject(UseUtilsService);
+  $$store = <any>{};
   push(patch: any) {
     this.$$.each(patch, (value, path) => {
       this.$$.set(this.$$store, path, value);
@@ -17,11 +16,11 @@ export class StoreMain {
   pull(...paths: string[]) {
     return this.$$.reduce(
       paths,
-      (res: TRecordJson, path) => {
+      (res: any, path) => {
         this.$$.set(res, path, this.$$.get(this.$$store, path));
         return res;
       },
-      <TRecordJson>{}
+      <any>{}
     );
   }
 }

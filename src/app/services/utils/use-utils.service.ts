@@ -1,35 +1,70 @@
 import { Injectable } from '@angular/core';
 
+import lodash from 'lodash';
 import { v4 as uuid } from 'uuid';
-
-import get from 'lodash/get';
-import set from 'lodash/set';
-import some from 'lodash/some';
-import noop from 'lodash/noop';
-import every from 'lodash/every';
-import each from 'lodash/each';
-import reduce from 'lodash/reduce';
-import isEmpty from 'lodash/isEmpty';
+import isEmail from 'validator/es/lib/isEmail';
+import isURL from 'validator/es/lib/isURL';
 
 import { idGen } from './id-gen';
+import { isNumeric } from './is-numeric';
+import { parseShellArgs } from './parse-shell-args';
+import { coreHasOwn } from './core-has-own';
+
+const {
+  get,
+  set,
+  some,
+  noop,
+  every,
+  each,
+  reduce,
+  isEmpty,
+  map,
+  filter,
+  find,
+  once,
+  size: len,
+  trim,
+  trimEnd,
+  trimStart,
+  includes,
+} = lodash;
 
 @Injectable({
   providedIn: 'root',
 })
 export class UseUtilsService {
+  // validator
+  isEmail = isEmail;
+  isURL = isURL;
+
   // lodash
-  noop = noop;
-  isEmpty = isEmpty;
+  includes = includes;
+  each = each;
+  every = every;
+  filter = filter;
+  find = find;
   get = get;
+  isEmpty = isEmpty;
+  len = len;
+  map = map;
+  noop = noop;
+  once = once;
+  reduce = reduce;
   set = set;
   some = some;
-  every = every;
-  each = each;
-  reduce = reduce;
-  // 3rd pty
+  trim = trim;
+  trimEnd = trimEnd;
+  trimStart = trimStart;
+
+  // uuid
   uuid = uuid;
+
   // local
+  coreHasOwn = coreHasOwn;
+  parseShellArgs = parseShellArgs;
   idGen = idGen;
   True = () => true;
   False = () => false;
+  isNumeric = isNumeric;
 }

@@ -1,13 +1,13 @@
-import { Injectable } from '@angular/core';
-import { type TOrNoValue } from '../types';
+import { Injectable, signal } from "@angular/core";
+import { type TOrNoValue } from "../types";
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class ToggleFlagService {
-  isActive = false;
+  isActive = signal(false);
   toggle(flag?: TOrNoValue<boolean>) {
-    this.isActive = null == flag ? !this.isActive : flag;
+    this.isActive.update((value) => (null == flag ? !value : flag));
   }
   on() {
     this.toggle(true);
