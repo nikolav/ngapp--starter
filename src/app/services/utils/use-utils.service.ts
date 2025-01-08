@@ -16,32 +16,33 @@ import {
 } from "../../utils";
 
 const {
-  get,
-  set,
-  some,
-  noop,
-  every,
+  assign,
+  debounce,
   each,
-  reduce,
-  isEmpty,
-  map,
+  escapeRegExp,
+  every,
   filter,
   find,
+  first,
+  get,
+  includes,
+  isEmpty,
+  last,
+  map,
+  noop,
+  omit,
   once,
+  pick,
+  range,
+  reduce,
+  sample,
+  set,
+  shuffle,
   size: len,
+  some,
   trim,
   trimEnd,
   trimStart,
-  includes,
-  assign,
-  debounce,
-  escapeRegExp,
-  first,
-  last,
-  omit,
-  pick,
-  sample,
-  shuffle,
   uniqueId,
 } = lodash;
 
@@ -73,6 +74,7 @@ export class UseUtilsService {
   omit = omit;
   once = once;
   pick = pick;
+  range = range;
   reduce = reduce;
   sample = sample;
   set = set;

@@ -2,7 +2,7 @@ import { Component, inject, signal, computed, OnInit } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { HttpClient } from "@angular/common/http";
 
-import { CommonMaterialModule } from "../../modules";
+import { CommonMaterialModule, IconxModule } from "../../modules";
 
 import {
   UseUtilsService,
@@ -18,7 +18,7 @@ import { StoreGlobalVariable } from "../../stores";
 
 @Component({
   selector: "page-index",
-  imports: [FormsModule, CommonMaterialModule],
+  imports: [FormsModule, CommonMaterialModule, IconxModule],
   templateUrl: "./index.component.html",
   styleUrl: "./index.component.scss",
   providers: [
@@ -61,4 +61,5 @@ export class IndexComponent implements OnInit {
   ngOnInit(): void {
     this.$qclientStatus.start();
   }
+  range = this.$$.range;
 }
