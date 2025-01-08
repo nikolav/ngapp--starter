@@ -1,5 +1,5 @@
 export * from './utils';
 export * from './query';
 
-export { ToggleFlagService } from './toggle-flag.service';
+export { ToggleFlagService as UseToggleFlagService } from './toggle-flag.service';
 

@@ -1,12 +1,22 @@
 import { Component, inject, computed } from "@angular/core";
+import { CommonModule } from "@angular/common";
 import { ActivatedRoute } from "@angular/router";
 
-import { IconAccount } from "../../components/icons";
+import { IconAccount, IconBuildings } from "../../components/icons";
 import { StoreGlobalVariable } from "../../stores";
+
+import { MatButtonModule } from "@angular/material/button";
+import { MatIconModule } from "@angular/material/icon";
 
 @Component({
   selector: "page-app",
-  imports: [IconAccount],
+  imports: [
+    CommonModule,
+    MatIconModule,
+    IconAccount,
+    IconBuildings,
+    MatButtonModule,
+  ],
   templateUrl: "./app.component.html",
   styleUrls: ["./app.component.scss"],
 })

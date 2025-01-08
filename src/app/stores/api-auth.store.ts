@@ -1,18 +1,33 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject, signal, effect } from "@angular/core";
+import { HttpClient } from "@angular/common/http";
 
-import type { TOrNoValue, IAuthCreds } from '../types';
-import { UseUtilsService, AppConfigService } from '../services';
+import type { IAuthCreds } from "../types";
+import { UseUtilsService, AppConfigService } from "../services";
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class ApiAuthService {
+  private $http: HttpClient = inject(HttpClient);
+  private $$: UseUtilsService = inject(UseUtilsService);
+  private $appConfig: AppConfigService = inject(AppConfigService);
+
+  token = signal("");
   account: any = null;
-  token: TOrNoValue<string> = null;
-  constructor(
-    private $$: UseUtilsService,
-    private $$appConfig: AppConfigService
-  ) {}
+
+  constructor() {
+    effect(() => {
+      try {
+        const token_ = this.token();
+        if (!token_) return;
+        // fetch account @token:signal
+      } catch (error) {
+        // pass
+      }
+    });
+  }
+
+  // api
   async authenticate(creds: IAuthCreds) {}
   async register(creds: IAuthCreds) {}
   async logout() {}

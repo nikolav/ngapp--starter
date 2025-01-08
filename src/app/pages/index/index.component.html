@@ -1,5 +1,13 @@
 <section class="page--index">
-  <button class="btn btn-primary" (click)="ok()">ok</button>
-  <button class="btn btn-primary" (click)="toggleFoo.toggle()">foo:toggle [{{ toggleFoo.isActive() }}]</button>
-  <pre>{{ gfoo() }}</pre>
+  <button mat-flat-button (click)="ok()">
+    ok
+  </button>
+  <button mat-flat-button (click)="toggleFoo.toggle()">foo:toggle [{{ toggleFoo.isActive() }}]</button>
+  <button mat-raised-button (click)="fetch0()">fetch:1</button>
+
+  <mat-action-list>
+    <button mat-list-item (click)="undefined">Save</button>
+    <button mat-list-item (click)="undefined">Undo</button>
+  </mat-action-list>
+
 </section>
