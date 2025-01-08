@@ -136,7 +136,7 @@ assets/prototype-app/www
 bower_components
 build/
 build/Release
-cat-config.sh
+# cat-config.sh
 celerybeat-schedule
 celerybeat.pid
 client.http
