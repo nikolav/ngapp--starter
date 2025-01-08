@@ -7,10 +7,13 @@ import isEmail from "validator/es/lib/isEmail";
 import isURL from "validator/es/lib/isURL";
 import isJWT from "validator/es/lib/isJWT";
 
-import { idGen } from "./id-gen";
-import { isNumeric } from "./is-numeric";
-import { parseShellArgs as parseShellInput } from "./parse-shell-args";
-import { coreHasOwn } from "./core-has-own";
+import {
+  coreHasOwn,
+  isNumeric,
+  idGen,
+  parseShellInput,
+  dumpJson,
+} from "../../utils";
 
 const {
   get,
@@ -84,6 +87,7 @@ export class UseUtilsService {
   uuid = uuid;
 
   // local
+  dumpJson = dumpJson;
   coreHasOwn = coreHasOwn;
   parseShellInput = parseShellInput;
   idGen = idGen;

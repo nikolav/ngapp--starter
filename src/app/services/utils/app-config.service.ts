@@ -1,20 +1,33 @@
-import { Injectable, inject } from "@angular/core";
-import { UseUtilsService } from "./use-utils.service";
+import { Injectable } from "@angular/core";
+import {
+  PRODUCTION,
+  API_URL_production,
+  API_URL_dev,
+  API_URL,
+  ENDPOINT_GRAPHQL,
+  KEY_ACCESS_TOKEN,
+} from "../../config";
 
 @Injectable({
   providedIn: "root",
 })
 export class AppConfigService {
-  private $$: UseUtilsService = inject(UseUtilsService);
   FOO = "BAR";
   DEMO = "DEMO:1";
   //
-  PRODUCTION = false;
-  // PRODUCTION = true;
-  API_URL_dev = "http://localhost:5000";
-  API_URL_production = "https://zyeqzw35h4kv5b70k7uqim.site";
-  API_URL = this.$$.trimEnd(
-    this.PRODUCTION ? this.API_URL_production : this.API_URL_dev,
-    "/"
-  );
+  PRODUCTION = PRODUCTION;
+  API_URL_dev = API_URL_dev;
+  API_URL_production = API_URL_production;
+  API_URL = API_URL;
+  ENDPOINT_GRAPHQL = ENDPOINT_GRAPHQL;
+
+  graphql = {
+    // ~10min autoreload*
+    QUERY_POLL_INTERVAL: 712345,
+  };
+  stores = {
+    auth: {
+      KEY_ACCESS_TOKEN,
+    },
+  };
 }

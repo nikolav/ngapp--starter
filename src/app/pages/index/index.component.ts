@@ -1,4 +1,4 @@
-import { Component, inject, signal, computed } from "@angular/core";
+import { Component, inject, signal, computed, OnInit } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { HttpClient } from "@angular/common/http";
 
@@ -10,6 +10,8 @@ import {
   AppConfigService,
   UseProccessMonitorService,
   UseUniqueIdService,
+  //
+  ApolloStatusService,
 } from "../../services";
 import { StoreGlobalVariable } from "../../stores";
 
@@ -24,14 +26,19 @@ import { StoreGlobalVariable } from "../../stores";
     UseUniqueIdService,
   ],
 })
-export class IndexComponent {
+export class IndexComponent implements OnInit {
   private $http = inject(HttpClient);
+
   private $$ = inject(UseUtilsService);
   private $config = inject(AppConfigService);
   private $g = inject(StoreGlobalVariable);
   private $ps = inject(UseProccessMonitorService);
+
   toggleFoo = inject(UseToggleFlagService);
   $sig = inject(UseUniqueIdService);
+
+  $qclientStatus = inject(ApolloStatusService);
+  dd = computed(() => this.$$.dumpJson(this.$qclientStatus.data()));
 
   G_foo = "foo";
 
@@ -48,5 +55,9 @@ export class IndexComponent {
   }
   fetch0() {
     this.$http.get(this.$config.API_URL, {}).subscribe((d) => console.log(d));
+  }
+  //
+  ngOnInit(): void {
+    this.$qclientStatus.start();
   }
 }
