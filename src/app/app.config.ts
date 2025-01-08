@@ -18,7 +18,12 @@ import {
   // withInterceptorsFromDi,
 } from "@angular/common/http";
 
-import { AppConfigService, UseUtilsService, DatetimeService } from "./services";
+import {
+  AppConfigService,
+  UseUtilsService,
+  DatetimeService,
+  EmitterService,
+} from "./services";
 import { StoreMain, StoreAuth, StoreGlobalVariable } from "./stores";
 import { provideAnimationsAsync } from "@angular/platform-browser/animations/async";
 import { provideApollo } from "apollo-angular";
@@ -54,13 +59,7 @@ export const appConfig: ApplicationConfig = {
     ),
     provideAnimationsAsync(),
     //
-    UseUtilsService,
-    DatetimeService,
-    AppConfigService,
-    StoreMain,
-    StoreGlobalVariable,
-    StoreAuth,
-    provideHttpClient(),
+    // provideHttpClient(),
     provideApollo(() => {
       const httpLink = inject(HttpLink);
       return {
@@ -74,5 +73,14 @@ export const appConfig: ApplicationConfig = {
         cache: new InMemoryCache(),
       };
     }),
+    //
+    UseUtilsService,
+    DatetimeService,
+    AppConfigService,
+    EmitterService,
+    StoreMain,
+    StoreGlobalVariable,
+    StoreAuth,
+    //
   ],
 };
