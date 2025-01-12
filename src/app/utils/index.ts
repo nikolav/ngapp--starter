@@ -5,3 +5,5 @@ export { isNumeric } from "./is-numeric";
 export { idGen } from "./id-gen";
 export { parseShellArgs as parseShellInput } from "./parse-shell-args";
 export { dumpJson } from "./dump-json";
+export { coreType } from "./core-type";
+export { cat } from "./cat";

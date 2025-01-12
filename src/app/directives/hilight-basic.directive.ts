@@ -1,30 +1,34 @@
 import {
+  inject,
   Directive,
   ElementRef,
   HostBinding,
   HostListener,
   OnInit,
-  Renderer2,
-} from '@angular/core';
+  // Renderer2,
+} from "@angular/core";
 
 @Directive({
-  selector: '[appHilightBasic]',
+  selector: "[appHilightBasic]",
 })
 export class HilightBasicDirective implements OnInit {
-  @HostBinding('style.backgroundColor') bgColor: any = 'transparent';
+  // reference element directive sits on
+  private elRef = inject(ElementRef);
 
-  constructor(private elRef: ElementRef, private renderer: Renderer2) {}
+  @HostBinding("style.backgroundColor") bgColor: any = "transparent";
+
+  // constructor(private renderer: Renderer2) {}
 
   ngOnInit(): void {
-    this.elRef.nativeElement.style.backgroundColor = 'green';
+    this.elRef.nativeElement.style.backgroundColor = "green";
   }
 
-  @HostListener('mouseover') mouseOver(e: Event) {
+  @HostListener("mouseover") mouseOver(e: Event) {
     //
-    this.bgColor = 'blue';
+    this.bgColor = "blue";
   }
-  @HostListener('mouseleave') mouseLeave(e: Event) {
+  @HostListener("mouseleave") mouseLeave(e: Event) {
     //
-    this.bgColor = 'green';
+    this.bgColor = "green";
   }
 }

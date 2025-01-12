@@ -14,7 +14,6 @@ const MODULES = [
   MatListModule,
   MatIconModule,
   MatButtonModule,
-  // MatButtonToggleModule,
   MatBadgeModule,
   MatGridListModule,
 ];

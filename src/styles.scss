@@ -1,6 +1,14 @@
-/* You can add global styles to this file, and also import other style files */
+@import "./app/assets/styles/vars";
 
-@import "./app/assets/styles/cssvars";
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Inter, "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Oxygen, Ubuntu, Cantarell, "Helvetica Neue", sans-serif !important;
+}
 
 @import "./app/assets/styles/scrollbars";
 
@@ -9,17 +17,7 @@
 @import "./app/assets/styles/modern_css_reset";
 @import "./app/assets/styles/reset";
 
-@import "tailwindcss/base";
-@import "tailwindcss/components";
-@import "tailwindcss/utilities";
-@import "tailwindcss/variants";
-@import "tailwindcss/screens";
+@import "./app/assets/styles/tailwind";
+@import "./app/assets/styles/material/mat";
 
-html,
-body {
-  height: 100%;
-}
-body {
-  margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
-}
+@import "./app/assets/styles/custom";

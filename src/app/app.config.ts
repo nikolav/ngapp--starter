@@ -1,7 +1,8 @@
 import {
+  inject,
   ApplicationConfig,
   provideZoneChangeDetection,
-  inject,
+  // importProvidersFrom,
 } from "@angular/core";
 
 import { provideRouter } from "@angular/router";
@@ -12,11 +13,18 @@ import {
   withEventReplay,
 } from "@angular/platform-browser";
 
+import { provideAnimationsAsync } from "@angular/platform-browser/animations/async";
+
 import {
   provideHttpClient,
   withFetch,
   // withInterceptorsFromDi,
 } from "@angular/common/http";
+
+import { provideApollo } from "apollo-angular";
+import { HttpLink } from "apollo-angular/http";
+import { InMemoryCache, ApolloLink } from "@apollo/client/core";
+import { setContext as setContextApollo } from "@apollo/client/link/context";
 
 import {
   AppConfigService,
@@ -25,11 +33,7 @@ import {
   EmitterService,
 } from "./services";
 import { StoreMain, StoreAuth, StoreGlobalVariable } from "./stores";
-import { provideAnimationsAsync } from "@angular/platform-browser/animations/async";
-import { provideApollo } from "apollo-angular";
-import { HttpLink } from "apollo-angular/http";
-import { InMemoryCache, ApolloLink } from "@apollo/client/core";
-import { setContext as setContextApollo } from "@apollo/client/link/context";
+import { AuthGuard, FooDeactivateGuard } from "./middleware/guards";
 
 import { ENDPOINT_GRAPHQL, KEY_ACCESS_TOKEN } from "./config";
 
@@ -53,11 +57,11 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideClientHydration(withEventReplay()),
+    provideAnimationsAsync(),
     provideHttpClient(
       withFetch()
       // withInterceptorsFromDi(),
     ),
-    provideAnimationsAsync(),
     //
     // provideHttpClient(),
     provideApollo(() => {
@@ -73,7 +77,7 @@ export const appConfig: ApplicationConfig = {
         cache: new InMemoryCache(),
       };
     }),
-    //
+    // ##services
     UseUtilsService,
     DatetimeService,
     AppConfigService,
@@ -81,6 +85,9 @@ export const appConfig: ApplicationConfig = {
     StoreMain,
     StoreGlobalVariable,
     StoreAuth,
+    // ##guards
+    AuthGuard,
+    FooDeactivateGuard,
     //
   ],
 };

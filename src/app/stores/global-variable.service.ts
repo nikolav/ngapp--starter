@@ -1,9 +1,9 @@
-import { Injectable, inject } from '@angular/core';
-import { StoreMain } from './main.store';
-import { UseUtilsService } from '../services';
+import { Injectable, inject } from "@angular/core";
+import { StoreMain } from "./main.store";
+import { UseUtilsService } from "../services";
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class GlobalVariableService {
   private $$: UseUtilsService = inject(UseUtilsService);

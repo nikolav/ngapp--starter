@@ -3,7 +3,12 @@ import twTypography from "@tailwindcss/typography";
 
 export default <Partial<Config>>{
   mode: "jit",
-  content: ["./src/**/*.{html,ts,js,jsx,tsx}"],
+  content: [
+    // scan .src*
+    "./src/**/*.{html,ts,js,jsx,tsx}",
+    // scan .docs*
+    "./docs/www/**/*.{html,js}",
+  ],
   theme: {
     extend: {},
   },

@@ -13,6 +13,8 @@ import {
   idGen,
   parseShellInput,
   dumpJson,
+  coreType,
+  cat,
 } from "../../utils";
 
 const {
@@ -96,4 +98,6 @@ export class UseUtilsService {
   True = () => true;
   False = () => false;
   isNumeric = isNumeric;
+  coreType = coreType;
+  cat = cat;
 }

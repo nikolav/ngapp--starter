@@ -10,8 +10,9 @@ import {
   AppConfigService,
   UseProccessMonitorService,
   UseUniqueIdService,
+
   //
-  ApolloStatusService,
+  // ApolloStatusService,
   // EmitterService,
 } from "../../services";
 import { StoreGlobalVariable } from "../../stores";
@@ -38,8 +39,8 @@ export class IndexComponent implements OnInit {
   toggleFoo = inject(UseToggleFlagService);
   $sig = inject(UseUniqueIdService);
 
-  $qclientStatus = inject(ApolloStatusService);
-  dd = computed(() => this.$$.dumpJson(this.$qclientStatus.data()));
+  // $qclientStatus = inject(ApolloStatusService);
+  // dd = computed(() => this.$$.dumpJson(this.$qclientStatus.data()));
 
   G_foo = "foo";
 
@@ -59,7 +60,7 @@ export class IndexComponent implements OnInit {
   }
   //
   ngOnInit(): void {
-    this.$qclientStatus.start();
+    // this.$qclientStatus.start();
   }
   range = this.$$.range;
 }
