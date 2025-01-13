@@ -15,6 +15,6 @@ export class AppComponent implements OnInit {
   private $emitter = inject(EmitterService);
   ngOnInit(): void {
     console.log("@ngOnInit");
-    setTimeout(() => this.$emitter.handle((emitter) => emitter.emit("@foo")));
+    setTimeout(() => this.$emitter.subject.next("foo:iYWov8sj5S"));
   }
 }

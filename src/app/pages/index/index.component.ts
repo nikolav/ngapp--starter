@@ -13,7 +13,6 @@ import {
 
   //
   // ApolloStatusService,
-  // EmitterService,
 } from "../../services";
 import { StoreGlobalVariable } from "../../stores";
 
@@ -62,5 +61,4 @@ export class IndexComponent implements OnInit {
   ngOnInit(): void {
     // this.$qclientStatus.start();
   }
-  range = this.$$.range;
 }

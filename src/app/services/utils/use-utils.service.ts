@@ -25,6 +25,7 @@ const {
   every,
   filter,
   find,
+  findKey,
   first,
   get,
   includes,
@@ -65,6 +66,7 @@ export class UseUtilsService {
   every = every;
   filter = filter;
   find = find;
+  findKey = findKey;
   first = first;
   get = get;
   includes = includes;

@@ -62,15 +62,12 @@ export const appConfig: ApplicationConfig = {
       withFetch()
       // withInterceptorsFromDi(),
     ),
-    //
-    // provideHttpClient(),
     provideApollo(() => {
       const httpLink = inject(HttpLink);
       return {
         link: ApolloLink.from([
           authApolo,
           httpLink.create({
-            // uri: "<%= endpoint %>",
             uri: ENDPOINT_GRAPHQL,
           }),
         ]),

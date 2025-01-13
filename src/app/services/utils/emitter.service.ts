@@ -1,12 +1,9 @@
 import { Injectable } from "@angular/core";
-import EE from "eventemitter3";
+import { Subject } from "rxjs";
 
 @Injectable({
   providedIn: "root",
 })
 export class EmitterService {
-  private _emitter = new EE();
-  handle(callback: (ee: EE) => void) {
-    callback(this._emitter);
-  }
+  subject = new Subject<any>();
 }
