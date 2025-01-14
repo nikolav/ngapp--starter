@@ -31,6 +31,7 @@ import {
   UseUtilsService,
   DatetimeService,
   EmitterService,
+  LightboxService,
 } from "./services";
 import { StoreMain, StoreAuth, StoreGlobalVariable } from "./stores";
 import { AuthGuard, FooDeactivateGuard } from "./middleware/guards";
@@ -82,6 +83,8 @@ export const appConfig: ApplicationConfig = {
     StoreMain,
     StoreGlobalVariable,
     StoreAuth,
+    // #services:ui
+    LightboxService,
     // ##guards
     AuthGuard,
     FooDeactivateGuard,

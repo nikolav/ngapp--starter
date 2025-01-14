@@ -13,6 +13,7 @@ import {
 
   //
   // ApolloStatusService,
+  LightboxService,
 } from "../../services";
 import { StoreGlobalVariable } from "../../stores";
 
@@ -34,6 +35,8 @@ export class IndexComponent implements OnInit {
   private $config = inject(AppConfigService);
   private $g = inject(StoreGlobalVariable);
   private $ps = inject(UseProccessMonitorService);
+
+  $lightbox = inject(LightboxService);
 
   toggleFoo = inject(UseToggleFlagService);
   $sig = inject(UseUniqueIdService);

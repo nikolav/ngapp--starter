@@ -32,6 +32,7 @@ const {
   isEmpty,
   last,
   map,
+  merge,
   noop,
   omit,
   once,
@@ -74,6 +75,7 @@ export class UseUtilsService {
   last = last;
   len = len;
   map = map;
+  merge = merge;
   noop = noop;
   omit = omit;
   once = once;
