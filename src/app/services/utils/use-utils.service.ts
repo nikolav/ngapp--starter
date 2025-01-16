@@ -30,6 +30,7 @@ const {
   get,
   includes,
   isEmpty,
+  kebabCase,
   last,
   map,
   merge,
@@ -44,10 +45,12 @@ const {
   shuffle,
   size: len,
   some,
+  startCase,
   trim,
   trimEnd,
   trimStart,
   uniqueId,
+  unset,
 } = lodash;
 
 @Injectable({
@@ -72,6 +75,7 @@ export class UseUtilsService {
   get = get;
   includes = includes;
   isEmpty = isEmpty;
+  kebabCase = kebabCase;
   last = last;
   len = len;
   map = map;
@@ -86,10 +90,12 @@ export class UseUtilsService {
   set = set;
   shuffle = shuffle;
   some = some;
+  startCase = startCase;
   trim = trim;
   trimEnd = trimEnd;
   trimStart = trimStart;
   uniqueId = uniqueId;
+  unset = unset;
 
   // uuid
   uuid = uuid;

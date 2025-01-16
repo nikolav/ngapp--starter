@@ -1,12 +1,12 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject } from "@angular/core";
 
-import { UseUtilsService } from '../services';
+import { UseUtilsService } from "../services";
 //
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class StoreMain {
-  private $$: UseUtilsService = inject(UseUtilsService);
+  private $$ = inject(UseUtilsService);
   $$store = <any>{};
   push(patch: any) {
     this.$$.each(patch, (value, path) => {
@@ -22,5 +22,8 @@ export class StoreMain {
       },
       <any>{}
     );
+  }
+  unset(...paths: string[]) {
+    this.$$.each(paths, (path) => this.$$.unset(this.$$store, path));
   }
 }

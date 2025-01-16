@@ -18,8 +18,11 @@ import { provideAnimationsAsync } from "@angular/platform-browser/animations/asy
 import {
   provideHttpClient,
   withFetch,
+  withInterceptors,
   // withInterceptorsFromDi,
 } from "@angular/common/http";
+
+import { demoInterceptor } from "./middleware/interceptors";
 
 import { provideApollo } from "apollo-angular";
 import { HttpLink } from "apollo-angular/http";
@@ -60,7 +63,11 @@ export const appConfig: ApplicationConfig = {
     provideClientHydration(withEventReplay()),
     provideAnimationsAsync(),
     provideHttpClient(
-      withFetch()
+      withFetch(),
+      withInterceptors([
+        // @demo
+        demoInterceptor,
+      ])
       // withInterceptorsFromDi(),
     ),
     provideApollo(() => {

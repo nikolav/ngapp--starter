@@ -2,7 +2,11 @@ import { Component, inject, signal, computed, OnInit } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { HttpClient } from "@angular/common/http";
 
-import { CommonMaterialModule, IconxModule } from "../../modules";
+import {
+  CommonMaterialModule,
+  IconxModule,
+  PipeUtilsModule,
+} from "../../modules";
 
 import {
   UseUtilsService,
@@ -10,8 +14,6 @@ import {
   AppConfigService,
   UseProccessMonitorService,
   UseUniqueIdService,
-
-  //
   // ApolloStatusService,
   LightboxService,
 } from "../../services";
@@ -19,13 +21,13 @@ import { StoreGlobalVariable } from "../../stores";
 
 @Component({
   selector: "page-index",
-  imports: [FormsModule, CommonMaterialModule, IconxModule],
+  imports: [FormsModule, CommonMaterialModule, IconxModule, PipeUtilsModule],
   templateUrl: "./index.component.html",
   styleUrl: "./index.component.scss",
   providers: [
-    UseToggleFlagService,
-    UseProccessMonitorService,
-    UseUniqueIdService,
+    // UseToggleFlagService,
+    // UseProccessMonitorService,
+    // UseUniqueIdService,
   ],
 })
 export class IndexComponent implements OnInit {
@@ -34,17 +36,19 @@ export class IndexComponent implements OnInit {
   private $$ = inject(UseUtilsService);
   private $config = inject(AppConfigService);
   private $g = inject(StoreGlobalVariable);
-  private $ps = inject(UseProccessMonitorService);
+  private $ps = new UseProccessMonitorService();
 
   $lightbox = inject(LightboxService);
 
-  toggleFoo = inject(UseToggleFlagService);
-  $sig = inject(UseUniqueIdService);
+  toggleFoo = new UseToggleFlagService();
+  $sig = new UseUniqueIdService();
 
   // $qclientStatus = inject(ApolloStatusService);
   // dd = computed(() => this.$$.dumpJson(this.$qclientStatus.data()));
 
   G_foo = "foo";
+
+  x1 = "x1";
 
   constructor() {
     if (!this.$g.exists(this.G_foo)) {

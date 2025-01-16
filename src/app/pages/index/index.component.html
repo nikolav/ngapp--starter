@@ -1,5 +1,11 @@
 <section class="page--index">
   <button mat-raised-button (click)="$lightbox.open([{src: '/lake.jpg'}])">ok</button>
+  <button mat-raised-button (click)="toggleFoo.toggle()">toggle</button>
+  <button mat-raised-button (click)="fetch0()">fetch0</button>
   <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Praesentium nesciunt
     sint quisquam!</p>
+  <p>{{ x1 | kebabCase }}</p>
+  @if (true) {
+  <pre>{{ toggleFoo.isActive() }}</pre>
+  }
 </section>
