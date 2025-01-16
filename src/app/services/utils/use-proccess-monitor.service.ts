@@ -6,7 +6,7 @@ import { UseUtilsService } from "../../services";
   providedIn: "root",
 })
 export class UseProccessMonitorService {
-  private $$: UseUtilsService = inject(UseUtilsService);
+  private $$ = inject(UseUtilsService);
 
   processing = signal<TOrNoValue<boolean>>(null);
   error = signal<TOrNoValue<any>>(null);

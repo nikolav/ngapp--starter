@@ -2,10 +2,18 @@
   <button mat-raised-button (click)="$lightbox.open([{src: '/lake.jpg'}])">ok</button>
   <button mat-raised-button (click)="toggleFoo.toggle()">toggle</button>
   <button mat-raised-button (click)="fetch0()">fetch0</button>
+  <button mat-raised-button
+    (click)="$auth.register({email: 'admin@nikolav.rs', password: 'uVU42yLcMCBYZQVYro'})">auth:register</button>
+  <button mat-raised-button
+    (click)="$auth.authenticate({email: 'admin@nikolav.rs', password: 'uVU42yLcMCBYZQVYro'})">auth:login</button>
+  <button mat-raised-button (click)="$auth.logout()">auth:logout</button>
   <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Praesentium nesciunt
     sint quisquam!</p>
   <p>{{ x1 | kebabCase }}</p>
   @if (true) {
   <pre>{{ toggleFoo.isActive() }}</pre>
   }
+  <pre><small>{{ saccount() }}</small></pre>
+  <pre><small>{{ $auth.isAuth() }}</small></pre>
+  <pre><small>{{ $auth.uid() }}</small></pre>
 </section>

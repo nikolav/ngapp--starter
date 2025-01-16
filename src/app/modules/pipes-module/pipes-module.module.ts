@@ -1,8 +1,9 @@
 import { NgModule } from "@angular/core";
+import { AsyncPipe } from "@angular/common";
 
-import { FooPipe, KebabCasePipe, StartCasePipe } from "../../pipes";
+import { FooPipe, KebabCasePipe, StartCasePipe, DumpsPipe } from "../../pipes";
 
-const PIPES = [FooPipe, KebabCasePipe, StartCasePipe];
+const PIPES = [AsyncPipe, FooPipe, KebabCasePipe, StartCasePipe, DumpsPipe];
 
 @NgModule({
   // declarations: [],

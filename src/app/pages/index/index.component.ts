@@ -17,7 +17,7 @@ import {
   // ApolloStatusService,
   LightboxService,
 } from "../../services";
-import { StoreGlobalVariable } from "../../stores";
+import { StoreGlobalVariable, StoreAuth } from "../../stores";
 
 @Component({
   selector: "page-index",
@@ -38,6 +38,7 @@ export class IndexComponent implements OnInit {
   private $g = inject(StoreGlobalVariable);
   private $ps = new UseProccessMonitorService();
 
+  $auth = inject(StoreAuth);
   $lightbox = inject(LightboxService);
 
   toggleFoo = new UseToggleFlagService();
@@ -49,6 +50,8 @@ export class IndexComponent implements OnInit {
   G_foo = "foo";
 
   x1 = "x1";
+
+  saccount = computed(() => this.$$.dumpJson(this.$auth.account()));
 
   constructor() {
     if (!this.$g.exists(this.G_foo)) {
