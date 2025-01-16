@@ -7,13 +7,13 @@
   <button mat-raised-button
     (click)="$auth.authenticate({email: 'admin@nikolav.rs', password: 'uVU42yLcMCBYZQVYro'})">auth:login</button>
   <button mat-raised-button (click)="$auth.logout()">auth:logout</button>
+  <button mat-raised-button
+    (click)="profilePush({foo: $$.idGen(), isAdmin: .5 < $$.Math.random()})">profile:patch</button>
   <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Praesentium nesciunt
     sint quisquam!</p>
   <p>{{ x1 | kebabCase }}</p>
   @if (true) {
   <pre>{{ toggleFoo.isActive() }}</pre>
   }
-  <pre><small>{{ saccount() }}</small></pre>
-  <pre><small>{{ $auth.isAuth() }}</small></pre>
-  <pre><small>{{ $auth.uid() }}</small></pre>
+  <pre><small>{{ $auth.debug() }}</small></pre>
 </section>

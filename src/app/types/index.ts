@@ -1,10 +1,12 @@
 import { GuardResult, MaybeAsync } from "@angular/router";
 
-export {
-  type JsonDataRecord as TRecordJson,
-  type TJson,
-  type TJsonLiteral,
+import {
+  JsonDataRecord as TRecordJson,
+  TJson,
+  TJsonLiteral,
 } from "../schemas/json.schema";
+
+export type { TRecordJson, TJson, TJsonLiteral };
 
 export type TOrNoValue<T = any> = T | undefined | null;
 export interface IAuthCreds {
@@ -13,4 +15,11 @@ export interface IAuthCreds {
 }
 export interface ICanComponentDeactivate {
   canDeactivate: () => MaybeAsync<GuardResult>;
+}
+
+export interface IResultApolloCacheService {
+  cacheRedisGetCacheByKey: {
+    error: any;
+    status: { cache: TRecordJson };
+  };
 }

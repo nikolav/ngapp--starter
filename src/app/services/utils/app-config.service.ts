@@ -30,4 +30,10 @@ export class AppConfigService {
       KEY_ACCESS_TOKEN,
     },
   };
+  key = {
+    KEY_AUTH_PROFILE: "AUTH_PROFILE:6cc4d5a2-5585-58fc-8427-ca7067968ef1:",
+  };
+  events = {
+    EVENT_APP_MOUNTED: "EVENT_APP_MOUNTED:31d93474-ddaa-5fe8-ad8a-41ddd01e4ebf",
+  };
 }

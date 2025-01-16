@@ -47,17 +47,19 @@ import {
   DatetimeService,
   EmitterService,
   LightboxService,
+  TopicsService,
+  CacheService,
 } from "./services";
 import { StoreMain, StoreAuth, StoreGlobalVariable } from "./stores";
 import { AuthGuard, FooDeactivateGuard } from "./middleware/guards";
 
-import { ENDPOINT_GRAPHQL, KEY_ACCESS_TOKEN } from "./config";
+import { ENDPOINT_GRAPHQL, TOKEN_DEFAULT } from "./config";
 
 const authApolo = setContextApollo((operation, context) => {
   try {
     return {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem(KEY_ACCESS_TOKEN)}`,
+        Authorization: `Bearer ${TOKEN_DEFAULT}`,
       },
     };
   } catch (error) {
@@ -102,6 +104,8 @@ export const appConfig: ApplicationConfig = {
     StoreMain,
     StoreGlobalVariable,
     StoreAuth,
+    TopicsService,
+    CacheService,
     // #services:ui
     LightboxService,
     // ##guards

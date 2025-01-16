@@ -12,10 +12,12 @@ import {
   UseUtilsService,
   UseToggleFlagService,
   AppConfigService,
-  UseProccessMonitorService,
+  // UseProccessMonitorService,
   UseUniqueIdService,
   // ApolloStatusService,
   LightboxService,
+  CacheService,
+  TopicsService,
 } from "../../services";
 import { StoreGlobalVariable, StoreAuth } from "../../stores";
 
@@ -33,10 +35,12 @@ import { StoreGlobalVariable, StoreAuth } from "../../stores";
 export class IndexComponent implements OnInit {
   private $http = inject(HttpClient);
 
-  private $$ = inject(UseUtilsService);
+  $$ = inject(UseUtilsService);
   private $config = inject(AppConfigService);
   private $g = inject(StoreGlobalVariable);
-  private $ps = new UseProccessMonitorService();
+
+  private $cache = inject(CacheService);
+  private $topics = inject(TopicsService);
 
   $auth = inject(StoreAuth);
   $lightbox = inject(LightboxService);
@@ -50,8 +54,6 @@ export class IndexComponent implements OnInit {
   G_foo = "foo";
 
   x1 = "x1";
-
-  saccount = computed(() => this.$$.dumpJson(this.$auth.account()));
 
   constructor() {
     if (!this.$g.exists(this.G_foo)) {
@@ -68,7 +70,12 @@ export class IndexComponent implements OnInit {
     this.$http.get(this.$config.API_URL, {}).subscribe((d) => console.log(d));
   }
   //
-  ngOnInit(): void {
+  ngOnInit() {
     // this.$qclientStatus.start();
+  }
+  profilePush(patch: any) {
+    return this.$auth
+      .profilePatch(patch)
+      ?.subscribe(async () => await this.$auth.profileReload());
   }
 }

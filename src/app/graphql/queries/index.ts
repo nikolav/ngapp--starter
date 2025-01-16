@@ -5,3 +5,10 @@ export const Q_status = gql`
     status
   }
 `;
+
+// cacheRedisGetCacheByKey(cache_key: String!): JsonData!
+export const Q_cacheRedisGetCacheByKey = gql`
+  query q_cacheRedisGetCacheByKey($cache_key: String!) {
+    cacheRedisGetCacheByKey(cache_key: $cache_key)
+  }
+`;

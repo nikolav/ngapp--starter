@@ -110,4 +110,8 @@ export class UseUtilsService {
   isNumeric = isNumeric;
   coreType = coreType;
   cat = cat;
+
+  // globals
+  Math = Math;
+  Date = Date;
 }
