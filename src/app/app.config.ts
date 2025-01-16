@@ -29,6 +29,10 @@ import { HttpLink } from "apollo-angular/http";
 import { InMemoryCache, ApolloLink } from "@apollo/client/core";
 import { setContext as setContextApollo } from "@apollo/client/link/context";
 
+import { provideFirebaseApp } from "@angular/fire/app";
+import { provideFirestore } from "@angular/fire/firestore";
+import { app as firebaseApp, db as firestore } from "./config/firebase";
+
 import {
   AppConfigService,
   UseUtilsService,
@@ -82,6 +86,9 @@ export const appConfig: ApplicationConfig = {
         cache: new InMemoryCache(),
       };
     }),
+    // ##firebase
+    provideFirebaseApp(() => firebaseApp),
+    provideFirestore(() => firestore),
     // ##services
     UseUtilsService,
     DatetimeService,
