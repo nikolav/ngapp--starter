@@ -1,4 +1,4 @@
-import { Component, Input } from "@angular/core";
+import { Component, input } from "@angular/core";
 
 @Component({
   selector: "icon-buildings",
@@ -6,5 +6,5 @@ import { Component, Input } from "@angular/core";
   templateUrl: "./icon-buildings.component.html",
 })
 export class IconBuildingsComponent {
-  @Input() size: any = "1em";
+  size = input<any>("1em");
 }

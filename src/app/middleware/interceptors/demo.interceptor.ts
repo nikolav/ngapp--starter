@@ -6,7 +6,7 @@ import {
 
 export const demoInterceptor: HttpInterceptorFn = (req, next) => {
   // runs for *requests
-  console.log("@interceptor:demo", { req });
+  console.log("@interceptor:demo", req);
   return next(req);
   // # access .response:event
   // .pipe(

@@ -21,6 +21,9 @@ export class AppConfigService {
   API_URL = API_URL;
   ENDPOINT_GRAPHQL = ENDPOINT_GRAPHQL;
 
+  app = {
+    ROUTE_PATH_REDIRECT_UNATHENTICATED: "/",
+  };
   graphql = {
     // ~10min autoreload*
     QUERY_POLL_INTERVAL: 712345,

@@ -1,9 +1,9 @@
-import { Component, Input } from '@angular/core';
+import { Component, input } from "@angular/core";
 
 @Component({
-  selector: 'icon-account',
-  templateUrl: './icon-account.component.html',
+  selector: "icon-account",
+  templateUrl: "./icon-account.component.html",
 })
 export class IconAccount {
-  @Input() size: any = '1em';
+  size = input<any>("1em");
 }

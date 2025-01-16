@@ -22,7 +22,7 @@ import {
 } from "@angular/fire/auth";
 import { QueryRef } from "apollo-angular";
 import { Subscription } from "rxjs";
-import { filter as op_filter } from "rxjs/operators";
+import { filter as op_filter, take as op_take } from "rxjs/operators";
 
 import type {
   IAuthCreds,
@@ -57,7 +57,7 @@ export class StoreAuth implements OnDestroy {
   private profile_s: TOrNoValue<Subscription>;
   private profile_q: TOrNoValue<QueryRef<IResultApolloCacheService>> = null;
 
-  user$ = userObs(this.$auth);
+  private user$ = userObs(this.$auth);
 
   account = signal<TOrNoValue<IUser>>(null);
   profile = signal<any>(null);
@@ -92,13 +92,14 @@ export class StoreAuth implements OnDestroy {
       )
       .subscribe(() => {
         // @app:mounted
-        //  sync profile from cache
+        //  profile --sync-start
         effect(
           () => {
             this.profile_s?.unsubscribe();
             const cache_key = this.$topics.authProfile(this.uid());
             if (!cache_key) {
-              return this.profile.set(null);
+              this.profile.set(null);
+              return;
             }
             this.profile_q = this.$cache.key(cache_key);
             this.profile_s = this.profile_q?.valueChanges.subscribe(
@@ -170,9 +171,16 @@ export class StoreAuth implements OnDestroy {
     console.log("@debug --auth-logout", this.$ps.error());
   }
 
-  profilePatch(ppatch: any, merge = true) {
-    const cache_key = this.$topics.authProfile(this.uid());
-    return cache_key ? this.$cache.commit(cache_key, ppatch, merge) : undefined;
+  async profilePatch(patch: any, merge = true) {
+    const profile_cache_key = this.$topics.authProfile(this.uid());
+    return new Promise((resolve, reject) =>
+      profile_cache_key
+        ? this.$cache
+            .commit(profile_cache_key, patch, merge)
+            ?.pipe(op_take(1))
+            .subscribe(resolve)
+        : reject(null)
+    );
   }
   async profileReload() {
     return await this.profile_q?.refetch();

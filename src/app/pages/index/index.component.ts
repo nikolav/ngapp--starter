@@ -68,9 +68,4 @@ export class IndexComponent implements OnInit {
   ngOnInit() {
     // this.$qclientStatus.start();
   }
-  profilePatch(patch: any) {
-    return this.$auth
-      .profilePatch(patch)
-      ?.subscribe(async () => await this.$auth.profileReload());
-  }
 }

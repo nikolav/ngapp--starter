@@ -114,4 +114,5 @@ export class UseUtilsService {
   // globals
   Math = Math;
   Date = Date;
+  JSON = JSON;
 }

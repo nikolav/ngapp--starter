@@ -7,11 +7,13 @@ import {
   RouterStateSnapshot,
 } from "@angular/router";
 import type { ICanComponentDeactivate } from "../../types";
+import { Injectable } from "@angular/core";
 
 // export const fooGuardGuard: CanDeactivateFn<unknown> = (component, currentRoute, currentState, nextState) => {
 //   return true;
 // };
 
+@Injectable({ providedIn: "root" })
 export class FooGuard implements CanDeactivate<ICanComponentDeactivate> {
   canDeactivate(
     component: ICanComponentDeactivate,
