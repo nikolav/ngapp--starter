@@ -16,8 +16,6 @@ import {
   UseUniqueIdService,
   // ApolloStatusService,
   LightboxService,
-  CacheService,
-  TopicsService,
 } from "../../services";
 import { StoreGlobalVariable, StoreAuth } from "../../stores";
 
@@ -38,9 +36,6 @@ export class IndexComponent implements OnInit {
   $$ = inject(UseUtilsService);
   private $config = inject(AppConfigService);
   private $g = inject(StoreGlobalVariable);
-
-  private $cache = inject(CacheService);
-  private $topics = inject(TopicsService);
 
   $auth = inject(StoreAuth);
   $lightbox = inject(LightboxService);
@@ -73,7 +68,7 @@ export class IndexComponent implements OnInit {
   ngOnInit() {
     // this.$qclientStatus.start();
   }
-  profilePush(patch: any) {
+  profilePatch(patch: any) {
     return this.$auth
       .profilePatch(patch)
       ?.subscribe(async () => await this.$auth.profileReload());

@@ -96,11 +96,10 @@ export class StoreAuth implements OnDestroy {
         effect(
           () => {
             this.profile_s?.unsubscribe();
-            const UID = this.uid();
-            if (!UID) {
+            const cache_key = this.$topics.authProfile(this.uid());
+            if (!cache_key) {
               return this.profile.set(null);
             }
-            const cache_key = this.$topics.authProfile(UID);
             this.profile_q = this.$cache.key(cache_key);
             this.profile_s = this.profile_q?.valueChanges.subscribe(
               (result) => {

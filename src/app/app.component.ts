@@ -15,7 +15,7 @@ export class AppComponent implements OnInit {
   private $emitter = inject(EmitterService);
   private $config = inject(AppConfigService);
 
-  ngOnInit(): void {
+  ngOnInit() {
     console.log("@ngOnInit --app.component");
     setTimeout(() =>
       this.$emitter.subject.next(this.$config.events.EVENT_APP_MOUNTED)
