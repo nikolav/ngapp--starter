@@ -1,5 +1,3 @@
-import minimist from "minimist";
+import { timer } from "rxjs";
 
-console.log(
-  minimist("-x 1 --title=foo bar".split(/\s+/g))
-);
+timer(0, 1000).subscribe((n) => console.log("timer", n));

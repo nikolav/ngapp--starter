@@ -1,4 +1,5 @@
 import { Injectable } from "@angular/core";
+import { APP_NAME, ADMIN_EMAIL } from "../../config/vars.env.public";
 import {
   PRODUCTION,
   API_URL_production,
@@ -13,7 +14,9 @@ import {
 })
 export class AppConfigService {
   FOO = "BAR";
-  DEMO = "DEMO:1";
+  //
+  APP_NAME = APP_NAME;
+  ADMIN_EMAIL = ADMIN_EMAIL;
   //
   PRODUCTION = PRODUCTION;
   API_URL_dev = API_URL_dev;

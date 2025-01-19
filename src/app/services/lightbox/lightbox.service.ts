@@ -8,7 +8,7 @@ import { UseUtilsService } from "../../services";
 
 const { Fancybox } = fancyappsui;
 const DEFAULT_OPTIONS = {
-  mainClass: "!z-[2425]",
+  mainClass: "!z-[2422]",
   // showClass:
   // hideClass
   closeExisting: true,
@@ -82,7 +82,7 @@ export class LightboxService {
     //   type    : "image" | "iframe" | "video" | "pdf" | "inline" | "html"| "ajax" | "youtube" | "vimeo"
     return Fancybox.show(slides, this.$$.assign({}, DEFAULT_OPTIONS, options));
   }
-  close(closeAll: boolean = true) {
+  close(closeAll = true) {
     return Fancybox.close(closeAll);
   }
   instance() {

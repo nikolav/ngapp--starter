@@ -22,7 +22,7 @@ import {
   // withInterceptorsFromDi,
 } from "@angular/common/http";
 
-import { demoInterceptor } from "./middleware/interceptors";
+import { logRequestInterceptor } from "./middleware/interceptors";
 
 import { provideApollo } from "apollo-angular";
 import { HttpLink } from "apollo-angular/http";
@@ -79,8 +79,8 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(
       withFetch(),
       withInterceptors([
-        // @demo
-        demoInterceptor,
+        // @interceptor:demo --log-http
+        logRequestInterceptor,
       ])
       // withInterceptorsFromDi(),
     ),
