@@ -50,7 +50,12 @@ import {
   TopicsService,
   CacheService,
 } from "./services";
-import { StoreMain, StoreAuth, StoreGlobalVariable } from "./stores";
+import {
+  StoreMain,
+  StoreAuth,
+  StoreGlobalVariable,
+  StoreAppProcessing,
+} from "./stores";
 import { AuthGuard, FooDeactivateGuard } from "./middleware/guards";
 
 import { ENDPOINT_GRAPHQL, TOKEN_DEFAULT } from "./config";
@@ -106,6 +111,7 @@ export const appConfig: ApplicationConfig = {
     StoreAuth,
     TopicsService,
     CacheService,
+    StoreAppProcessing,
     // #services:ui
     LightboxService,
     // ##guards

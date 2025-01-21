@@ -2,7 +2,10 @@ import { Component, OnInit, inject } from "@angular/core";
 import { RouterModule } from "@angular/router";
 
 import { CommonMaterialModule } from "./modules";
-import { EmitterService, AppConfigService } from "./services";
+import {
+  EmitterService,
+  AppConfigService,
+} from "./services";
 
 @Component({
   selector: "app-root",
@@ -16,9 +19,10 @@ export class AppComponent implements OnInit {
   private $config = inject(AppConfigService);
 
   ngOnInit() {
-    console.log("@ngOnInit --app.component");
+    console.log("@debug:ngOnInit --app.component");
+    // @next:init
     setTimeout(() =>
-      this.$emitter.subject.next(this.$config.events.EVENT_APP_MOUNTED)
+      this.$emitter.subject.next(this.$config.events.EVENT_APP_INIT)
     );
   }
 }

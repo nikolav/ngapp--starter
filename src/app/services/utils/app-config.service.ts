@@ -25,6 +25,7 @@ export class AppConfigService {
   ENDPOINT_GRAPHQL = ENDPOINT_GRAPHQL;
 
   app = {
+    PROCESSING: `PROCESSING:510e66b5-2880-5c7a-ae49-aa2f191d2bcc`,
     ROUTE_PATH_REDIRECT_UNATHENTICATED: "/",
   };
   graphql = {
@@ -40,6 +41,6 @@ export class AppConfigService {
     KEY_AUTH_PROFILE: "AUTH_PROFILE:6cc4d5a2-5585-58fc-8427-ca7067968ef1:",
   };
   events = {
-    EVENT_APP_MOUNTED: "EVENT_APP_MOUNTED:31d93474-ddaa-5fe8-ad8a-41ddd01e4ebf",
+    EVENT_APP_INIT: "EVENT_APP_INIT:76190ab4-54d8-50b8-8acf-e5fefffabbbb",
   };
 }

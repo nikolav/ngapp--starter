@@ -17,7 +17,11 @@ import {
   // ApolloStatusService,
   LightboxService,
 } from "../../services";
-import { StoreGlobalVariable, StoreAuth } from "../../stores";
+import {
+  StoreGlobalVariable,
+  StoreAuth,
+  StoreAppProcessing,
+} from "../../stores";
 
 @Component({
   selector: "page-index",
@@ -34,8 +38,11 @@ export class IndexComponent implements OnInit {
   private $http = inject(HttpClient);
 
   $$ = inject(UseUtilsService);
-  private $config = inject(AppConfigService);
-  private $g = inject(StoreGlobalVariable);
+  $config = inject(AppConfigService);
+  $env = inject(StoreGlobalVariable);
+  $ps = inject(StoreAppProcessing);
+
+  flag1 = signal(true);
 
   $auth = inject(StoreAuth);
   $lightbox = inject(LightboxService);
@@ -51,15 +58,16 @@ export class IndexComponent implements OnInit {
   x1 = "x1";
 
   constructor() {
-    if (!this.$g.exists(this.G_foo)) {
-      this.$g.commit(this.G_foo, signal(null));
+    if (!this.$env.exists(this.G_foo)) {
+      this.$env.commit(this.G_foo, signal(null));
     }
+    this.$ps.watch(this.flag1);
   }
 
-  gfoo = computed(() => this.$g.key(this.G_foo)());
+  gfoo = computed(() => this.$env.key(this.G_foo)());
 
   ok() {
-    this.$g.key(this.G_foo).set(this.$$.uuid());
+    this.$env.key(this.G_foo).set(this.$$.uuid());
   }
   fetch0() {
     this.$http.get(this.$config.API_URL, {}).subscribe((d) => console.log(d));
@@ -67,5 +75,8 @@ export class IndexComponent implements OnInit {
   //
   ngOnInit() {
     // this.$qclientStatus.start();
+  }
+  flag1Toggle() {
+    this.flag1.update((val) => !val);
   }
 }

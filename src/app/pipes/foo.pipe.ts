@@ -1,11 +1,10 @@
 import { Pipe, PipeTransform } from "@angular/core";
 
 @Pipe({
-  name: "append_foo",
+  name: "appendFoo",
 })
-export class FooPipe implements PipeTransform {
-  transform(value: any, ...args: any[]) {
-    //
+export class AppendFooPipe implements PipeTransform {
+  transform(value: any) {
     return `${value}:foo`;
   }
 }

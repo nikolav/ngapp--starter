@@ -87,9 +87,7 @@ export class StoreAuth implements OnDestroy {
       this.account.set(user);
     });
     this.$emitter.subject
-      .pipe(
-        op_filter((event) => this.$config.events.EVENT_APP_MOUNTED === event)
-      )
+      .pipe(op_filter((event) => this.$config.events.EVENT_APP_INIT === event))
       .subscribe(() => {
         // @app:mounted
         //  profile --sync-start
