@@ -22,10 +22,19 @@ import {
   StoreAuth,
   StoreAppProcessing,
 } from "../../stores";
+import { LayoutDefault } from "../../layouts";
 
 @Component({
   selector: "page-index",
-  imports: [FormsModule, CommonMaterialModule, IconxModule, PipeUtilsModule],
+  imports: [
+    // components
+    LayoutDefault,
+    // services
+    FormsModule,
+    CommonMaterialModule,
+    IconxModule,
+    PipeUtilsModule,
+  ],
   templateUrl: "./index.component.html",
   styleUrl: "./index.component.scss",
   providers: [
@@ -42,13 +51,12 @@ export class IndexComponent implements OnInit {
   $env = inject(StoreGlobalVariable);
   $ps = inject(StoreAppProcessing);
 
-  flag1 = signal(true);
-
   $auth = inject(StoreAuth);
   $lightbox = inject(LightboxService);
 
   toggleFoo = new UseToggleFlagService();
   $sig = new UseUniqueIdService();
+  flag1 = signal(true);
 
   // $qclientStatus = inject(ApolloStatusService);
   // dd = computed(() => this.$$.dumpJson(this.$qclientStatus.data()));

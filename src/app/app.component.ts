@@ -2,10 +2,7 @@ import { Component, OnInit, inject } from "@angular/core";
 import { RouterModule } from "@angular/router";
 
 import { CommonMaterialModule } from "./modules";
-import {
-  EmitterService,
-  AppConfigService,
-} from "./services";
+import { EmitterService, AppConfigService } from "./services";
 
 @Component({
   selector: "app-root",
