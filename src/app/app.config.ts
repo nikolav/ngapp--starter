@@ -2,7 +2,7 @@ import {
   inject,
   ApplicationConfig,
   provideZoneChangeDetection,
-  // importProvidersFrom,
+  importProvidersFrom,
 } from "@angular/core";
 
 import { provideRouter } from "@angular/router";
@@ -58,7 +58,8 @@ import {
 } from "./stores";
 import { AuthGuard, FooDeactivateGuard } from "./middleware/guards";
 
-import { ENDPOINT_GRAPHQL, TOKEN_DEFAULT, IO_SERVER } from "./config";
+import { ENDPOINT_GRAPHQL, TOKEN_DEFAULT, configSocketIO } from "./config";
+import { SocketIoModule } from "ngx-socket-io";
 
 const authApolo = setContextApollo((operation, context) => {
   try {
@@ -101,6 +102,7 @@ export const appConfig: ApplicationConfig = {
         cache: new InMemoryCache(),
       };
     }),
+    importProvidersFrom(SocketIoModule.forRoot(configSocketIO)),
     // ##services
     UseUtilsService,
     DatetimeService,
