@@ -58,7 +58,7 @@ import {
 } from "./stores";
 import { AuthGuard, FooDeactivateGuard } from "./middleware/guards";
 
-import { ENDPOINT_GRAPHQL, TOKEN_DEFAULT } from "./config";
+import { ENDPOINT_GRAPHQL, TOKEN_DEFAULT, IO_SERVER } from "./config";
 
 const authApolo = setContextApollo((operation, context) => {
   try {
