@@ -9,6 +9,8 @@ import {
   KEY_ACCESS_TOKEN,
 } from "../../config";
 
+const withTimestamps = (ls: any[]) => [...ls, "created_at", "updated_at"];
+
 @Injectable({
   providedIn: "root",
 })
@@ -28,6 +30,14 @@ export class AppConfigService {
     PROCESSING: `PROCESSING:510e66b5-2880-5c7a-ae49-aa2f191d2bcc`,
     ROUTE_PATH_REDIRECT_UNATHENTICATED: "/",
   };
+  // collections:config:mongo
+  collections = {
+    foobars: {
+      topic: "foobars",
+      fields: withTimestamps(["foo", "bar"]),
+      sort: "date_desc",
+    },
+  };
   graphql = {
     // ~10min autoreload*
     QUERY_POLL_INTERVAL: 712345,
@@ -42,5 +52,9 @@ export class AppConfigService {
   };
   events = {
     EVENT_APP_INIT: "EVENT_APP_INIT:76190ab4-54d8-50b8-8acf-e5fefffabbbb",
+  };
+  io = {
+    IOEVENT_COLLECTIONS_UPSERT_prefix:
+      "IOEVENT_COLLECTIONS_UPSERT:4bdc857d-e203-5503-af89-31f07c43cded:",
   };
 }

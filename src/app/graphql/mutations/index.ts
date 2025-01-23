@@ -11,3 +11,22 @@ export const M_cacheRedisCommit = gql`
   }
 `;
 
+// collectionsUpsert(topic: String!, data: JsonData!, fields: [String!]!, id: ID): JsonData!
+export const M_collectionsUpsert = gql`
+  mutation m_collectionsUpsert(
+    $topic: String!
+    $data: JsonData!
+    $fields: [String!]!
+    $id: ID
+  ) {
+    collectionsUpsert(topic: $topic, data: $data, fields: $fields, id: $id)
+  }
+`;
+
+// collectionsDrop(topic: String!, ids: [ID!]): JsonData!
+export const M_collectionsDrop = gql`
+  mutation m_collectionsDrop($topic: String!, $ids: [ID!]) {
+    collectionsDrop(topic: $topic, ids: $ids)
+  }
+`;
+

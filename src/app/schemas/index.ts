@@ -7,5 +7,6 @@ export const schemaJwt = z.string().refine(isJWT);
 
 export const schemaDocsCollectionsConfig = z.object({
   topic: z.string().nonempty(),
-  fields: z.array(z.string().nonempty()),
+  fields: z.array(z.string()),
+  sort: z.string().nullish(),
 });

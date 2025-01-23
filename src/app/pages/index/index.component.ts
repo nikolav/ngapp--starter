@@ -5,6 +5,7 @@ import {
   computed,
   OnInit,
   effect,
+  OnDestroy,
 } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { HttpClient } from "@angular/common/http";
@@ -31,6 +32,8 @@ import {
   StoreAppProcessing,
 } from "../../stores";
 import { LayoutDefault } from "../../layouts";
+import { TOrNoValue } from "../../types";
+import { Subscription } from "rxjs";
 
 @Component({
   selector: "page-index",
@@ -52,7 +55,7 @@ import { LayoutDefault } from "../../layouts";
     // DocsCollectionService,
   ],
 })
-export class IndexComponent implements OnInit {
+export class IndexComponent implements OnInit, OnDestroy {
   private $http = inject(HttpClient);
 
   $$ = inject(UseUtilsService);
@@ -67,7 +70,9 @@ export class IndexComponent implements OnInit {
   $sig = new UseUniqueIdService();
   flag1 = signal(true);
 
-  $ddFoobars = new DocsCollectionService();
+  $ddFoobars = new DocsCollectionService().use(
+    this.$config.collections.foobars
+  );
 
   // $qclientStatus = inject(ApolloStatusService);
   // dd = computed(() => this.$$.dumpJson(this.$qclientStatus.data()));
@@ -82,6 +87,16 @@ export class IndexComponent implements OnInit {
     }
     this.$ps.watch(this.flag1);
     effect(() => console.log({ "@data": this.$ddFoobars.data() }));
+    let changes_s: TOrNoValue<Subscription>;
+    effect(() => {
+      if (this.$ddFoobars.enabled()) {
+        changes_s = this.$ddFoobars
+          .IO()!
+          .subscribe(() => this.$ddFoobars.reload());
+      } else {
+        changes_s?.unsubscribe();
+      }
+    });
   }
 
   gfoo = computed(() => this.$env.key(this.G_foo)());
@@ -95,9 +110,22 @@ export class IndexComponent implements OnInit {
   //
   ngOnInit() {
     // this.$qclientStatus.start();
-    this.$ddFoobars.config.set({ topic: "foobars", fields: ["foo", "bar"] });
+    // this.$ddFoobars.config.set(this.$config.collections.foobars);
+  }
+  ngOnDestroy() {
+    this.$ddFoobars.stop();
   }
   flag1Toggle() {
     this.flag1.update((val) => !val);
+  }
+  foobarsAdd() {
+    this.$ddFoobars
+      .commit({ foo: this.$$.idGen(), bar: this.$$.idGen() })
+      ?.subscribe((res) => {
+        console.log({ res });
+      });
+  }
+  foobarsDrop(...ids: any[]) {
+    this.$ddFoobars.drop(...ids)?.subscribe();
   }
 }
