@@ -26,7 +26,6 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     state: RouterStateSnapshot
   ): MaybeAsync<GuardResult> {
     console.log("@debug:AuthGuard");
-
     // pass or redirect:default
     return (
       this.$auth.isAuth() ||

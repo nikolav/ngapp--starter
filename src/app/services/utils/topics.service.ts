@@ -14,4 +14,9 @@ export class TopicsService {
       ? `${this.$config.io.IOEVENT_COLLECTIONS_UPSERT_prefix}${topic}`
       : "";
   }
+  ioEventOnCache(cache_key?: any) {
+    return cache_key
+      ? `${this.$config.io.IOEVENT_REDIS_CACHE_KEY_UPDATED_prefix}${cache_key}`
+      : "";
+  }
 }

@@ -38,14 +38,15 @@ import {
   AppConfigService,
 } from "../services";
 import { schemaJwt } from "../schemas";
+import { Socket } from "ngx-socket-io";
 
 @Injectable({
   providedIn: "root",
 })
 export class StoreAuth implements OnDestroy {
-  private injector = inject(Injector);
-
+  private $injector = inject(Injector);
   private $auth = inject(Auth);
+  private $io = inject(Socket);
   private $$ = inject(UseUtilsService);
   private $ps = inject(UseProccessMonitorService);
   private $topics = inject(TopicsService);
@@ -53,9 +54,11 @@ export class StoreAuth implements OnDestroy {
   private $config = inject(AppConfigService);
   private $emitter = inject(EmitterService);
 
+  private profile_q: TOrNoValue<QueryRef<IResultApolloCacheService>> = null;
+
   private user_s: TOrNoValue<Subscription>;
   private profile_s: TOrNoValue<Subscription>;
-  private profile_q: TOrNoValue<QueryRef<IResultApolloCacheService>> = null;
+  private profileIO_s: TOrNoValue<Subscription>;
 
   private user$ = userObs(this.$auth);
 
@@ -69,6 +72,14 @@ export class StoreAuth implements OnDestroy {
   uid = computed(() => this.$$.get(this.account(), "uid", ""));
   email = computed(() => this.$$.get(this.account(), "email", ""));
   isAdmin = computed(() => this.$$.get(this.profile(), "isAdmin", false));
+  profileCacheKey = computed(() => this.$topics.authProfile(this.uid()));
+
+  profileIO = computed(() => {
+    const cache_key = this.profileCacheKey();
+    return cache_key
+      ? this.$io.fromEvent(this.$topics.ioEventOnCache(cache_key))
+      : undefined;
+  });
 
   debug = computed(() =>
     this.$$.dumpJson({
@@ -86,15 +97,19 @@ export class StoreAuth implements OnDestroy {
     this.user_s = this.user$.subscribe((user) => {
       this.account.set(user);
     });
+    // @profile:load-from-cache
     this.$emitter.subject
-      .pipe(op_filter((event) => this.$config.events.EVENT_APP_INIT === event))
+      .pipe(
+        op_filter((event) => this.$config.events.EVENT_APP_INIT === event),
+        op_take(1)
+      )
       .subscribe(() => {
         // @app:mounted
         //  profile --sync-start
         effect(
           () => {
             this.profile_s?.unsubscribe();
-            const cache_key = this.$topics.authProfile(this.uid());
+            const cache_key = this.profileCacheKey();
             if (!cache_key) {
               this.profile.set(null);
               return;
@@ -106,9 +121,19 @@ export class StoreAuth implements OnDestroy {
               }
             );
           },
-          { injector: this.injector }
+          { injector: this.$injector }
         );
       });
+    // @profile:io:reload
+    effect(() => {
+      if (this.profileCacheKey()) {
+        this.profileIO_s = this.profileIO()!.subscribe(() =>
+          this.profileReload()
+        );
+      } else {
+        this.profileIO_s?.unsubscribe();
+      }
+    });
   }
 
   async authenticate(creds: IAuthCreds) {
@@ -170,7 +195,7 @@ export class StoreAuth implements OnDestroy {
   }
 
   async profilePatch(patch: any, merge = true) {
-    const profile_cache_key = this.$topics.authProfile(this.uid());
+    const profile_cache_key = this.profileCacheKey();
     return new Promise((resolve, reject) =>
       profile_cache_key
         ? this.$cache
@@ -187,5 +212,6 @@ export class StoreAuth implements OnDestroy {
   ngOnDestroy() {
     this.user_s?.unsubscribe();
     this.profile_s?.unsubscribe();
+    this.profileIO_s?.unsubscribe();
   }
 }

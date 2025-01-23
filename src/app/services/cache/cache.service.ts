@@ -1,5 +1,6 @@
 import { Injectable, inject } from "@angular/core";
 import { Apollo } from "apollo-angular";
+import { take as op_take } from "rxjs/operators";
 import { Q_cacheRedisGetCacheByKey, M_cacheRedisCommit } from "../../graphql";
 import { AppConfigService, UseUtilsService } from "../../services";
 import type {
@@ -30,14 +31,16 @@ export class CacheService {
 
   commit(cache_key: any, patch: TOrNoValue<TRecordJson>, merge = true) {
     return cache_key
-      ? this.$apollo.mutate({
-          mutation: M_cacheRedisCommit,
-          variables: {
-            cache_key,
-            patch,
-            merge,
-          },
-        })
+      ? this.$apollo
+          .mutate({
+            mutation: M_cacheRedisCommit,
+            variables: {
+              cache_key,
+              patch,
+              merge,
+            },
+          })
+          .pipe(op_take(1))
       : undefined;
   }
 

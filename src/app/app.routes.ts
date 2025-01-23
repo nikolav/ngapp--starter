@@ -23,6 +23,7 @@ export const routes: Routes = [
   // {
   //   path: "assets",
   //   component: Foo,
+  //   canActivateChild: [AuthGuard],
   //   children: [
   //     {
   //       path: ":id",
