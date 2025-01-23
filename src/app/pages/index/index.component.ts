@@ -6,6 +6,7 @@ import {
   OnInit,
   effect,
   OnDestroy,
+  Injector,
 } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { HttpClient } from "@angular/common/http";
@@ -57,6 +58,7 @@ import { Subscription } from "rxjs";
 })
 export class IndexComponent implements OnInit, OnDestroy {
   private $http = inject(HttpClient);
+  private $injector = inject(Injector);
 
   $$ = inject(UseUtilsService);
   $config = inject(AppConfigService);
@@ -70,9 +72,7 @@ export class IndexComponent implements OnInit, OnDestroy {
   $sig = new UseUniqueIdService();
   flag1 = signal(true);
 
-  $ddFoobars = new DocsCollectionService().use(
-    this.$config.collections.foobars
-  );
+  $ddLogs = new DocsCollectionService().use(this.$config.collections.logs);
 
   // $qclientStatus = inject(ApolloStatusService);
   // dd = computed(() => this.$$.dumpJson(this.$qclientStatus.data()));
@@ -86,17 +86,16 @@ export class IndexComponent implements OnInit, OnDestroy {
       this.$env.commit(this.G_foo, signal(null));
     }
     this.$ps.watch(this.flag1);
-    effect(() => console.log({ "@data": this.$ddFoobars.data() }));
-    let changes_s: TOrNoValue<Subscription>;
-    effect(() => {
-      if (this.$ddFoobars.enabled()) {
-        changes_s = this.$ddFoobars
-          .IO()!
-          .subscribe(() => this.$ddFoobars.reload());
-      } else {
-        changes_s?.unsubscribe();
-      }
-    });
+    //
+    // let logs_s: TOrNoValue<Subscription>;
+    // effect(() => {
+    //   if (this.$ddLogs.enabled()) {
+    //     logs_s = this.$ddLogs.IO()!.subscribe(() => this.$ddLogs.reload());
+    //   } else {
+    //     logs_s?.unsubscribe();
+    //   }
+    // });
+    effect(() => console.log({ "@logs": this.$ddLogs.data() }));
   }
 
   gfoo = computed(() => this.$env.key(this.G_foo)());
@@ -110,22 +109,21 @@ export class IndexComponent implements OnInit, OnDestroy {
   //
   ngOnInit() {
     // this.$qclientStatus.start();
-    // this.$ddFoobars.config.set(this.$config.collections.foobars);
   }
   ngOnDestroy() {
-    this.$ddFoobars.stop();
+    // this.$ddFoobars.stop();
   }
   flag1Toggle() {
     this.flag1.update((val) => !val);
   }
-  foobarsAdd() {
-    this.$ddFoobars
-      .commit({ foo: this.$$.idGen(), bar: this.$$.idGen() })
-      ?.subscribe((res) => {
-        console.log({ res });
-      });
+  logsReload() {
+    this.$ddLogs.reload();
   }
-  foobarsDrop(...ids: any[]) {
-    this.$ddFoobars.drop(...ids)?.subscribe();
+  logsAdd() {
+    return this.$ddLogs
+      .commit({
+        message: `message --${this.$$.idGen()}`,
+      })
+      ?.subscribe();
   }
 }

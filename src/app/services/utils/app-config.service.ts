@@ -37,6 +37,16 @@ export class AppConfigService {
       fields: withTimestamps(["foo", "bar"]),
       sort: "date_desc",
     },
+    main: {
+      topic: "main",
+      fields: withTimestamps(["name", "value"]),
+      // sort: "date_desc",
+    },
+    logs: {
+      topic: "logs:4f0c506a-7d37-5996-981b-e6fe3d73d370",
+      fields: withTimestamps(["message"]),
+      sort: "date_desc",
+    },
   };
   graphql = {
     // ~10min autoreload*
