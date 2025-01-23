@@ -1,4 +1,11 @@
-import { Component, inject, signal, computed, OnInit } from "@angular/core";
+import {
+  Component,
+  inject,
+  signal,
+  computed,
+  OnInit,
+  effect,
+} from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { HttpClient } from "@angular/common/http";
 
@@ -16,6 +23,7 @@ import {
   UseUniqueIdService,
   // ApolloStatusService,
   LightboxService,
+  DocsCollectionService,
 } from "../../services";
 import {
   StoreGlobalVariable,
@@ -41,6 +49,7 @@ import { LayoutDefault } from "../../layouts";
     // UseToggleFlagService,
     // UseProccessMonitorService,
     // UseUniqueIdService,
+    // DocsCollectionService,
   ],
 })
 export class IndexComponent implements OnInit {
@@ -58,6 +67,8 @@ export class IndexComponent implements OnInit {
   $sig = new UseUniqueIdService();
   flag1 = signal(true);
 
+  $ddFoobars = new DocsCollectionService();
+
   // $qclientStatus = inject(ApolloStatusService);
   // dd = computed(() => this.$$.dumpJson(this.$qclientStatus.data()));
 
@@ -70,6 +81,7 @@ export class IndexComponent implements OnInit {
       this.$env.commit(this.G_foo, signal(null));
     }
     this.$ps.watch(this.flag1);
+    effect(() => console.log({ "@data": this.$ddFoobars.data() }));
   }
 
   gfoo = computed(() => this.$env.key(this.G_foo)());
@@ -83,6 +95,7 @@ export class IndexComponent implements OnInit {
   //
   ngOnInit() {
     // this.$qclientStatus.start();
+    this.$ddFoobars.config.set({ topic: "foobars", fields: ["foo", "bar"] });
   }
   flag1Toggle() {
     this.flag1.update((val) => !val);

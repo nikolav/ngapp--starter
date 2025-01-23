@@ -12,3 +12,10 @@ export const Q_cacheRedisGetCacheByKey = gql`
     cacheRedisGetCacheByKey(cache_key: $cache_key)
   }
 `;
+
+// collectionsByTopic(topic: String!, config: JsonData!): JsonData!
+export const Q_collectionsByTopic = gql`
+  query q_collectionsByTopic($topic: String!, $config: JsonData!) {
+    collectionsByTopic(topic: $topic, config: $config)
+  }
+`;
