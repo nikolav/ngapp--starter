@@ -1,7 +1,10 @@
 import { Routes } from "@angular/router";
 
-import { PageApp, PageIndex, PageNotFound } from "./pages";
-import { AuthGuard, FooDeactivateGuard } from "./middleware/guards";
+import { PageApp, PageIndex, PageNotFound, PageDemo } from "./pages";
+import {
+  AuthGuard,
+  // FooDeactivateGuard
+} from "./middleware/guards";
 
 export const routes: Routes = [
   {
@@ -11,6 +14,10 @@ export const routes: Routes = [
     // pathMatch: "full",
   },
   {
+    path: "demo",
+    component: PageDemo,
+  },
+  {
     path: "app",
     component: PageApp,
     // protect route access
@@ -18,7 +25,11 @@ export const routes: Routes = [
     // protect child routes access
     canActivateChild: [AuthGuard],
     // protect route leave
-    canDeactivate: [FooDeactivateGuard],
+    // canDeactivate: [FooDeactivateGuard],
+    // data: {
+    //   foo: "bar",
+    // },
+    // resolve: { foo: FooResolver },
   },
   // {
   //   path: "assets",

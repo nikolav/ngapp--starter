@@ -7,6 +7,7 @@ import {
   API_URL,
   ENDPOINT_GRAPHQL,
   KEY_ACCESS_TOKEN,
+  APP_ID,
 } from "../../config";
 
 const withTimestamps = (ls: any[]) => [...ls, "created_at", "updated_at"];
@@ -59,6 +60,7 @@ export class AppConfigService {
   };
   key = {
     KEY_AUTH_PROFILE: "AUTH_PROFILE:6cc4d5a2-5585-58fc-8427-ca7067968ef1:",
+    KEY_APP_REMOTE_CONFIG: `KEY_APP_REMOTE_CONFIG:dd107db3-c14d-5357-9364-568b61c444e8:${APP_ID}`,
   };
   events = {
     EVENT_APP_INIT: "EVENT_APP_INIT:76190ab4-54d8-50b8-8acf-e5fefffabbbb",

@@ -5,7 +5,15 @@ import {
   importProvidersFrom,
 } from "@angular/core";
 
-import { provideRouter } from "@angular/router";
+import {
+  provideRouter,
+  // use hash:/#/ location strategy
+  // withHashLocation,
+
+  // Use a route to pass information to components
+  // #https://angular.dev/guide/routing/common-router-tasks#getting-route-information
+  // withComponentInputBinding,
+} from "@angular/router";
 import { routes } from "./app.routes";
 
 import {
@@ -49,6 +57,7 @@ import {
   LightboxService,
   TopicsService,
   CacheService,
+  UseDisplayService,
 } from "./services";
 import {
   StoreMain,
@@ -79,7 +88,11 @@ const authApolo = setContextApollo((operation, context) => {
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
-    provideRouter(routes),
+    provideRouter(
+      routes
+      // , withHashLocation()
+      // , withComponentInputBinding()
+    ),
     provideClientHydration(withEventReplay()),
     provideAnimationsAsync(),
     provideHttpClient(
@@ -116,6 +129,7 @@ export const appConfig: ApplicationConfig = {
     StoreAppProcessing,
     // #services:ui
     LightboxService,
+    UseDisplayService,
     // ##guards
     AuthGuard,
     FooDeactivateGuard,

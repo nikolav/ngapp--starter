@@ -6,16 +6,16 @@ import { UseUtilsService } from "../services";
   providedIn: "root",
 })
 export class GlobalVariableService {
-  private $$: UseUtilsService = inject(UseUtilsService);
-  private $$main: StoreMain = inject(StoreMain);
+  private $$ = inject(UseUtilsService);
+  private $main = inject(StoreMain);
 
-  exists(name: any) {
-    return this.$$.coreHasOwn(this.$$main.$$store, name);
+  exists(field: any) {
+    return this.$$.coreHasOwn(this.$main.store, field);
   }
   key(name: any) {
-    return this.$$main.pull(name)[name];
+    return this.$main.pull(name)[name];
   }
   commit(name: any, value: any) {
-    this.$$main.push({ [name]: value });
+    this.$main.push({ [name]: value });
   }
 }

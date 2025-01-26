@@ -8,7 +8,7 @@ import { CommonMaterialModule } from "../../modules";
   styleUrl: "./not-found.component.scss",
 })
 export class NotFoundComponent implements OnInit {
-  ngOnInit(): void {
+  ngOnInit() {
     // pass
   }
 }

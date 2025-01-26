@@ -15,4 +15,9 @@ export class ToggleFlagService {
   off() {
     this.toggle(false);
   }
+  // @init set state
+  use(flag: boolean) {
+    this.isActive.set(flag);
+    return this;
+  }
 }

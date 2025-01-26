@@ -1,15 +1,5 @@
 @import "./app/assets/styles/vars";
 
-@import "./app/assets/styles/scrollbars";
-
-@import "./app/assets/styles/eric_meyers_reset";
-@import "./app/assets/styles/sanitize";
-@import "./app/assets/styles/modern_css_reset";
-@import "./app/assets/styles/reset";
-
-@import "./app/assets/styles/tailwind";
-
-@import "./app/assets/styles/material/mat";
 html,
 body {
   height: 100%;
@@ -20,8 +10,17 @@ body {
     Roboto, Oxygen, Ubuntu, Cantarell, "Helvetica Neue", sans-serif !important;
 }
 
+@import "./app/assets/styles/scrollbars";
+
+@import "./app/assets/styles/eric_meyers_reset";
+@import "./app/assets/styles/sanitize";
+@import "./app/assets/styles/modern_css_reset";
+@import "./app/assets/styles/reset";
+
+@import "./app/assets/styles/tailwind";
+
+@import "./app/assets/styles/material/mat";
+
 @import "./app/assets/styles/custom";
 
-// 3rd party
 @import "@fancyapps/ui/dist/fancybox/fancybox.css";
-

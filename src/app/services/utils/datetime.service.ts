@@ -83,5 +83,5 @@ dayjs.extend(pluginLocalizedFormat);
   providedIn: "root",
 })
 export class DatetimeService {
-  dd = dayjs;
+  dayjs = dayjs;
 }

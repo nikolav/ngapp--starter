@@ -11,14 +11,12 @@
     <button mat-raised-button
       (click)="$auth.profilePatch({foo: $$.idGen(), isAdmin: .5 < $$.Math.random()})">profile:patch</button>
     <button mat-raised-button (click)="$auth.profileReload()">profile:reload</button>
-    <button mat-raised-button (click)="flag1Toggle()">sig1:toggle</button>
     <button mat-raised-button (click)="logsAdd()">logs:add</button>
     <button mat-raised-button (click)="logsReload()">logs:reload</button>
     <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Praesentium nesciunt
       sint quisquam!</p>
     <p>{{ x1 | kebabCase }}</p>
     <pre>{{ toggleFoo.isActive() }}</pre>
-    <pre>{{ $ps.processing() }}</pre>
     <pre><small>{{ $auth.debug() }}</small></pre>
   </section>
 </app-layout-default>

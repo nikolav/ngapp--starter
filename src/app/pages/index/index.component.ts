@@ -6,7 +6,7 @@ import {
   OnInit,
   effect,
   OnDestroy,
-  Injector,
+  // Injector,
 } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { HttpClient } from "@angular/common/http";
@@ -26,15 +26,16 @@ import {
   // ApolloStatusService,
   LightboxService,
   DocsCollectionService,
+  // DatetimeService,
 } from "../../services";
 import {
   StoreGlobalVariable,
   StoreAuth,
-  StoreAppProcessing,
+  // StoreAppProcessing,
 } from "../../stores";
 import { LayoutDefault } from "../../layouts";
-import { TOrNoValue } from "../../types";
-import { Subscription } from "rxjs";
+// import { TOrNoValue } from "../../types";
+// import { Subscription } from "rxjs";
 
 @Component({
   selector: "page-index",
@@ -57,22 +58,18 @@ import { Subscription } from "rxjs";
   ],
 })
 export class IndexComponent implements OnInit, OnDestroy {
-  private $http = inject(HttpClient);
-  private $injector = inject(Injector);
-
+  // private $injector = inject(Injector);
+  $http = inject(HttpClient);
   $$ = inject(UseUtilsService);
   $config = inject(AppConfigService);
   $env = inject(StoreGlobalVariable);
-  $ps = inject(StoreAppProcessing);
-
   $auth = inject(StoreAuth);
   $lightbox = inject(LightboxService);
 
-  toggleFoo = new UseToggleFlagService();
-  $sig = new UseUniqueIdService();
-  flag1 = signal(true);
-
   $ddLogs = new DocsCollectionService().use(this.$config.collections.logs);
+
+  $sig = new UseUniqueIdService();
+  toggleFoo = new UseToggleFlagService().use(true);
 
   // $qclientStatus = inject(ApolloStatusService);
   // dd = computed(() => this.$$.dumpJson(this.$qclientStatus.data()));
@@ -85,8 +82,6 @@ export class IndexComponent implements OnInit, OnDestroy {
     if (!this.$env.exists(this.G_foo)) {
       this.$env.commit(this.G_foo, signal(null));
     }
-    this.$ps.watch(this.flag1);
-    //
     // let logs_s: TOrNoValue<Subscription>;
     // effect(() => {
     //   if (this.$ddLogs.enabled()) {
@@ -112,9 +107,6 @@ export class IndexComponent implements OnInit, OnDestroy {
   }
   ngOnDestroy() {
     // this.$ddFoobars.stop();
-  }
-  flag1Toggle() {
-    this.flag1.update((val) => !val);
   }
   logsReload() {
     this.$ddLogs.reload();

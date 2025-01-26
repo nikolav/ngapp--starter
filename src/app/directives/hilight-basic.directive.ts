@@ -13,14 +13,14 @@ import {
 })
 export class HilightBasicDirective implements OnInit {
   // reference element directive sits on
-  private elRef = inject(ElementRef);
+  private refHost = inject(ElementRef);
 
   @HostBinding("style.backgroundColor") bgColor: any = "transparent";
 
   // constructor(private renderer: Renderer2) {}
 
   ngOnInit(): void {
-    this.elRef.nativeElement.style.backgroundColor = "green";
+    this.refHost.nativeElement.style.backgroundColor = "green";
   }
 
   @HostListener("mouseover") mouseOver(e: Event) {
