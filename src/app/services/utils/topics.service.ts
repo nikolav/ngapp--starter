@@ -7,7 +7,7 @@ import { AppConfigService } from "../../services";
 export class TopicsService {
   private $config = inject(AppConfigService);
   authProfile(uid?: any) {
-    return uid ? `${this.$config.key.KEY_AUTH_PROFILE}${uid}` : "";
+    return uid ? `${this.$config.key.AUTH_PROFILE}${uid}` : "";
   }
   collectionsIoEventChanges(topic?: any) {
     return topic

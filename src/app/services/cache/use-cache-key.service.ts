@@ -30,27 +30,27 @@ export class UseCacheKeyService implements OnDestroy {
       ? this.$io.fromEvent(this.$topics.ioEventOnCache(this.cache_key()))
       : undefined
   );
-  commit(patch: any, merge = true) {
-    return new Promise((resolve) =>
+  async commit(patch: any, merge = true) {
+    return await new Promise((resolve) =>
       this.$cache
         .commit(this.cache_key(), patch, merge)
         ?.pipe(op_take(1))
         .subscribe(resolve)
     );
   }
-  reload() {
-    this.q()?.refetch();
+  async reload() {
+    return await this.q()?.refetch();
   }
   use(key: string) {
     this.cache_key.set(key);
     return this;
   }
   start() {
-    if (!this.enabled()) return;
-    const ck = this.cache_key();
-    this.q_s = this.q()?.valueChanges.subscribe((res) =>
-      this.data.set(this.$cache.data(res, ck))
-    );
+    if (this.enabled()) {
+      this.q_s = this.q()?.valueChanges.subscribe((res) =>
+        this.data.set(this.$cache.data(res, this.cache_key()))
+      );
+    }
   }
   destroy() {
     this.q_s?.unsubscribe();

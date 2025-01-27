@@ -4,8 +4,6 @@ import { RouterModule } from "@angular/router";
 import { CommonMaterialModule } from "./modules";
 import { EmitterService, AppConfigService } from "./services";
 
-import { Socket } from "ngx-socket-io";
-
 @Component({
   selector: "app-root",
   imports: [RouterModule, CommonMaterialModule],
@@ -17,16 +15,11 @@ export class AppComponent implements OnInit {
   private $emitter = inject(EmitterService);
   private $config = inject(AppConfigService);
 
-  private $io = inject(Socket);
-
   ngOnInit() {
     console.log("@debug:ngOnInit --app.component");
-    // @next:init
+    // @next:init:emit
     setTimeout(() =>
       this.$emitter.subject.next(this.$config.events.EVENT_APP_INIT)
     );
-    this.$io.fromEvent("status:foo").subscribe((dd) => {
-      console.log({ dd });
-    });
   }
 }

@@ -1,19 +1,21 @@
 import { NgModule } from "@angular/core";
-import { AsyncPipe } from "@angular/common";
+import { AsyncPipe, JsonPipe } from "@angular/common";
 
 import {
   AppendFooPipe,
   KebabCasePipe,
   StartCasePipe,
-  DumpsPipe,
+  // DumpsPipe,
 } from "../../pipes";
 
 const PIPES = [
-  AsyncPipe,
   AppendFooPipe,
   KebabCasePipe,
   StartCasePipe,
-  DumpsPipe,
+  // DumpsPipe,
+  //
+  AsyncPipe,
+  JsonPipe,
 ];
 
 @NgModule({
