@@ -1,10 +1,7 @@
 import { Routes } from "@angular/router";
 
 import { PageApp, PageIndex, PageNotFound, PageDemo } from "./pages";
-import {
-  AuthGuard,
-  // FooDeactivateGuard
-} from "./middleware/guards";
+import { AuthGuard, FooDeactivateGuard } from "./middleware/guards";
 
 export const routes: Routes = [
   {
@@ -25,7 +22,7 @@ export const routes: Routes = [
     // protect child routes access
     canActivateChild: [AuthGuard],
     // protect route leave
-    // canDeactivate: [FooDeactivateGuard],
+    canDeactivate: [FooDeactivateGuard],
     // data: {
     //   foo: "bar",
     // },

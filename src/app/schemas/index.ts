@@ -10,3 +10,9 @@ export const schemaDocsCollectionsConfig = z.object({
   fields: z.array(z.string()),
   sort: z.string().nullish(),
 });
+
+export const schemaStoragePatchField = z.string().nonempty();
+export const schemaStoragePatch = z.record(
+  schemaStoragePatchField,
+  z.any().nullish()
+);

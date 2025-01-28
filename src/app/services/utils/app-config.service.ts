@@ -9,6 +9,7 @@ import {
   KEY_ACCESS_TOKEN,
   APP_ID,
 } from "../../config";
+import { TOKEN_foo, TOKEN_localStorage } from "../../keys";
 
 const withTimestamps = (ls: any[]) => [...ls, "created_at", "updated_at"];
 
@@ -63,6 +64,7 @@ export class AppConfigService {
     APP_REMOTE_CONFIG: `KEY_APP_REMOTE_CONFIG:dd107db3-c14d-5357-9364-568b61c444e8:${APP_ID}`,
   };
   events = {
+    STORAGE_CHANGE: "STORAGE_CHANGE:c4d1fdfb-8f17-5cff-9dd1-900172f9ad25",
     EVENT_APP_INIT: "EVENT_APP_INIT:76190ab4-54d8-50b8-8acf-e5fefffabbbb",
     ROUTER_NAVIGATION_START:
       "ROUTER_NAVIGATION_START:1dd152a5-7d3e-5e9d-bf6c-85bb555e3503",
@@ -76,4 +78,9 @@ export class AppConfigService {
       "IOEVENT_REDIS_CACHE_KEY_UPDATED:Hvtmg8LbKbeajKb:",
   };
   re = {};
+  // di tokens
+  di = {
+    TOKEN_foo,
+    TOKEN_localStorage,
+  };
 }

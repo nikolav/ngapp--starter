@@ -49,26 +49,28 @@ import {
   storage as firebaseStorage,
 } from "./config/firebase";
 
-import {
-  AppConfigService,
-  UseUtilsService,
-  DatetimeService,
-  EmitterService,
-  LightboxService,
-  TopicsService,
-  CacheService,
-  UseDisplayService,
-} from "./services";
-import {
-  StoreMain,
-  StoreAuth,
-  StoreGlobalVariable,
-  StoreAppProcessing,
-} from "./stores";
-import { AuthGuard, FooDeactivateGuard } from "./middleware/guards";
+// import {
+//   AppConfigService,
+//   UseUtilsService,
+//   DatetimeService,
+//   EmitterService,
+//   LightboxService,
+//   TopicsService,
+//   CacheService,
+//   UseDisplayService,
+// } from "./services";
+// import {
+//   StoreMain,
+//   StoreAuth,
+//   StoreGlobalVariable,
+//   StoreAppProcessing,
+// } from "./stores";
+// import { AuthGuard, FooDeactivateGuard } from "./middleware/guards";
 
 import { ENDPOINT_GRAPHQL, TOKEN_DEFAULT, configSocketIO } from "./config";
 import { SocketIoModule } from "ngx-socket-io";
+
+import { TOKEN_foo } from "./keys";
 
 const authApolo = setContextApollo((operation, context) => {
   try {
@@ -117,26 +119,31 @@ export const appConfig: ApplicationConfig = {
     }),
     importProvidersFrom(SocketIoModule.forRoot(configSocketIO)),
     // ##services
-    UseUtilsService,
-    DatetimeService,
-    AppConfigService,
-    EmitterService,
-    StoreMain,
-    StoreGlobalVariable,
-    StoreAuth,
-    TopicsService,
-    CacheService,
-    StoreAppProcessing,
+    // UseUtilsService,
+    // DatetimeService,
+    // AppConfigService,
+    // EmitterService,
+    // StoreMain,
+    // StoreGlobalVariable,
+    // StoreAuth,
+    // TopicsService,
+    // CacheService,
+    // StoreAppProcessing,
     // #services:ui
-    LightboxService,
-    UseDisplayService,
+    // LightboxService,
+    // UseDisplayService,
     // ##guards
-    AuthGuard,
-    FooDeactivateGuard,
+    // AuthGuard,
+    // FooDeactivateGuard,
     // ##firebase
     provideFirebaseApp(() => firebaseApp),
     provideFirestore(() => firestore),
     provideFirebaseAuth(() => firebaseAuth),
     provideFirebaseStorage(() => firebaseStorage),
+    // #provide:custom
+    {
+      provide: TOKEN_foo,
+      useValue: "foobar",
+    },
   ],
 };
