@@ -64,6 +64,10 @@ export class AppConfigService {
   };
   events = {
     EVENT_APP_INIT: "EVENT_APP_INIT:76190ab4-54d8-50b8-8acf-e5fefffabbbb",
+    ROUTER_NAVIGATION_START:
+      "ROUTER_NAVIGATION_START:1dd152a5-7d3e-5e9d-bf6c-85bb555e3503",
+    ROUTER_NAVIGATION_END:
+      "ROUTER_NAVIGATION_END:129bd9cd-ac1d-5679-81dc-eeb943fe5e70",
   };
   io = {
     IOEVENT_COLLECTIONS_UPSERT_prefix:

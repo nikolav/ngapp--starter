@@ -1,8 +1,15 @@
 import { Component, OnInit, inject } from "@angular/core";
-import { RouterModule } from "@angular/router";
+import {
+  NavigationCancel,
+  NavigationEnd,
+  NavigationError,
+  NavigationStart,
+  Router,
+  RouterModule,
+} from "@angular/router";
 
 import { CommonMaterialModule } from "./modules";
-import { EmitterService, AppConfigService } from "./services";
+import { EmitterService, AppConfigService, UseUtilsService } from "./services";
 
 @Component({
   selector: "app-root",
@@ -12,9 +19,26 @@ import { EmitterService, AppConfigService } from "./services";
   providers: [],
 })
 export class AppComponent implements OnInit {
+  private $$ = inject(UseUtilsService);
   private $emitter = inject(EmitterService);
   private $config = inject(AppConfigService);
+  private $router = inject(Router);
 
+  constructor() {
+    this.$router.events.subscribe((event) => {
+      // @route-change:emit
+      if (event instanceof NavigationStart)
+        this.$emitter.subject.next(this.$config.events.ROUTER_NAVIGATION_START);
+      if (
+        this.$$.some([
+          event instanceof NavigationEnd,
+          event instanceof NavigationCancel,
+          event instanceof NavigationError,
+        ])
+      )
+        this.$emitter.subject.next(this.$config.events.ROUTER_NAVIGATION_END);
+    });
+  }
   ngOnInit() {
     console.log("@debug:ngOnInit --app.component");
     // @next:init:emit

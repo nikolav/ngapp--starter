@@ -44,7 +44,7 @@ export class DocsCollectionService {
   //
   config = signal<TOrNoValue<IDocsCollectionsConfig>>(undefined);
   enabled = computed(
-    () => true === schemaDocsCollectionsConfig.safeParse(this.config()).success
+    () => schemaDocsCollectionsConfig.safeParse(this.config()).success
   );
   q = computed(() =>
     this.enabled()
@@ -88,7 +88,7 @@ export class DocsCollectionService {
       if (this.enabled()) {
         this.start();
       } else {
-        this.stop();
+        this.destroy();
       }
     });
   }
@@ -102,7 +102,7 @@ export class DocsCollectionService {
       this.result.set(result)
     );
   }
-  stop() {
+  destroy() {
     this.result_s?.unsubscribe();
   }
   commit(data: any, id?: any) {

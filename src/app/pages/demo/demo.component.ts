@@ -13,8 +13,6 @@ import { AppConfigService } from "../../services";
 export class DemoComponent implements OnDestroy, OnInit {
   private $config = inject(AppConfigService);
 
-  constructor() {}
-
   ngOnInit() {}
   ngOnDestroy() {}
 }
