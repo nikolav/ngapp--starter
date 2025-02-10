@@ -5,6 +5,7 @@ import {
   inject,
   OnDestroy,
   OnInit,
+  signal,
 } from "@angular/core";
 import { LayoutDefault } from "../../layouts";
 // import { DdemoDirective } from "../../directives/ddemo.directive";

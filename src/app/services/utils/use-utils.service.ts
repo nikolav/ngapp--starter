@@ -15,6 +15,7 @@ import {
   dumpJson,
   coreType,
   cat,
+  onDebug,
 } from "../../utils";
 
 const {
@@ -30,6 +31,7 @@ const {
   get,
   includes,
   isEmpty,
+  isEqual,
   kebabCase,
   last,
   map,
@@ -75,6 +77,7 @@ export class UseUtilsService {
   get = get;
   includes = includes;
   isEmpty = isEmpty;
+  isEqual = isEqual;
   kebabCase = kebabCase;
   last = last;
   len = len;
@@ -110,6 +113,7 @@ export class UseUtilsService {
   isNumeric = isNumeric;
   coreType = coreType;
   cat = cat;
+  onDebug = onDebug;
 
   // globals
   Math = Math;

@@ -49,7 +49,7 @@ export class LocalStorageService {
     // @init load
     this.sync();
   }
-  set(field: string, value: string) {
+  set(field: string, value: any) {
     try {
       const payload = schemaStoragePatch.parse({ [field]: value });
       this.localStorage.setItem(field, value);
@@ -58,8 +58,7 @@ export class LocalStorageService {
         payload,
       });
     } catch (error) {
-      console.log("@debug:LocalStorageService --set");
-      console.log(error);
+      this.$$.onDebug("LocalStorageService --set", error);
     }
   }
   drop(field: any) {
@@ -72,8 +71,7 @@ export class LocalStorageService {
         drop: true,
       });
     } catch (error) {
-      console.log("@debug:LocalStorageService --drop");
-      console.log(error);
+      this.$$.onDebug("LocalStorageService --drop", error);
     }
   }
   sync() {
@@ -88,8 +86,7 @@ export class LocalStorageService {
       }
       this.data.set(store_);
     } catch (error) {
-      console.log("@debug:LocalStorageService --sync");
-      console.log(error);
+      this.$$.onDebug("LocalStorageService --sync", error);
     }
   }
   destroy() {
