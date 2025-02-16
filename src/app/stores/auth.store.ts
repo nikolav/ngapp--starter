@@ -48,11 +48,12 @@ export class StoreAuth implements OnDestroy {
   private $auth = inject(Auth);
   private $io = inject(Socket);
   private $$ = inject(UseUtilsService);
-  private $ps = inject(UseProccessMonitorService);
   private $topics = inject(TopicsService);
   private $cache = inject(CacheService);
   private $config = inject(AppConfigService);
   private $emitter = inject(EmitterService);
+
+  private $ps = new UseProccessMonitorService();
 
   private profile_q: TOrNoValue<QueryRef<IResultApolloCacheService>> = null;
 

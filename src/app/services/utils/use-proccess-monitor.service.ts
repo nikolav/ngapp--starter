@@ -2,9 +2,7 @@ import { Injectable, inject, signal } from "@angular/core";
 import type { TOrNoValue } from "../../types";
 import { UseUtilsService } from "../../services";
 
-@Injectable({
-  providedIn: "root",
-})
+@Injectable()
 export class UseProccessMonitorService {
   private $$ = inject(UseUtilsService);
 

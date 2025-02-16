@@ -21,7 +21,6 @@ import {
   UseUtilsService,
   UseToggleFlagService,
   AppConfigService,
-  // UseProccessMonitorService,
   UseUniqueIdService,
   // ApolloStatusService,
   LightboxService,
@@ -50,12 +49,7 @@ import { LayoutDefault } from "../../layouts";
   ],
   templateUrl: "./index.component.html",
   styleUrl: "./index.component.scss",
-  providers: [
-    // UseToggleFlagService,
-    // UseProccessMonitorService,
-    // UseUniqueIdService,
-    // DocsCollectionService,
-  ],
+  providers: [],
 })
 export class IndexComponent implements OnInit, OnDestroy {
   // private $injector = inject(Injector);

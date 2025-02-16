@@ -31,9 +31,7 @@ interface IDocsCollectionsConfig {
   sort?: string;
 }
 
-@Injectable({
-  providedIn: "root",
-})
+@Injectable()
 export class DocsCollectionService {
   private $apollo = inject(Apollo);
   private $io = inject(Socket);

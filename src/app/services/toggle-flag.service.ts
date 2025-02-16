@@ -1,9 +1,7 @@
 import { Injectable, signal } from "@angular/core";
 import { type TOrNoValue } from "../types";
 
-@Injectable({
-  providedIn: "root",
-})
+@Injectable()
 export class ToggleFlagService {
   isActive = signal(false);
   toggle(flag?: TOrNoValue<boolean>) {
