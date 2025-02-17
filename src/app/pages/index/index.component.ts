@@ -26,6 +26,7 @@ import {
   LightboxService,
   DocsCollectionService,
   // DatetimeService,
+  FilesStorageService,
 } from "../../services";
 import {
   StoreGlobalVariable,
@@ -59,17 +60,14 @@ export class IndexComponent implements OnInit, OnDestroy {
   $env = inject(StoreGlobalVariable);
   $auth = inject(StoreAuth);
   $lightbox = inject(LightboxService);
+  $fs = inject(FilesStorageService);
 
   $ddLogs = new DocsCollectionService().use(this.$config.collections.logs);
 
   $sig = new UseUniqueIdService();
   toggleFoo = new UseToggleFlagService().use(true);
 
-  // $qclientStatus = inject(ApolloStatusService);
-  // dd = computed(() => this.$$.dumpJson(this.$qclientStatus.data()));
-
   G_foo = "foo";
-
   x1 = "x1";
 
   constructor() {

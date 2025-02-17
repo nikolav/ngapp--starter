@@ -4,7 +4,7 @@ import type { TOrNoValue } from "../../types";
 
 @Injectable()
 export class UseUniqueIdService {
-  private $$: UseUtilsService = inject(UseUtilsService);
+  private $$ = inject(UseUtilsService);
 
   private prefix: string;
   ID = signal<TOrNoValue<string>>(null);

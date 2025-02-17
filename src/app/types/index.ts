@@ -23,3 +23,8 @@ export interface IResultApolloCacheService {
     status: { cache: TRecordJson };
   };
 }
+export interface IUploadFile {
+  file: File;
+  path?: string;
+}
+export type TUploadFiles = Record<string, IUploadFile>;
