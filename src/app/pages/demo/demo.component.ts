@@ -1,40 +1,15 @@
-import {
-  Component,
-  computed,
-  effect,
-  inject,
-  OnDestroy,
-  OnInit,
-  signal,
-} from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { LayoutDefault } from "../../layouts";
-// import { DdemoDirective } from "../../directives/ddemo.directive";
-import { CommonMaterialModule, PipeUtilsModule } from "../../modules";
-import {
-  AppConfigService,
-  LocalStorageService,
-  UseUtilsService,
-} from "../../services";
 
 @Component({
   selector: "app-demo",
-  imports: [PipeUtilsModule, LayoutDefault, CommonMaterialModule],
+  imports: [LayoutDefault],
   templateUrl: "./demo.component.html",
   styleUrl: "./demo.component.scss",
 })
 export class DemoComponent implements OnDestroy, OnInit {
-  private $$ = inject(UseUtilsService);
-  private $config = inject(AppConfigService);
-  private $storage = inject(LocalStorageService);
+  constructor() {}
 
-  constructor() {
-    effect(() => {
-      console.log(this.$storage.data());
-    });
-  }
-
-  ngOnInit() {
-    console.log("@demo:ngOnInit");
-  }
+  ngOnInit() {}
   ngOnDestroy() {}
 }

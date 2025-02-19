@@ -12,9 +12,7 @@ import { Subscription } from "rxjs";
 import { take as op_take } from "rxjs/operators";
 import { Socket } from "ngx-socket-io";
 
-@Injectable({
-  providedIn: "root",
-})
+@Injectable()
 export class UseCacheKeyService implements OnDestroy {
   private $io = inject(Socket);
   private $topics = inject(TopicsService);
