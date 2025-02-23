@@ -1,7 +1,8 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Component, OnInit, OnDestroy, inject } from "@angular/core";
 
 import { LayoutDefault } from "../../layouts";
 import { CommonMaterialModule } from "../../modules";
+import { StoreDataCache } from "../../stores";
 import { DdemoDirective } from "../../directives";
 
 @Component({
@@ -9,10 +10,12 @@ import { DdemoDirective } from "../../directives";
   imports: [LayoutDefault, CommonMaterialModule, DdemoDirective],
   templateUrl: "./index.component.html",
   styleUrl: "./index.component.scss",
-  providers: [],
+  providers: [StoreDataCache],
 })
 export class IndexComponent implements OnInit, OnDestroy {
-  constructor() {}
+  dd = inject(StoreDataCache).use({ foo: 122 });
+  //
   ngOnInit() {}
   ngOnDestroy() {}
 }
+//

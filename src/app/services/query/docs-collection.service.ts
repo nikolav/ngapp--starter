@@ -74,7 +74,7 @@ export class DocsCollectionService {
 
   error = computed(() => {
     const res = this.result();
-    return res?.error || this.$$.get(res, "data.collectionsByTopic.error");
+    return res?.error ?? this.$$.get(res, "data.collectionsByTopic.error");
   });
   loading = computed(() => this.result()?.loading);
   data = computed(() =>

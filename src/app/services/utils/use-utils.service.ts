@@ -3,9 +3,13 @@ import { Injectable } from "@angular/core";
 import lodash from "lodash";
 import { v4 as uuid } from "uuid";
 
+// #https://github.com/validatorjs/validator.js
 import isEmail from "validator/es/lib/isEmail";
 import isURL from "validator/es/lib/isURL";
 import isJWT from "validator/es/lib/isJWT";
+
+// #https://github.com/alexei/sprintf.js#readme
+import { sprintf, vsprintf } from "sprintf-js";
 
 import {
   coreHasOwn,
@@ -21,6 +25,7 @@ import {
 const {
   assign,
   debounce,
+  clone,
   each,
   escapeRegExp,
   every,
@@ -32,6 +37,7 @@ const {
   includes,
   isEmpty,
   isEqual,
+  isString,
   kebabCase,
   last,
   map,
@@ -50,6 +56,7 @@ const {
   startCase,
   take,
   takeRight,
+  throttle,
   trim,
   trimEnd,
   trimStart,
@@ -68,6 +75,7 @@ export class UseUtilsService {
 
   // lodash
   assign = assign;
+  clone = clone;
   debounce = debounce;
   each = each;
   escapeRegExp = escapeRegExp;
@@ -80,6 +88,7 @@ export class UseUtilsService {
   includes = includes;
   isEmpty = isEmpty;
   isEqual = isEqual;
+  isString = isString;
   kebabCase = kebabCase;
   last = last;
   len = len;
@@ -96,13 +105,18 @@ export class UseUtilsService {
   shuffle = shuffle;
   some = some;
   startCase = startCase;
-  trim = trim;
   take = take;
   takeRight = takeRight;
+  throttle = throttle;
+  trim = trim;
   trimEnd = trimEnd;
   trimStart = trimStart;
   uniqueId = uniqueId;
   unset = unset;
+
+  // sprint-js
+  sprintf = sprintf;
+  vsprintf = vsprintf;
 
   // uuid
   uuid = uuid;

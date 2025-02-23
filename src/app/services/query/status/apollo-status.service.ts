@@ -1,6 +1,8 @@
 import { Injectable, inject, signal, computed } from "@angular/core";
 import { Apollo } from "apollo-angular";
 import { ApolloQueryResult } from "@apollo/client/core";
+import { Subscription } from "rxjs";
+
 import { Q_status } from "../../../graphql";
 import { AppConfigService } from "../../../services";
 import type { TOrNoValue } from "../../../types";
@@ -25,13 +27,17 @@ export class ApolloStatusService {
     pollInterval: this.$config.graphql.QUERY_POLL_INTERVAL,
     variables: {},
   });
+  q_s: TOrNoValue<Subscription>;
 
   error = computed(() => this.result()?.error);
   loading = computed(() => this.result()?.loading);
   data = computed(() => this.result()?.data);
 
   start() {
-    return this.q.valueChanges.subscribe((result) => this.result.set(result));
+    this.q_s = this.q.valueChanges.subscribe((qres) => this.result.set(qres));
+  }
+  destroy() {
+    this.q_s?.unsubscribe();
   }
   async reload() {
     return await this.q.refetch();

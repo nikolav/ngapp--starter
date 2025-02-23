@@ -1,4 +1,6 @@
-import { Directive } from "@angular/core";
+import { Directive, inject } from "@angular/core";
+import { StoreDataCache } from "../stores";
+// import { UseUtilsService } from ".././services";
 
 @Directive({
   selector: "[ddemo]",
@@ -7,7 +9,8 @@ import { Directive } from "@angular/core";
   },
 })
 export class DdemoDirective {
+  dd = inject(StoreDataCache);
   ok() {
-    console.log("ddemo.d");
+    console.log("@cache", this.dd.cache());
   }
 }
