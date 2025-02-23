@@ -48,6 +48,8 @@ const {
   size: len,
   some,
   startCase,
+  take,
+  takeRight,
   trim,
   trimEnd,
   trimStart,
@@ -95,6 +97,8 @@ export class UseUtilsService {
   some = some;
   startCase = startCase;
   trim = trim;
+  take = take;
+  takeRight = takeRight;
   trimEnd = trimEnd;
   trimStart = trimStart;
   uniqueId = uniqueId;

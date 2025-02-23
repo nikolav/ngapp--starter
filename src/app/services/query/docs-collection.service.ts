@@ -63,8 +63,8 @@ export class DocsCollectionService {
   result = signal<TOrNoValue<ApolloQueryResult<any>>>(undefined);
   private result_s: TOrNoValue<Subscription>;
 
-  // IO$ --changes-io
-  IO = computed(() =>
+  // io$ --changes-io
+  io = computed(() =>
     this.enabled()
       ? this.$io.fromEvent(
           this.$topics.collectionsIoEventChanges(this.config()!.topic)
@@ -96,8 +96,8 @@ export class DocsCollectionService {
     return this;
   }
   start() {
-    this.result_s = this.q()?.valueChanges.subscribe((result) =>
-      this.result.set(result)
+    this.result_s = this.q()?.valueChanges.subscribe((qres) =>
+      this.result.set(qres)
     );
   }
   destroy() {

@@ -1,20 +1,13 @@
-import {
-  Directive,
-  inject,
-  TemplateRef,
-  AfterViewInit,
-  ViewContainerRef,
-} from "@angular/core";
+import { Directive } from "@angular/core";
 
 @Directive({
   selector: "[ddemo]",
+  host: {
+    "(click)": "ok()",
+  },
 })
-export class DdemoDirective implements AfterViewInit {
-  private enabled = true;
-  private vcRef = inject(ViewContainerRef);
-  private fragment = inject(TemplateRef);
-  constructor() {
-    if (this.enabled) this.vcRef.createEmbeddedView(this.fragment);
+export class DdemoDirective {
+  ok() {
+    console.log("ddemo.d");
   }
-  ngAfterViewInit() {}
 }

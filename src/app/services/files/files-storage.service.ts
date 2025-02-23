@@ -1,5 +1,5 @@
 import { inject, Injectable } from "@angular/core";
-import { Observable } from "rxjs";
+import { from, map as op_map } from "rxjs";
 import {
   Storage,
   ref,
@@ -20,16 +20,16 @@ export class FilesStorageService {
   private $storage = inject(Storage);
   private $$ = inject(UseUtilsService);
 
-  upload(files: TUploadFiles) {
-    return new Observable((subs) => {
+  upload(files: TUploadFiles, onProgress: any = this.$$.noop) {
+    return from(
       Promise.all(
         this.$$.map(
           files,
           ({ file, path }, title) =>
             new Promise((resolve, reject) => {
               const pathFilename = [
-                // this.path(),
-                path ? this.$$.trim(path, "/") : this.$$.trim(file.name, "/"),
+                // .path(),
+                this.$$.trim(path ?? file.name, "/"),
               ]
                 .filter(Boolean)
                 .join("/");
@@ -39,9 +39,9 @@ export class FilesStorageService {
                 "state_changed",
                 // @progress
                 (snapshot) => {
-                  const progress =
-                    (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                  console.log({ [`${title} --upload-progress`]: progress });
+                  // const progress =
+                  //   (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                  onProgress({ [title]: snapshot });
                 },
                 // @error
                 reject,
@@ -58,8 +58,8 @@ export class FilesStorageService {
               );
             })
         )
-      ).then((res) => subs.next(this.$$.assign({}, ...res)));
-    });
+      )
+    ).pipe(op_map((res) => this.$$.assign({}, ...res)));
   }
   async ls(path: string) {
     return [

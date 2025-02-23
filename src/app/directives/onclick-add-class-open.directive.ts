@@ -1,11 +1,12 @@
-import { Directive, HostBinding, HostListener } from '@angular/core';
+import { Directive } from "@angular/core";
 
 @Directive({
-  selector: '[appOnclickAddClassOpen]',
+  selector: "[appOnclickAddClassOpen]",
+  host: {
+    "[class.open]": "isOpen",
+    "(click)": "isOpen = !isOpen",
+  },
 })
 export class OnclickAddClassOpenDirective {
-  @HostBinding('class.open') isOpen = false;
-  @HostListener('click') toggleOpen() {
-    this.isOpen = !this.isOpen;
-  }
+  isOpen = false;
 }
