@@ -5,6 +5,6 @@ import { Pipe, PipeTransform } from "@angular/core";
 })
 export class AppendFooPipe implements PipeTransform {
   transform(value: any) {
-    return `${value}:foo`;
+    return `FOO: --${value}--`;
   }
 }

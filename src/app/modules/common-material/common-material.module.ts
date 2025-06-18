@@ -1,6 +1,6 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { ReactiveFormsModule, FormsModule } from "@angular/forms";
+// import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 // import { MatButtonToggleModule } from "@angular/material/button-toggle";
 // import { MatBottomSheetModule } from "@angular/material/bottom-sheet";
 import { MatBadgeModule } from "@angular/material/badge";
@@ -29,8 +29,8 @@ import { MatToolbarModule } from "@angular/material/toolbar";
 const MODULES = [
   CommonModule,
   // #forms
-  ReactiveFormsModule,
-  FormsModule,
+  // ReactiveFormsModule,
+  // FormsModule,
   // #mat
   MatBadgeModule,
   MatButtonModule,
@@ -58,7 +58,7 @@ const MODULES = [
 
 @NgModule({
   // declarations: [],
-  imports: [...MODULES],
-  exports: [...MODULES],
+  imports: MODULES,
+  exports: MODULES,
 })
 export class CommonMaterialModule {}

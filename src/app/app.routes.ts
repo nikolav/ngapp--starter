@@ -19,13 +19,12 @@ export const routes: Routes = [
     component: PageApp,
     // protect route access
     // canActivate: [AuthGuard],
-    // protect child routes access
-    // canActivateChild: [AuthGuard],
-    // protect route leave
     // canDeactivate: [FooDeactivateGuard],
     // data: {
     //   foo: "bar",
     // },
+    // protect child routes access
+    // canActivateChild: [AuthGuard],
     // resolve: { foo: FooResolver },
   },
   // {

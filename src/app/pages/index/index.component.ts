@@ -4,7 +4,7 @@ import { LayoutDefault } from "../../layouts";
 import { CommonMaterialModule } from "../../modules";
 import { StoreDataCache } from "../../stores";
 import { DdemoDirective } from "../../directives";
-import { UseUtilsService } from "../../services";
+// import { UseUtilsService } from "../../services";
 
 @Component({
   selector: "page-index",
@@ -14,8 +14,8 @@ import { UseUtilsService } from "../../services";
   providers: [StoreDataCache],
 })
 export class IndexComponent implements OnInit, OnDestroy {
-  private $$ = inject(UseUtilsService);
-  dd = inject(StoreDataCache).use({ foo: 122 });
+  // private $$ = inject(UseUtilsService);
+  dd = inject(StoreDataCache).use({ foo: 122333 });
   //
   ngOnInit() {}
   ngOnDestroy() {}
