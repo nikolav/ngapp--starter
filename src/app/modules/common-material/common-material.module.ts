@@ -1,5 +1,5 @@
 import { NgModule } from "@angular/core";
-import { CommonModule } from "@angular/common";
+// import { CommonModule } from "@angular/common";
 // import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 // import { MatButtonToggleModule } from "@angular/material/button-toggle";
 // import { MatBottomSheetModule } from "@angular/material/bottom-sheet";
@@ -27,7 +27,7 @@ import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { MatToolbarModule } from "@angular/material/toolbar";
 
 const MODULES = [
-  CommonModule,
+  // CommonModule,
   // #forms
   // ReactiveFormsModule,
   // FormsModule,

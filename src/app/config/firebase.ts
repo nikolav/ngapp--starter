@@ -41,12 +41,14 @@ const firebaseConfig_production = {
   measurementId: "G-TB1KFTL3E8",
 };
 
-export const config = PRODUCTION
+// export const config = PRODUCTION
+const firebaseConfig = PRODUCTION
   ? firebaseConfig_production
   : firebaseConfig_dev;
 
 // Initialize Firebase
-export const app = 0 < getApps().length ? getApp() : initializeApp(config);
+export const app =
+  0 < getApps().length ? getApp() : initializeApp(firebaseConfig);
 
 // Initialize Cloud Firestore and get a reference to the service
 export const auth = getAuth(app);
@@ -68,3 +70,4 @@ export const storage = getStorage(app);
 //   }
 //   return null;
 // };
+export const config = firebaseConfig;

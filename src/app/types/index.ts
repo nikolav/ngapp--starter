@@ -6,7 +6,7 @@ import {
   TJsonLiteral,
 } from "../schemas/json.schema";
 
-export type { TRecordJson, TJson, TJsonLiteral };
+export type { TRecordJson, TJson, TJsonLiteral, MaybeAsync as TMaybeAsync };
 
 export type TOrNoValue<T = any> = T | undefined | null;
 export interface IAuthCreds {

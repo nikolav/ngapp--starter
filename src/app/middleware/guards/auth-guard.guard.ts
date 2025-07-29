@@ -5,7 +5,7 @@ import {
   CanActivate,
   CanActivateChild,
   GuardResult,
-  MaybeAsync,
+  // MaybeAsync,
   ActivatedRouteSnapshot,
   RouterStateSnapshot,
 } from "@angular/router";
@@ -14,6 +14,7 @@ import { AppConfigService } from "../../services";
 // export const authGuardGuard: CanActivateFn = (route, state) => {
 //   return true;
 // };
+import { TMaybeAsync } from "../../types";
 
 @Injectable({ providedIn: "root" })
 export class AuthGuard implements CanActivate, CanActivateChild {
@@ -24,7 +25,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
-  ): MaybeAsync<GuardResult> {
+  ): TMaybeAsync<GuardResult> {
     console.log("@debug:AuthGuard");
     // pass or redirect:default
     return (
@@ -37,7 +38,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
   canActivateChild(
     childRoute: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
-  ): MaybeAsync<GuardResult> {
+  ): TMaybeAsync<GuardResult> {
     console.log("@debug:AuthGuard:canActivateChild");
     return true;
   }

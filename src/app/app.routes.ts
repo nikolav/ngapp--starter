@@ -21,7 +21,7 @@ export const routes: Routes = [
     // canActivate: [AuthGuard],
     // canDeactivate: [FooDeactivateGuard],
     // data: {
-    //   foo: "bar",
+    //   FOO: "BAR",
     // },
     // protect child routes access
     // canActivateChild: [AuthGuard],

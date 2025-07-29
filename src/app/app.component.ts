@@ -1,4 +1,5 @@
 import { Component, OnInit, inject } from "@angular/core";
+import { CommonModule } from "@angular/common";
 import {
   NavigationCancel,
   NavigationEnd,
@@ -8,12 +9,12 @@ import {
   RouterModule,
 } from "@angular/router";
 
-import { CommonMaterialModule } from "./modules";
+import { MaterialUIModule } from "./modules";
 import { EmitterService, AppConfigService, UseUtilsService } from "./services";
 
 @Component({
   selector: "app-root",
-  imports: [RouterModule, CommonMaterialModule],
+  imports: [CommonModule, RouterModule, MaterialUIModule],
   templateUrl: "./app.component.html",
   styleUrls: ["./app.component.scss"],
   providers: [],
