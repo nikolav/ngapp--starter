@@ -3,8 +3,11 @@ import { UseUtilsService } from "../services";
 
 @Injectable()
 export class DataCacheService {
+  private empty_ = () => <any>{};
   private $$ = inject(UseUtilsService);
+  //
   cache = signal<any>({});
+  //
   push(patch: Record<string, any>) {
     this.cache.update((d) =>
       this.$$.reduce(
@@ -41,6 +44,6 @@ export class DataCacheService {
     return this;
   }
   destroy() {
-    this.cache.set(<any>{});
+    this.cache.set(this.empty_());
   }
 }

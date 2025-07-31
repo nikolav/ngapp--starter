@@ -1,5 +1,11 @@
 import { gql } from "apollo-angular";
 
+export const M_test = gql`
+  mutation m_test {
+    test
+  }
+`;
+
 // cacheRedisCommit(cache_key: String!, patch: JsonData, merge: Boolean): JsonData!
 export const M_cacheRedisCommit = gql`
   mutation m_cacheRedisCommit(
@@ -29,4 +35,3 @@ export const M_collectionsDrop = gql`
     collectionsDrop(topic: $topic, ids: $ids)
   }
 `;
-
