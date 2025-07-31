@@ -20,10 +20,10 @@ import { EmitterService, AppConfigService, UseUtilsService } from "./services";
   providers: [],
 })
 export class AppComponent implements OnInit {
-  private $$ = inject(UseUtilsService);
-  private $emitter = inject(EmitterService);
-  private $config = inject(AppConfigService);
   private $router = inject(Router);
+  private $$ = inject(UseUtilsService);
+  private $config = inject(AppConfigService);
+  private $emitter = inject(EmitterService);
 
   constructor() {
     this.$router.events.subscribe((event) => {
