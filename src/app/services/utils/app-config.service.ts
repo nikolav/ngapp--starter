@@ -75,7 +75,7 @@ export class AppConfigService {
     IOEVENT_COLLECTIONS_UPSERT_prefix:
       "IOEVENT_COLLECTIONS_UPSERT:4bdc857d-e203-5503-af89-31f07c43cded:",
     IOEVENT_REDIS_CACHE_KEY_UPDATED_prefix:
-      "IOEVENT_REDIS_CACHE_KEY_UPDATED:Hvtmg8LbKbeajKb:",
+      "IOEVENT_REDIS_CACHE_KEY_UPDATED:Fx8FtARWgQ:",
   };
   re = {};
   // di tokens
