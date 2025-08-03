@@ -1,6 +1,26 @@
 <app-layout-default>
   <section class="page--index">
-    <h1>&#064;page--index</h1>
-    <button mat-raised-button ddemo>ok</button>
+    <h1>&#064;page --INDEX</h1>
+    <button mat-raised-button (click)="$auth.authenticate({
+      email: 'admin2@nikolav.rs',
+      password: 'admin2@nikolav.rs'
+    })">login</button>
+    <button mat-raised-button (click)="$auth.profilePatch({ foo: $$.uuid()})">profile:patch</button>
+    <button mat-raised-button (click)="logDebug()">debug</button>
+    <button mat-raised-button (click)="$auth.logout()">logout</button>
+    <button mat-raised-button (click)="$auth.register({
+      email: 'admin2@nikolav.rs',
+      password: 'admin2@nikolav.rs'
+    })">regiser</button>
+    <div>
+      <pre>
+        {{ $auth.isAuth() }}
+      </pre>
+      <small>
+        <pre>
+          {{ $auth.account() | json }}
+        </pre>
+      </small>
+    </div>
   </section>
 </app-layout-default>

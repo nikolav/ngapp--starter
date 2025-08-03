@@ -8,7 +8,8 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:ngapp": "node dist/ngapp/server/server.mjs",
-    "tinker": "ts-node ./tinker.mjs "
+    "tinker": "ts-node ./tinker.mjs ",
+    "deploy:dev": "npm run build && firebase deploy --only hosting "
   },
   "private": true,
   "dependencies": {
