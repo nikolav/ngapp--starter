@@ -69,7 +69,7 @@ export class StoreAuth implements OnDestroy {
   error = computed(() => this.$ps.error());
   processing = computed(() => this.$ps.processing());
   token = computed(() => this.$$.get(this.account(), "accessToken", ""));
-  isAuth = computed(() => true === schemaJwt.safeParse(this.token()).success);
+  isAuth = computed(() => schemaJwt.safeParse(this.token()).success);
   uid = computed(() => this.$$.get(this.account(), "uid", ""));
   email = computed(() => this.$$.get(this.account(), "email", ""));
   isAdmin = computed(() => this.$$.get(this.profile(), "isAdmin", false));

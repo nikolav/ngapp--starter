@@ -39,12 +39,12 @@ import { setContext as setContextApollo } from "@apollo/client/link/context";
 
 // #https://github.com/angular/angularfire/blob/main/docs/firestore.md
 import { provideFirebaseApp } from "@angular/fire/app";
-import { provideFirestore } from "@angular/fire/firestore";
+// import { provideFirestore } from "@angular/fire/firestore";
 import { provideAuth as provideFirebaseAuth } from "@angular/fire/auth";
 import { provideStorage as provideFirebaseStorage } from "@angular/fire/storage";
 import {
   app as firebaseApp,
-  db as firestore,
+  // db as firestore,
   auth as firebaseAuth,
   storage as firebaseStorage,
 } from "./config/firebase";
@@ -137,7 +137,7 @@ export const appConfig: ApplicationConfig = {
     // FooDeactivateGuard,
     // ##firebase
     provideFirebaseApp(() => firebaseApp),
-    provideFirestore(() => firestore),
+    // provideFirestore(() => firestore),
     provideFirebaseAuth(() => firebaseAuth),
     provideFirebaseStorage(() => firebaseStorage),
     // #provide:custom
