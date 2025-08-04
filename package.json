@@ -4,7 +4,8 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "cat ./src/app/assets/index.production.html > ./src/index.html && ng build ",
+    "build:dev": "cat ./src/app/assets/index.development.html > ./src/index.html && ng build ",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:ngapp": "node dist/ngapp/server/server.mjs",
@@ -34,7 +35,7 @@
     "dayjs": "^1.11.13",
     "eventemitter3": "^5.0.1",
     "express": "^4.18.2",
-    "firebase": "^11.1.0",
+    "firebase": "^11.10.0",
     "form-data": "^4.0.1",
     "graphql": "^16",
     "lodash": "^4.17.21",

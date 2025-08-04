@@ -43,6 +43,10 @@ import { provideFirebaseApp } from "@angular/fire/app";
 import { provideAuth as provideFirebaseAuth } from "@angular/fire/auth";
 import { provideStorage as provideFirebaseStorage } from "@angular/fire/storage";
 import {
+  provideMessaging as provideFirebaseMessaging,
+  getMessaging,
+} from "@angular/fire/messaging";
+import {
   app as firebaseApp,
   // db as firestore,
   auth as firebaseAuth,
@@ -140,6 +144,7 @@ export const appConfig: ApplicationConfig = {
     // provideFirestore(() => firestore),
     provideFirebaseAuth(() => firebaseAuth),
     provideFirebaseStorage(() => firebaseStorage),
+    provideFirebaseMessaging(() => getMessaging(firebaseApp)),
     // #provide:custom
     {
       provide: TOKEN_foo,
