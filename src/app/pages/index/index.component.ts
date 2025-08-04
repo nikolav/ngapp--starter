@@ -1,29 +1,17 @@
-import { Component, OnInit, OnDestroy, inject } from "@angular/core";
-import { JsonPipe } from "@angular/common";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 
 import { LayoutDefault } from "../../layouts";
 import { MaterialUIModule } from "../../modules";
-import { StoreDataCache, StoreAuth } from "../../stores";
-import { UseUtilsService } from "../../services";
 
 @Component({
   selector: "page-index",
-  imports: [LayoutDefault, MaterialUIModule, JsonPipe],
+  imports: [LayoutDefault, MaterialUIModule],
   templateUrl: "./index.component.html",
   styleUrl: "./index.component.scss",
-  providers: [StoreDataCache],
+  providers: [],
 })
 export class IndexComponent implements OnInit, OnDestroy {
-  $$ = inject(UseUtilsService);
-  $auth = inject(StoreAuth);
-  dd = inject(StoreDataCache).use({
-    foo: "fcbb8a08-2df8-5d5f-9234-55748fd41150",
-  });
-  //
   ngOnInit() {}
   ngOnDestroy() {}
-  logDebug() {
-    console.log(this.$auth.debug());
-  }
 }
 //

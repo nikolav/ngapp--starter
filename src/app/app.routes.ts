@@ -8,7 +8,7 @@ export const routes: Routes = [
     path: "",
     component: PageIndex,
     // title: 'home'
-    // pathMatch: "full",
+    pathMatch: "full",
   },
   {
     path: "demo",

@@ -24,7 +24,7 @@ export class DataCacheService {
     // .pull({'x1': 'foo.bar[1]', 'x2': 'bax.y1'})
     const d = this.cache();
     return this.$$.reduce(
-      this.$$.isString(fields) ? { fields } : fields,
+      this.$$.isString(fields) ? { [fields]: fields } : fields,
       (dd, path, field) => {
         this.$$.set(dd, field, this.$$.get(d, path));
         return dd;

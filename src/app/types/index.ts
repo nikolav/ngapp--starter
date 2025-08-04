@@ -6,6 +6,8 @@ import {
   TJsonLiteral,
 } from "../schemas/json.schema";
 
+export * from "./models";
+
 export type { TRecordJson, TJson, TJsonLiteral, MaybeAsync as TMaybeAsync };
 
 export type TOrNoValue<T = any> = T | undefined | null;
