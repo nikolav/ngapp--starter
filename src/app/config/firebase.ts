@@ -43,7 +43,9 @@ const firebaseConfig_production = {
 
 // export const config = PRODUCTION
 const firebaseConfig = PRODUCTION
-  ? firebaseConfig_production
+  ?
+    // firebaseConfig_production
+    firebaseConfig_dev
   : firebaseConfig_dev;
 
 // Initialize Firebase
