@@ -3,7 +3,7 @@
   "version": "19",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "cat ./src/app/assets/index.development.html > ./src/index.html && ng serve ",
     "build": "cat ./src/app/assets/index.production.html > ./src/index.html && ng build ",
     "build:dev": "cat ./src/app/assets/index.development.html > ./src/index.html && ng build ",
     "watch": "ng build --watch --configuration development",
