@@ -16,7 +16,7 @@ import { IconLoading } from "../../components/icons";
 })
 export class IndexComponent implements OnInit, OnDestroy {
   $$ = inject(UseUtilsService);
-  auth = inject(StoreAuth);
+  $auth = inject(StoreAuth);
   ngOnInit() {}
   ngOnDestroy() {}
 }

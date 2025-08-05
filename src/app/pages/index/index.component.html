@@ -4,21 +4,21 @@
     <div class="flex justify-center items-center">
       <icon-loading [gap]="12" [width]="5" [size]="55" class="text-sky-500" />
     </div>
-    <button (click)="auth.authenticate({ 'email': 'admin@nikolav.rs', 'password': 'admin@nikolav.rs' })">login</button>
+    <button (click)="$auth.authenticate({ 'email': 'admin@nikolav.rs', 'password': 'admin@nikolav.rs' })">login</button>
     •
-    <button (click)="auth.logout()">logout</button> •
-    <button (click)="auth.register({ 'email': 'admin@nikolav.rs', 'password': 'admin@nikolav.rs' })">register</button>
+    <button (click)="$auth.logout()">logout</button> •
+    <button (click)="$auth.register({ 'email': 'admin@nikolav.rs', 'password': 'admin@nikolav.rs' })">register</button>
     •
-    <button (click)="auth.profilePatch({x: $$.Math.random(), foo: $$.Math.random()})">profile:push</button>
+    <button (click)="$auth.profilePatch({x: $$.Math.random(), foo: $$.Math.random()})">profile:push</button>
 
     <p>
       <small>
         <pre>
-          {{ auth.account() | json }}
+          {{ $auth.account() | json }}
         </pre>
         <hr>
         <pre>
-          {{ auth.profile() | json }}
+          {{ $auth.profile() | json }}
         </pre>
       </small>
     </p>
