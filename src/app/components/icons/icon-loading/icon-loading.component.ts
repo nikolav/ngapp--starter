@@ -8,8 +8,8 @@ import { Component, computed, input } from "@angular/core";
 })
 export class IconLoadingComponent {
   size = input<any>("1em");
-  width = input<number>(10);
-  gap = input<number>(10);
+  width = input(10);
+  gap = input(10);
   duration = input(4.1666);
   r = computed(() => Math.max(50 - this.width() / 2 - 1, 0));
   darray = computed(
