@@ -12,7 +12,7 @@ export class NotificationsRequestService {
 
   constructor() {
     this.$emitter.subject.subscribe((evt) => {
-      if (evt === this.$config.events.EVENT_APP_INIT) {
+      if (this.$config.events.EVENT_APP_INIT === evt) {
         this.request();
       }
     });

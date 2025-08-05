@@ -6,6 +6,8 @@ export * from "./lang";
 export * from "./storage";
 export * from "./files";
 export * from "./messaging";
+export * from "./collections";
+export * from "./docs";
 
 export { ToggleFlagService as UseToggleFlagService } from "./toggle-flag.service";
 export { LightboxService } from "./lightbox/lightbox.service";

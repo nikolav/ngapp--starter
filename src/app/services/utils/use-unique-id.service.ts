@@ -2,7 +2,9 @@ import { Injectable, inject, signal } from "@angular/core";
 import { UseUtilsService } from "../../services";
 import type { TOrNoValue } from "../../types";
 
-@Injectable()
+@Injectable({
+  providedIn: "root",
+})
 export class UseUniqueIdService {
   private $$ = inject(UseUtilsService);
 
