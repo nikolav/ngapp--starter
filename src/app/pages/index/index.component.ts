@@ -5,16 +5,17 @@ import { LayoutDefault } from "../../layouts";
 import { MaterialUIModule } from "../../modules";
 import { StoreAuth } from "../../stores";
 import { UseUtilsService } from "../../services";
+import { IconLoading } from "../../components/icons";
 
 @Component({
   selector: "page-index",
-  imports: [LayoutDefault, MaterialUIModule, JsonPipe],
+  imports: [LayoutDefault, MaterialUIModule, JsonPipe, IconLoading],
   templateUrl: "./index.component.html",
   styleUrl: "./index.component.scss",
   providers: [],
 })
 export class IndexComponent implements OnInit, OnDestroy {
-  $$ = inject(UseUtilsService)
+  $$ = inject(UseUtilsService);
   auth = inject(StoreAuth);
   ngOnInit() {}
   ngOnDestroy() {}

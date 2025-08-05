@@ -1,8 +1,10 @@
 <app-layout-default>
   <section class="page--index">
     <h1>&#064;page --INDEX</h1>
-    <button
-      (click)="auth.authenticate({ 'email': 'admin@nikolav.rs', 'password': 'admin@nikolav.rs' })">login</button>
+    <div class="flex justify-center items-center">
+      <icon-loading [gap]="12" [width]="5" [size]="55" class="text-sky-500" />
+    </div>
+    <button (click)="auth.authenticate({ 'email': 'admin@nikolav.rs', 'password': 'admin@nikolav.rs' })">login</button>
     •
     <button (click)="auth.logout()">logout</button> •
     <button (click)="auth.register({ 'email': 'admin@nikolav.rs', 'password': 'admin@nikolav.rs' })">register</button>
