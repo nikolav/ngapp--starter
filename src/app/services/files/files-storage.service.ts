@@ -59,6 +59,7 @@ export class FilesStorageService {
             })
         )
       )
+      // merge all results in one map
     ).pipe(op_map((res) => this.$$.assign({}, ...res)));
   }
   async ls(path: string) {

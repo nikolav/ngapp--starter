@@ -6,7 +6,7 @@ import {
   computed,
   signal,
   effect,
-  Injector,
+  // Injector,
 } from "@angular/core";
 import {
   Auth,
@@ -22,7 +22,10 @@ import {
 } from "@angular/fire/auth";
 import { QueryRef } from "apollo-angular";
 import { Subscription } from "rxjs";
-import { filter as op_filter, take as op_take } from "rxjs/operators";
+import {
+  // filter as op_filter,
+  first as op_first,
+} from "rxjs/operators";
 
 import type {
   IAuthCreds,
@@ -34,8 +37,8 @@ import {
   UseProccessMonitorService,
   TopicsService,
   CacheService,
-  EmitterService,
-  AppConfigService,
+  // EmitterService,
+  // AppConfigService,
 } from "../services";
 import { schemaJwt } from "../schemas";
 import { Socket } from "ngx-socket-io";
@@ -44,15 +47,14 @@ import { Socket } from "ngx-socket-io";
   providedIn: "root",
 })
 export class StoreAuth implements OnDestroy {
-  private $injector = inject(Injector);
+  // private $injector = inject(Injector);
   private $auth = inject(Auth);
   private $io = inject(Socket);
   private $$ = inject(UseUtilsService);
   private $topics = inject(TopicsService);
   private $cache = inject(CacheService);
-  private $config = inject(AppConfigService);
-  private $emitter = inject(EmitterService);
-
+  // private $config = inject(AppConfigService);
+  // private $emitter = inject(EmitterService);
   private $ps = new UseProccessMonitorService();
 
   private profile_q: TOrNoValue<QueryRef<IResultApolloCacheService>> = null;
@@ -63,6 +65,7 @@ export class StoreAuth implements OnDestroy {
 
   private user$ = userObs(this.$auth);
 
+  // auth state
   account = signal<TOrNoValue<IUser>>(null);
   profile = signal<any>(null);
 
@@ -98,42 +101,55 @@ export class StoreAuth implements OnDestroy {
     this.user_s = this.user$.subscribe((user) => {
       this.account.set(user);
     });
-    // @profile:load-from-cache
-    this.$emitter.subject
-      .pipe(
-        op_filter((event) => this.$config.events.EVENT_APP_INIT === event),
-        op_take(1)
-      )
-      .subscribe(() => {
-        // @app:mounted
-        //  profile --sync-start
-        effect(
-          () => {
-            this.profile_s?.unsubscribe();
-            const cache_key = this.profileCacheKey();
-            if (!cache_key) {
-              this.profile.set(null);
-              return;
-            }
-            this.profile_q = this.$cache.key(cache_key);
-            this.profile_s = this.profile_q?.valueChanges.subscribe(
-              (result) => {
-                this.profile.set(this.$cache.data(result, cache_key));
-              }
-            );
-          },
-          { injector: this.$injector }
-        );
+    // @profile:load-from-cache at app:init
+    // this.$emitter.subject
+    //   .pipe(
+    //     op_filter((event) => this.$config.events.EVENT_APP_INIT === event),
+    //     op_first()
+    //   )
+    //   .subscribe(() => {
+    //     // @app:mounted
+    //     //  profile --sync-start
+    //     effect(
+    //       () => {
+    //         this.profile_s?.unsubscribe();
+    //         const cache_key = this.profileCacheKey();
+    //         if (!cache_key) return;
+    //         this.profile_q = this.$cache.key(cache_key);
+    //         this.profile_s = this.profile_q?.valueChanges.subscribe(
+    //           (result) => {
+    //             this.profile.set(this.$cache.data(result, cache_key));
+    //           }
+    //         );
+    //       },
+    //       { injector: this.$injector }
+    //     );
+    //   });
+    // load profile on cache_key
+    effect((onCleanup) => {
+      let profile_cache_key = this.profileCacheKey();
+      if (!profile_cache_key) {
+        this.profile.set(null);
+        return;
+      }
+      this.profile_q = this.$cache.key(profile_cache_key);
+      this.profile_s = this.profile_q?.valueChanges.subscribe((result) => {
+        this.profile.set(this.$cache.data(result, profile_cache_key));
       });
-    // @profile:io:reload
-    effect(() => {
+      onCleanup(() => {
+        this.profile_s?.unsubscribe();
+      });
+    });
+    // reload profile on io
+    effect((onCleanup) => {
       if (this.profileCacheKey()) {
         this.profileIO_s = this.profileIO()!.subscribe(() =>
           this.profileReload()
         );
-      } else {
-        this.profileIO_s?.unsubscribe();
       }
+      onCleanup(() => {
+        this.profileIO_s?.unsubscribe();
+      });
     });
   }
 
@@ -201,7 +217,7 @@ export class StoreAuth implements OnDestroy {
       profile_cache_key
         ? this.$cache
             .commit(profile_cache_key, patch, merge)
-            ?.pipe(op_take(1))
+            ?.pipe(op_first())
             .subscribe(resolve)
         : reject(null)
     );

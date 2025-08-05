@@ -1,5 +1,24 @@
 <app-layout-default>
   <section class="page--index">
     <h1>&#064;page --INDEX</h1>
+    <button
+      (click)="auth.authenticate({ 'email': 'admin@nikolav.rs', 'password': 'admin@nikolav.rs' })">login</button>
+    •
+    <button (click)="auth.logout()">logout</button> •
+    <button (click)="auth.register({ 'email': 'admin@nikolav.rs', 'password': 'admin@nikolav.rs' })">register</button>
+    •
+    <button (click)="auth.profilePatch({x: $$.Math.random(), foo: $$.Math.random()})">profile:push</button>
+
+    <p>
+      <small>
+        <pre>
+          {{ auth.account() | json }}
+        </pre>
+        <hr>
+        <pre>
+          {{ auth.profile() | json }}
+        </pre>
+      </small>
+    </p>
   </section>
 </app-layout-default>
