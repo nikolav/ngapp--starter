@@ -1,29 +1,52 @@
-import { Injectable, inject } from "@angular/core";
+import { Injectable, inject, signal } from "@angular/core";
 
 import { UseUtilsService } from "../services";
-//
+
 @Injectable({
   providedIn: "root",
 })
 export class StoreMain {
   private $$ = inject(UseUtilsService);
-  store = <any>{};
+
+  store = signal(<any>{});
+
   push(patch: any) {
-    this.$$.each(patch, (value, path) => {
-      this.$$.set(this.store, path, value);
-    });
+    this.store.update((store_) =>
+      this.$$.reduce(
+        patch,
+        (res, value, path) => {
+          this.$$.set(res, path, value);
+          return res;
+        },
+        this.$$.clone(store_)
+      )
+    );
   }
-  pull(...paths: string[]) {
+  // pull({ 'a': 'foo.bar[1]', 'b': 'x.y' })
+  pull(fields: Record<string, string>) {
+    const store_ = this.store();
     return this.$$.reduce(
-      paths,
-      (res: any, path) => {
-        this.$$.set(res, path, this.$$.get(this.store, path));
+      fields,
+      (res, path, field) => {
+        this.$$.set(res, field, this.$$.get(store_, path));
         return res;
       },
       <any>{}
     );
   }
+  exists(path: string) {
+    return this.$$.hasPath(this.store(), path);
+  }
   unset(...paths: string[]) {
-    this.$$.each(paths, (path) => this.$$.unset(this.store, path));
+    this.store.update((store_) =>
+      this.$$.reduce(
+        paths,
+        (res, path) => {
+          this.$$.unset(res, path);
+          return res;
+        },
+        this.$$.clone(store_)
+      )
+    );
   }
 }

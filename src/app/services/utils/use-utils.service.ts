@@ -34,6 +34,7 @@ const {
   findKey,
   first,
   get,
+  hasIn: hasPath,
   includes,
   isEmpty,
   isEqual,
@@ -85,6 +86,7 @@ export class UseUtilsService {
   findKey = findKey;
   first = first;
   get = get;
+  hasPath = hasPath;
   includes = includes;
   isEmpty = isEmpty;
   isEqual = isEqual;

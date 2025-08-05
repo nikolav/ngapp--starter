@@ -66,7 +66,6 @@ import {
 // import {
 //   StoreMain,
 //   StoreAuth,
-//   StoreGlobalVariable,
 //   StoreAppProcessing,
 // } from "./stores";
 // import { AuthGuard, FooDeactivateGuard } from "./middleware/guards";
@@ -128,7 +127,6 @@ export const appConfig: ApplicationConfig = {
     // AppConfigService,
     // EmitterService,
     // StoreMain,
-    // StoreGlobalVariable,
     // StoreAuth,
     // TopicsService,
     // CacheService,
