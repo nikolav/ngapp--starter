@@ -35,7 +35,11 @@ export class StoreMain {
     );
   }
   exists(path: string) {
-    return this.$$.hasPath(this.store(), path);
+    return this.$$.has(this.store(), path);
+  }
+  use(newStore: any) {
+    this.store.set(newStore);
+    return this;
   }
   unset(...paths: string[]) {
     this.store.update((store_) =>
