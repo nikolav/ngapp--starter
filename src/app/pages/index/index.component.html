@@ -4,11 +4,6 @@
     <div class="flex justify-center items-center">
       <icon-loading [gap]="12" [width]="5" [size]="55" class="text-sky-500" />
     </div>
-    <div>
-      <button (click)="storeUpdate()">ok</button>
-      <small>
-        <pre>{{ $main.store() | json }}</pre>
-      </small>
-    </div>
+    <button mat-raised-button>ok</button>
   </section>
 </app-layout-default>

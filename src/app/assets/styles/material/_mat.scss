@@ -1,16 +1,29 @@
 @use "@angular/material" as mat;
 @use "./themes/main" as my-theme;
 
-html {
+:root {
+  color-scheme: light dark;
   @include mat.theme(
     (
-      color: (
-        primary: my-theme.$primary-palette,
-        tertiary: my-theme.$tertiary-palette,
-        theme-type: light,
-      ),
-      typography: Roboto,
-      density: 0,
+      // color: my-theme.$primary-palette,
+      color:
+        (
+          primary: my-theme.$primary-palette,
+          tertiary: my-theme.$tertiary-palette,
+          // theme-type: light,
+          theme-type: color-scheme
+        ),
+      // typography: Roboto,
+      typography:
+        (
+          plain-family: Roboto,
+          brand-family: "Open Sans",
+          // bold-weight: 900,
+          // medium-weight: 500,
+          // regular-weight: 300
+        ),
+
+      density: 0
     )
   );
 }

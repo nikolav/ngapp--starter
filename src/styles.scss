@@ -14,14 +14,13 @@ body {
 
 @import "./app/assets/styles/eric_meyers_reset";
 @import "./app/assets/styles/sanitize";
+@import "./app/assets/styles/normalize";
 @import "./app/assets/styles/modern_css_reset";
-@import "./app/assets/styles/reset";
+@import "./app/assets/styles/reset-custom";
 
 @import "./app/assets/styles/tailwind";
 
 @import "./app/assets/styles/material/mat";
-
 @import "./app/assets/styles/custom";
 
 @import "@fancyapps/ui/dist/fancybox/fancybox.css";
-
