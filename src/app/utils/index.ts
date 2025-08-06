@@ -8,3 +8,4 @@ export { dumpJson } from "./dump-json";
 export { coreType } from "./core-type";
 export { cat } from "./cat";
 export { onDebug } from "./on-debug";
+export { deepmerge } from "./deepmerge";

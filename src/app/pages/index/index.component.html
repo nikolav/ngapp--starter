@@ -1,9 +1,13 @@
 <app-layout-default>
   <section class="page--index">
     <h1>&#064;page --INDEX</h1>
+    <button mat-raised-button (click)="ok()">OK</button>
     <div class="flex justify-center items-center">
-      <icon-loading [gap]="12" [width]="5" [size]="55" class="text-sky-500" />
+      <button mat-raised-button matTooltip="Info about the action"
+        aria-label="Button that displays a tooltip when focused or hovered over">
+        Action
+      </button>
     </div>
-    <button mat-raised-button>ok</button>
+
   </section>
 </app-layout-default>

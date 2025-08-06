@@ -3,6 +3,7 @@
 
 :root {
   color-scheme: light dark;
+  // color-scheme: light;
   @include mat.theme(
     (
       // color: my-theme.$primary-palette,
@@ -24,6 +25,51 @@
         ),
 
       density: 0
+    ),
+    $overrides: (
+      //
+      // theme-overrides
+    )
+  );
+}
+// body.dark-mode {
+//   color-scheme: dark;
+// }
+
+// =====================
+:root {
+  // ==theme:overrides
+  @include mat.theme-overrides(
+    (
+      // primary: #ebdcff,
+      // on-primary: #230f46,
+      // body-medium: 500 1.15rem/1.3rem Arial,
+      // corner-large: 32px,
+      // level3: 0 4px 6px 1px var(--mat-sys-surface-dim),
+    )
+  );
+  // ==component:overrides button
+  @include mat.button-overrides(
+    (
+      //
+      // filled-container-shape: 0.22rem,
+    )
+  );
+  // ==component:overrides card
+  @include mat.card-overrides(
+    (
+      //
+      elevated-container-color: var(--mat-sys-surface-container-lowest)
+    )
+  );
+}
+
+.app-mat-form-field-underline {
+  @include mat.form-field-overrides(
+    (
+      filled-container-shape: 0,
+      filled-container-color: transparent,
+      hover-state-layer-opacity: 0,
     )
   );
 }

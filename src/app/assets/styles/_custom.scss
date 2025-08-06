@@ -1,6 +1,9 @@
-.elevated {
-  box-shadow: var(--mat-sys-level1) !important;
+.app-elevated {
+  box-shadow: var(--mat-sys-level1);
 }
-.elevated-lg {
-  box-shadow: var(--mat-sys-level3) !important;
+.app-elevated-lg {
+  box-shadow: var(--mat-sys-level2);
+}
+.app-elevated-xl {
+  box-shadow: var(--mat-sys-level3);
 }

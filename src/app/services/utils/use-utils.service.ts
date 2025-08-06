@@ -20,6 +20,7 @@ import {
   coreType,
   cat,
   onDebug,
+  deepmerge,
 } from "../../utils";
 
 const {
@@ -79,6 +80,7 @@ export class UseUtilsService {
   assign = assign;
   clone = clone;
   debounce = debounce;
+  deepmerge = deepmerge;
   each = each;
   escapeRegExp = escapeRegExp;
   every = every;

@@ -1,15 +1,6 @@
 @import "./app/assets/styles/vars";
 
-html,
-body {
-  height: 100%;
-}
-body {
-  margin: 0;
-  font-family: Inter, "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI",
-    Roboto, Oxygen, Ubuntu, Cantarell, "Helvetica Neue", sans-serif !important;
-}
-
+@import "./app/assets/styles/base";
 @import "./app/assets/styles/scrollbars";
 
 @import "./app/assets/styles/eric_meyers_reset";
