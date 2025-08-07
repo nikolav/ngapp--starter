@@ -1,7 +1,9 @@
 import { Injectable, computed, inject, signal } from "@angular/core";
 import { BreakpointObserver, Breakpoints } from "@angular/cdk/layout";
-import { Subject } from "rxjs";
+import { Subject, Subscription, fromEvent } from "rxjs";
 import { takeUntil } from "rxjs/operators";
+
+import { TOrNoValue } from "../../types";
 
 const DISPLAY_NAMES = new Map([
   [Breakpoints.XSmall, "xs"],
@@ -38,7 +40,11 @@ export class UseDisplayService {
   landscape = computed(() => "landscape" === this.orientation());
   portrait = computed(() => "portrait" === this.orientation());
 
+  readonly width = signal<TOrNoValue<number>>(window.innerWidth);
+  private width_s: TOrNoValue<Subscription>;
+
   constructor() {
+    // sync size
     this._breakpointObserver
       .observe([
         Breakpoints.XSmall,
@@ -55,6 +61,7 @@ export class UseDisplayService {
           }
         }
       });
+    // sync orientation
     this._breakpointObserverOrientation
       .observe([Q_ORIENTATION_PORTRAIT, Q_ORIENTATION_LANDSCAPE])
       .pipe(takeUntil(this._destroyed))
@@ -67,10 +74,15 @@ export class UseDisplayService {
           }
         }
       });
+    // sync window width
+    this.width_s = fromEvent(window, "resize").subscribe(() => {
+      this.width.set(window.innerWidth);
+    });
   }
   ngOnDestroy() {
     this._destroyed.next();
     this._destroyed.complete();
+    this.width_s?.unsubscribe();
   }
   // evaluate one or more media queries against the current viewport size.
   //  .isMatched("(max-width: 599px)");
