@@ -10,6 +10,12 @@ const DISPLAY_NAMES = new Map([
   [Breakpoints.Large, "lg"],
   [Breakpoints.XLarge, "xl"],
 ]);
+const Q_ORIENTATION_PORTRAIT = "(orientation: portrait)";
+const Q_ORIENTATION_LANDSCAPE = "(orientation: landscape)";
+const DISPLAY_ORIENTATIONS = new Map([
+  [Q_ORIENTATION_PORTRAIT, "portrait"],
+  [Q_ORIENTATION_LANDSCAPE, "landscape"],
+]);
 
 @Injectable({
   providedIn: "root",
@@ -18,8 +24,10 @@ export class UseDisplayService {
   readonly UNKNOWN = "";
   private _destroyed = new Subject<void>();
   private readonly _breakpointObserver = inject(BreakpointObserver);
+  private readonly _breakpointObserverOrientation = inject(BreakpointObserver);
 
   readonly current = signal<string>(this.UNKNOWN);
+  readonly orientation = signal<string>(this.UNKNOWN);
 
   constructor() {
     this._breakpointObserver
@@ -38,6 +46,18 @@ export class UseDisplayService {
           }
         }
       });
+    this._breakpointObserverOrientation
+      .observe([Q_ORIENTATION_PORTRAIT, Q_ORIENTATION_LANDSCAPE])
+      .pipe(takeUntil(this._destroyed))
+      .subscribe((result) => {
+        for (const query of Object.keys(result.breakpoints)) {
+          if (result.breakpoints[query]) {
+            this.orientation.set(
+              DISPLAY_ORIENTATIONS.get(query) ?? this.UNKNOWN
+            );
+          }
+        }
+      });
   }
   ngOnDestroy() {
     this._destroyed.next();
@@ -45,7 +65,7 @@ export class UseDisplayService {
   }
   // evaluate one or more media queries against the current viewport size.
   //  .isMatched("(max-width: 599px)");
-  matches(displayQuery: any) {
+  matches(displayQuery: string | readonly string[]) {
     return this._breakpointObserver.isMatched(displayQuery);
   }
 }
