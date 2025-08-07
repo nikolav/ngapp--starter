@@ -1,4 +1,4 @@
-import { Injectable, inject, signal } from "@angular/core";
+import { Injectable, computed, inject, signal } from "@angular/core";
 import { BreakpointObserver, Breakpoints } from "@angular/cdk/layout";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
@@ -28,6 +28,15 @@ export class UseDisplayService {
 
   readonly current = signal<string>(this.UNKNOWN);
   readonly orientation = signal<string>(this.UNKNOWN);
+
+  xs = computed(() => "xs" === this.current());
+  sm = computed(() => "sm" === this.current());
+  md = computed(() => "md" === this.current());
+  lg = computed(() => "lg" === this.current());
+  xl = computed(() => "xl" === this.current());
+
+  landscape = computed(() => "landscape" === this.orientation());
+  portrait = computed(() => "portrait" === this.orientation());
 
   constructor() {
     this._breakpointObserver
