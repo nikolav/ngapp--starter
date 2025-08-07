@@ -30,3 +30,8 @@ export interface IUploadFile {
   path?: string;
 }
 export type TUploadFiles = Record<string, IUploadFile>;
+
+// ==store:flags
+export interface ISToreFlagsCache {
+  [name: string]: boolean;
+}

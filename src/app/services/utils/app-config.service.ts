@@ -62,6 +62,7 @@ export class AppConfigService {
   key = {
     AUTH_PROFILE: "AUTH_PROFILE:6cc4d5a2-5585-58fc-8427-ca7067968ef1:",
     APP_REMOTE_CONFIG: `KEY_APP_REMOTE_CONFIG:dd107db3-c14d-5357-9364-568b61c444e8:${APP_ID}`,
+    CACHE_KEY_STORE_FLAGS: "mUYzNU:b7943cb8-b3d4-5921-af05-bfc0b1a36c68",
   };
   events = {
     STORAGE_CHANGE: "STORAGE_CHANGE:c4d1fdfb-8f17-5cff-9dd1-900172f9ad25",

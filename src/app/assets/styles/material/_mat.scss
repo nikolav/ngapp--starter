@@ -62,6 +62,17 @@
       elevated-container-color: var(--mat-sys-surface-container-lowest)
     )
   );
+  // ==component:overrides sidenav
+  @include mat.sidenav-overrides(
+    (
+      //
+      container-shape: 0,
+      container-background-color: var(--mat-sys-surface-container-lowest),
+      content-background-color: transparent,
+      scrim-color: rgba(0 0 0 / 0.33),
+      container-elevation-shadow: var(--mat-sys-level3)
+    )
+  );
 }
 
 .app-mat-form-field-underline {

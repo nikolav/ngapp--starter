@@ -6,7 +6,11 @@ import { MatSnackBar } from "@angular/material/snack-bar";
 import { LayoutDefault } from "../../layouts";
 import { MaterialUIModule } from "../../modules";
 import { StoreAuth, StoreMain } from "../../stores";
-import { UseUtilsService, UseDisplayService } from "../../services";
+import {
+  UseUtilsService,
+  UseDisplayService,
+  UseToggleFlagService,
+} from "../../services";
 import { IconLoading, IconAccount } from "../../components/icons";
 import { IconBuildingsComponent } from "../../components/icons/icon-buildings/icon-buildings.component";
 
@@ -32,7 +36,9 @@ export class IndexComponent implements OnInit, OnDestroy {
   $auth = inject(StoreAuth);
   $display = inject(UseDisplayService);
 
-  fieldText = this.f.control("");
+  $toggle = new UseToggleFlagService().use(false);
+
+  val = this.f.control("");
 
   list = ["foo", "bar", "baz"];
 
@@ -50,15 +56,13 @@ export class IndexComponent implements OnInit, OnDestroy {
     );
   }
   ngOnInit() {
-    this.fieldText.valueChanges.subscribe((val) => {
+    this.val.valueChanges.subscribe((val) => {
       console.log({ val });
     });
   }
   ngOnDestroy() {}
 
-  fieldTextClear() {
-    this.fieldText.reset();
-  }
+  fieldTextClear() {}
 
   patchMain() {
     this.$main.push({

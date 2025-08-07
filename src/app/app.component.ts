@@ -11,6 +11,7 @@ import {
 
 import { MaterialUIModule } from "./modules";
 import { EmitterService, AppConfigService, UseUtilsService } from "./services";
+import { StoreFlags } from "./stores";
 
 @Component({
   selector: "app-root",
@@ -24,6 +25,8 @@ export class AppComponent implements OnInit {
   private $$ = inject(UseUtilsService);
   private $config = inject(AppConfigService);
   private $emitter = inject(EmitterService);
+  KEY_FLAGS = this.$config.key.CACHE_KEY_STORE_FLAGS;
+  $flags = inject(StoreFlags);
 
   constructor() {
     this.$router.events.subscribe((event) => {

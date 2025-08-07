@@ -1,8 +1,16 @@
-<main class="app--main">
-  <div class="app-nav--main flex flex-wrap *gap-3 justify-around">
-    <a mat-button routerLink="">home</a>
-    <a mat-button routerLink="/app">app</a>
-    <a mat-button routerLink="/demo">demo</a>
-  </div>
-  <router-outlet></router-outlet>
+<main class="app--main *bg-sky-200 h-full">
+  <mat-sidenav-container class="h-full">
+    <mat-sidenav (closedStart)="$flags.off(KEY_FLAGS)" mode="over" [opened]="$flags.pull(KEY_FLAGS)">
+      <button mat-button (click)="$flags.toggle(KEY_FLAGS)">toggle</button>
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <button mat-button (click)="$flags.toggle(KEY_FLAGS)">toggle</button>
+      <div class="app-nav--main flex flex-wrap *gap-3 justify-around">
+        <a mat-button routerLink="">home</a>
+        <a mat-button routerLink="/app">app</a>
+        <a mat-button routerLink="/demo">demo</a>
+      </div>
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
 </main>

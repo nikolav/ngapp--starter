@@ -3,3 +3,4 @@ export { AppProcessingService as StoreAppProcessing } from "./app-processing.ser
 export { UseIsProcessingService } from "./use-is-processing.service";
 export { DataCacheService as StoreDataCache } from "./cache-data.service";
 export { StoreAuth } from "./auth.store";
+export { StoreFlagsService as StoreFlags } from "./flags.store.service";

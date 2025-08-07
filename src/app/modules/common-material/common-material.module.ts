@@ -22,11 +22,11 @@ import { MatTooltipModule } from "@angular/material/tooltip";
 // import { MatBottomSheetModule } from "@angular/material/bottom-sheet";
 // import { MatCheckboxModule } from "@angular/material/checkbox";
 // import { MatChipsModule } from "@angular/material/chips";
-// import { MatMenuModule } from "@angular/material/menu";
+import { MatMenuModule } from "@angular/material/menu";
 // import { MatPaginatorModule } from "@angular/material/paginator";
 // import { MatProgressBarModule } from "@angular/material/progress-bar";
 // import { MatRippleModule } from "@angular/material/core";
-// import { MatSidenavModule } from "@angular/material/sidenav";
+import { MatSidenavModule } from "@angular/material/sidenav";
 // import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 
 const MODULES = [
@@ -35,11 +35,11 @@ const MODULES = [
   // FormsModule,
   // MatCheckboxModule,
   // MatChipsModule,
-  // MatMenuModule,
+  MatMenuModule,
   // MatPaginatorModule,
   // MatProgressBarModule,
   // MatRippleModule,
-  // MatSidenavModule,
+  MatSidenavModule,
   // MatSlideToggleModule,
   MatBadgeModule,
   MatButtonModule,
