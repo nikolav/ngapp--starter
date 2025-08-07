@@ -6,7 +6,7 @@ import { MatSnackBar } from "@angular/material/snack-bar";
 import { LayoutDefault } from "../../layouts";
 import { MaterialUIModule } from "../../modules";
 import { StoreAuth, StoreMain } from "../../stores";
-import { UseUtilsService } from "../../services";
+import { UseUtilsService, UseDisplayService } from "../../services";
 import { IconLoading, IconAccount } from "../../components/icons";
 import { IconBuildingsComponent } from "../../components/icons/icon-buildings/icon-buildings.component";
 
@@ -30,6 +30,7 @@ export class IndexComponent implements OnInit, OnDestroy {
   $$ = inject(UseUtilsService);
   $main = inject(StoreMain);
   $auth = inject(StoreAuth);
+  $display = inject(UseDisplayService);
 
   fieldText = this.f.control("");
 
