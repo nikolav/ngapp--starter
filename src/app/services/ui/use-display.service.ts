@@ -30,6 +30,7 @@ export class UseDisplayService {
 
   readonly current = signal<string>(this.UNKNOWN);
   readonly orientation = signal<string>(this.UNKNOWN);
+  readonly width = signal<TOrNoValue<number>>(window.innerWidth);
 
   xs = computed(() => "xs" === this.current());
   sm = computed(() => "sm" === this.current());
@@ -40,7 +41,6 @@ export class UseDisplayService {
   landscape = computed(() => "landscape" === this.orientation());
   portrait = computed(() => "portrait" === this.orientation());
 
-  readonly width = signal<TOrNoValue<number>>(window.innerWidth);
   private width_s: TOrNoValue<Subscription>;
 
   constructor() {
@@ -79,14 +79,14 @@ export class UseDisplayService {
       this.width.set(window.innerWidth);
     });
   }
-  ngOnDestroy() {
-    this._destroyed.next();
-    this._destroyed.complete();
-    this.width_s?.unsubscribe();
-  }
   // evaluate one or more media queries against the current viewport size.
   //  .isMatched("(max-width: 599px)");
   matches(displayQuery: string | readonly string[]) {
     return this._breakpointObserver.isMatched(displayQuery);
+  }
+  destroy() {
+    this.width_s?.unsubscribe();
+    this._destroyed.next();
+    this._destroyed.complete();
   }
 }
