@@ -20,7 +20,7 @@ import { MatTooltipModule } from "@angular/material/tooltip";
 // import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 // import { MatButtonToggleModule } from "@angular/material/button-toggle";
 // import { MatBottomSheetModule } from "@angular/material/bottom-sheet";
-// import { MatCheckboxModule } from "@angular/material/checkbox";
+import { MatCheckboxModule } from "@angular/material/checkbox";
 // import { MatChipsModule } from "@angular/material/chips";
 import { MatMenuModule } from "@angular/material/menu";
 // import { MatPaginatorModule } from "@angular/material/paginator";
@@ -33,7 +33,7 @@ const MODULES = [
   // CommonModule,
   // ReactiveFormsModule,
   // FormsModule,
-  // MatCheckboxModule,
+  MatCheckboxModule,
   // MatChipsModule,
   MatMenuModule,
   // MatPaginatorModule,

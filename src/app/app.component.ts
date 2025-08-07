@@ -25,8 +25,10 @@ export class AppComponent implements OnInit {
   private $$ = inject(UseUtilsService);
   private $config = inject(AppConfigService);
   private $emitter = inject(EmitterService);
-  KEY_FLAGS = this.$config.key.CACHE_KEY_STORE_FLAGS;
-  $flags = inject(StoreFlags);
+
+  // toggle sidenav flags
+  readonly KEY_FLAGS = this.$config.key.CACHE_KEY_STORE_FLAGS;
+  readonly $flags = inject(StoreFlags);
 
   constructor() {
     this.$router.events.subscribe((event) => {
@@ -44,7 +46,7 @@ export class AppComponent implements OnInit {
     });
   }
   ngOnInit() {
-    console.log("@debug:ngOnInit --app.component");
+    console.log("@debug app.component:ngOnInit");
     // @next:init:emit
     setTimeout(() =>
       this.$emitter.subject.next(this.$config.events.EVENT_APP_INIT)
