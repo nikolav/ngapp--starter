@@ -1,14 +1,13 @@
 <app-layout-default>
   <section class="page--index">
-    <p>
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Ut rem dolore culpa expedita magnam quia aliquid vel,
-      velit impedit aperiam similique nisi corporis illo dolores ullam enim quisquam quis voluptas.
-    </p>
-    <div class="flex justify-center">
-      <popper-content #popper1Content>
-        <p class="bold">Popper content..</p>
-      </popper-content>
-      <button [popper]="popper1Content" mat-raised-button>popper!</button>
-    </div>
+    <h2>
+      &#64;page--index
+    </h2>
+    <mat-chip-listbox multiple>
+      <mat-chip-option value="one">One fish</mat-chip-option>
+      <mat-chip-option value="two">Two fish</mat-chip-option>
+      <mat-chip-option value="three">Three fish</mat-chip-option>
+      <mat-chip-option value="four" disabled>Four fish</mat-chip-option>
+    </mat-chip-listbox>
   </section>
 </app-layout-default>

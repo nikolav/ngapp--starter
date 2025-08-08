@@ -3,3 +3,10 @@
 @import "tailwindcss/utilities";
 @import "tailwindcss/variants";
 @import "tailwindcss/screens";
+
+@layer components {
+  .popper-base {
+    // @apply /* add classes to popper-container */ !important;
+    // border: 0 !important;
+  }
+}

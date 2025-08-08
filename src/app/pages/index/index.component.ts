@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy, inject } from "@angular/core";
 import { JsonPipe } from "@angular/common";
 import { ReactiveFormsModule, FormBuilder } from "@angular/forms";
-import { MatSnackBar } from "@angular/material/snack-bar";
 // import { PopperjsModule } from "../../modules";
 
 import { LayoutDefault } from "../../layouts";
@@ -9,7 +8,7 @@ import { MaterialUIModule, PopperjsModule } from "../../modules";
 import { StoreAuth, StoreMain } from "../../stores";
 import {
   UseUtilsService,
-  UseDisplayService,
+  // UseDisplayService,
   UseToggleFlagService,
 } from "../../services";
 import {
@@ -21,14 +20,14 @@ import {
 @Component({
   selector: "page-index",
   imports: [
-    LayoutDefault,
-    MaterialUIModule,
-    JsonPipe,
-    IconLoading,
-    ReactiveFormsModule,
     IconAccount,
     IconBuildings,
+    IconLoading,
+    JsonPipe,
+    LayoutDefault,
+    MaterialUIModule,
     PopperjsModule,
+    ReactiveFormsModule,
   ],
   templateUrl: "./index.component.html",
   styleUrl: "./index.component.scss",
@@ -38,8 +37,7 @@ export class IndexComponent implements OnInit, OnDestroy {
   private f = inject(FormBuilder);
   $$ = inject(UseUtilsService);
   $main = inject(StoreMain);
-  $auth = inject(StoreAuth);
-  $display = inject(UseDisplayService);
+  // $auth = inject(StoreAuth);
 
   $toggle = new UseToggleFlagService().use(false);
 
@@ -47,11 +45,6 @@ export class IndexComponent implements OnInit, OnDestroy {
 
   list = ["foo", "bar", "baz"];
 
-  private _snackBar = inject(MatSnackBar);
-
-  openSnackBar(message: string, action: string) {
-    this._snackBar.open(message, action);
-  }
   ok() {
     console.log(
       this.$$.deepmerge()(
@@ -60,21 +53,9 @@ export class IndexComponent implements OnInit, OnDestroy {
       )
     );
   }
-  ngOnInit() {
-    this.val.valueChanges.subscribe((val) => {
-      console.log({ val });
-    });
-  }
+  ngOnInit() {}
   ngOnDestroy() {}
 
-  fieldTextClear() {}
-
-  patchMain() {
-    this.$main.push({
-      "x.1": Math.random(),
-      "a.b.c": Date.now(),
-    });
-  }
   debug() {
     console.log(this.$main.store());
   }
