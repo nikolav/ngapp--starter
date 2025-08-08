@@ -1,18 +1,22 @@
-import { Component, OnInit, OnDestroy, inject, viewChild } from "@angular/core";
+import { Component, OnInit, OnDestroy, inject } from "@angular/core";
 import { JsonPipe } from "@angular/common";
 import { ReactiveFormsModule, FormBuilder } from "@angular/forms";
 import { MatSnackBar } from "@angular/material/snack-bar";
+// import { PopperjsModule } from "../../modules";
 
 import { LayoutDefault } from "../../layouts";
-import { MaterialUIModule } from "../../modules";
+import { MaterialUIModule, PopperjsModule } from "../../modules";
 import { StoreAuth, StoreMain } from "../../stores";
 import {
   UseUtilsService,
   UseDisplayService,
   UseToggleFlagService,
 } from "../../services";
-import { IconLoading, IconAccount } from "../../components/icons";
-import { IconBuildingsComponent } from "../../components/icons/icon-buildings/icon-buildings.component";
+import {
+  IconLoading,
+  IconAccount,
+  IconBuildings,
+} from "../../components/icons";
 
 @Component({
   selector: "page-index",
@@ -23,7 +27,8 @@ import { IconBuildingsComponent } from "../../components/icons/icon-buildings/ic
     IconLoading,
     ReactiveFormsModule,
     IconAccount,
-    IconBuildingsComponent,
+    IconBuildings,
+    PopperjsModule,
   ],
   templateUrl: "./index.component.html",
   styleUrl: "./index.component.scss",

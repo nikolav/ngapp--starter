@@ -4,5 +4,11 @@
       Lorem ipsum dolor sit amet consectetur adipisicing elit. Ut rem dolore culpa expedita magnam quia aliquid vel,
       velit impedit aperiam similique nisi corporis illo dolores ullam enim quisquam quis voluptas.
     </p>
+    <div class="flex justify-center">
+      <popper-content #popper1Content>
+        <p class="bold">Popper content..</p>
+      </popper-content>
+      <button [popper]="popper1Content" mat-raised-button>popper!</button>
+    </div>
   </section>
 </app-layout-default>

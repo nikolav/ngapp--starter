@@ -11,7 +11,7 @@ export class StoreFlagsService {
   readonly store = signal(<ISToreFlagsCache>{});
 
   push(flags: ISToreFlagsCache) {
-    this.store.update((storeCurrent) =>
+    return this.store.update((storeCurrent) =>
       this.$$.assign(<ISToreFlagsCache>{}, storeCurrent, flags)
     );
   }
@@ -22,7 +22,7 @@ export class StoreFlagsService {
     return this.push(<ISToreFlagsCache>{ [name]: false });
   }
   toggle(name: string) {
-    this.store.update((storeCurrent) =>
+    return this.store.update((storeCurrent) =>
       this.$$.assign(<ISToreFlagsCache>{}, storeCurrent, <ISToreFlagsCache>{
         [name]: !storeCurrent[name],
       })
