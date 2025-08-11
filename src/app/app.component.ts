@@ -13,7 +13,7 @@ import {
 import { MaterialUIModule } from "./modules";
 import { EmitterService, AppConfigService, UseUtilsService } from "./services";
 import { StoreFlags } from "./stores";
-import { routeTransitionInOut } from "./assets/route-transitions";
+import { routeTransitionBlurInOut } from "./assets/route-transitions";
 
 @Component({
   selector: "app-root",
@@ -21,7 +21,7 @@ import { routeTransitionInOut } from "./assets/route-transitions";
   templateUrl: "./app.component.html",
   styleUrls: ["./app.component.scss"],
   providers: [],
-  animations: [routeTransitionInOut],
+  animations: [routeTransitionBlurInOut],
 })
 export class AppComponent implements OnInit {
   private $router = inject(Router);

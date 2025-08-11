@@ -11,7 +11,7 @@
         <a mat-button routerLink="/app">app</a>
         <a mat-button routerLink="/demo">demo</a>
       </div>
-      <div [@routeTransitionInOut]="routeTransitionPrepareOutlet(outlet)">
+      <div [@routeTransitionBlurInOut]="routeTransitionPrepareOutlet(outlet)">
         <router-outlet #outlet="outlet"></router-outlet>
       </div>
     </mat-sidenav-content>
