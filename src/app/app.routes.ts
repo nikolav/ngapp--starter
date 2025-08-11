@@ -9,14 +9,17 @@ export const routes: Routes = [
     component: PageIndex,
     // title: 'home'
     pathMatch: "full",
+    data: { animation: "PageIndex" },
   },
   {
     path: "demo",
     component: PageDemo,
+    data: { animation: "PageDemo" },
   },
   {
     path: "app",
     component: PageApp,
+    data: { animation: "PageApp" },
     // protect route access
     // canActivate: [AuthGuard],
     // canDeactivate: [FooDeactivateGuard],
@@ -45,6 +48,7 @@ export const routes: Routes = [
   {
     path: "not-found",
     component: PageNotFound,
+    data: { animation: "PageNotFound" },
   },
   {
     path: "**",

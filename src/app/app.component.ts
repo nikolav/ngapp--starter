@@ -7,11 +7,13 @@ import {
   NavigationStart,
   Router,
   RouterModule,
+  RouterOutlet,
 } from "@angular/router";
 
 import { MaterialUIModule } from "./modules";
 import { EmitterService, AppConfigService, UseUtilsService } from "./services";
 import { StoreFlags } from "./stores";
+import { routeTransitionInOut } from "./assets/route-transitions";
 
 @Component({
   selector: "app-root",
@@ -19,6 +21,7 @@ import { StoreFlags } from "./stores";
   templateUrl: "./app.component.html",
   styleUrls: ["./app.component.scss"],
   providers: [],
+  animations: [routeTransitionInOut],
 })
 export class AppComponent implements OnInit {
   private $router = inject(Router);
@@ -51,5 +54,8 @@ export class AppComponent implements OnInit {
     setTimeout(() =>
       this.$emitter.subject.next(this.$config.events.EVENT_APP_INIT)
     );
+  }
+  routeTransitionPrepareOutlet(outlet: RouterOutlet) {
+    return this.$$.get(outlet, "activatedRouteData.animation", "--DEFAULT--");
   }
 }
