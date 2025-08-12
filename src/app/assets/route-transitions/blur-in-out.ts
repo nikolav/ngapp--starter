@@ -9,9 +9,10 @@ import {
 } from "@angular/animations";
 
 export const routeTransitionBlurInOut = trigger("routeTransitionBlurInOut", [
-  transition("* <=> *", [
-    // Wildcard for any route change
+  transition("* => *", [
+    // 'position-relative'@host
     style({ position: "relative" }),
+    // 'position-absolute'@children
     query(
       ":enter, :leave",
       [
@@ -24,10 +25,14 @@ export const routeTransitionBlurInOut = trigger("routeTransitionBlurInOut", [
       ],
       { optional: true }
     ),
+    // start state for :enter
     query(":enter", [style({ opacity: 0, filter: "blur(.122rem)" })], {
       optional: true,
     }),
+    // run children :leave animations
     query(":leave", animateChild(), { optional: true }),
+    // run :enter :leave animations in parallel
+    //  both incoming/outgoing routes are animated
     group([
       query(
         ":leave",

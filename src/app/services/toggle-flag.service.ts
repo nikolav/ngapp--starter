@@ -3,7 +3,7 @@ import { type TOrNoValue } from "../types";
 
 @Injectable()
 export class ToggleFlagService {
-  isActive = signal(false);
+  readonly isActive = signal(false);
   toggle(flag?: TOrNoValue<boolean>) {
     this.isActive.update((value) => (null == flag ? !value : flag));
   }

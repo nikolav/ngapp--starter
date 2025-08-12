@@ -4,6 +4,7 @@ import {
   provideZoneChangeDetection,
   importProvidersFrom,
 } from "@angular/core";
+import { CommonModule } from "@angular/common";
 
 import {
   provideRouter,
@@ -92,6 +93,7 @@ const authApolo = setContextApollo((operation, context) => {
 //
 export const appConfig: ApplicationConfig = {
   providers: [
+    importProvidersFrom(CommonModule),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(
       routes
