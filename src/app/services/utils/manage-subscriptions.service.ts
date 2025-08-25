@@ -10,7 +10,7 @@ export class ManageSubscriptionsService {
   clear(...keys: string[]) {
     keys.forEach((key) => {
       if (this.$$.coreHasOwn(this.cache, key)) {
-        this.cache[key].unsubscribe();
+        this.cache[key]?.unsubscribe();
         delete this.cache[key];
       }
     });
@@ -18,14 +18,14 @@ export class ManageSubscriptionsService {
   push(subs: TManageSubscriptionsCache) {
     this.$$.each(subs, (sub, key) => {
       if (this.$$.coreHasOwn(this.cache, key)) {
-        this.cache[key].unsubscribe();
+        this.cache[key]?.unsubscribe();
       }
       this.cache[key] = sub;
     });
   }
   destroy() {
     this.$$.each(this.cache, (sub) => {
-      sub.unsubscribe();
+      sub?.unsubscribe();
     });
     this.use({});
   }

@@ -37,4 +37,7 @@ export interface ISToreFlagsCache {
   [name: string]: boolean;
 }
 
-export type TManageSubscriptionsCache = Record<string, Subscription>;
+export type TManageSubscriptionsCache = Record<
+  string,
+  TOrNoValue<Subscription>
+>;
