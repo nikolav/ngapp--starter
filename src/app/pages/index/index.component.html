@@ -7,5 +7,25 @@
       <!-- <mat-progress-spinner [value]="88" determinate /> -->
       <mat-spinner />
     </div>
+    <div>
+      <button mat-raised-button
+        (click)="$auth.authenticate({'email': 'admin@nikolav.rs', 'password': 'admin@nikolav.rs'})">auth:login</button>
+      <button mat-raised-button (click)="$auth.logout()">auth:logout</button>
+    </div>
+    <p>
+      <small>
+        <pre>[{{ $auth.access_token() }}]</pre>
+      </small>
+    </p>
+    <p>
+      <small>
+        <pre>{{ $auth.account() | json }}</pre>
+      </small>
+    </p>
+    <p>
+      <small>
+        <pre>{{ $auth.profile() | json }}</pre>
+      </small>
+    </p>
   </section>
 </app-layout-default>

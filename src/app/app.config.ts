@@ -31,12 +31,14 @@ import {
   // withInterceptorsFromDi,
 } from "@angular/common/http";
 
-import { logRequestInterceptor } from "./middleware/interceptors";
+import {
+  logRequestInterceptor,
+  authRequestInterceptor,
+} from "./middleware/interceptors";
 
 import { provideApollo } from "apollo-angular";
 import { HttpLink } from "apollo-angular/http";
-import { InMemoryCache, ApolloLink } from "@apollo/client/core";
-import { setContext as setContextApollo } from "@apollo/client/link/context";
+import { InMemoryCache } from "@apollo/client/core";
 
 // #https://github.com/angular/angularfire/blob/main/docs/firestore.md
 import { provideFirebaseApp } from "@angular/fire/app";
@@ -71,24 +73,10 @@ import {
 // } from "./stores";
 // import { AuthGuard, FooDeactivateGuard } from "./middleware/guards";
 
-import { ENDPOINT_GRAPHQL, TOKEN_DEFAULT, configSocketIO } from "./config";
+import { ENDPOINT_GRAPHQL, configSocketIO } from "./config";
 import { SocketIoModule } from "ngx-socket-io";
 
 import { TOKEN_foo } from "./keys";
-
-const authApolo = setContextApollo((operation, context) => {
-  try {
-    return {
-      headers: {
-        Authorization: `Bearer ${TOKEN_DEFAULT}`,
-      },
-    };
-  } catch (error) {
-    // pass
-  }
-
-  return {};
-});
 
 //
 export const appConfig: ApplicationConfig = {
@@ -105,20 +93,20 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(
       withFetch(),
       withInterceptors([
-        // @interceptor:demo --log-http
+        // interceptor --log-http
         logRequestInterceptor,
+        // interceptor --set-auth-header
+        authRequestInterceptor,
       ])
+
       // withInterceptorsFromDi(),
     ),
     provideApollo(() => {
       const httpLink = inject(HttpLink);
       return {
-        link: ApolloLink.from([
-          authApolo,
-          httpLink.create({
-            uri: ENDPOINT_GRAPHQL,
-          }),
-        ]),
+        link: httpLink.create({
+          uri: ENDPOINT_GRAPHQL,
+        }),
         cache: new InMemoryCache(),
       };
     }),

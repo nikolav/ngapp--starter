@@ -6,8 +6,10 @@ import {
   computed,
   signal,
   effect,
-  // Injector,
+  Injector,
+  untracked,
 } from "@angular/core";
+import { HttpClient } from "@angular/common/http";
 import {
   Auth,
   createUserWithEmailAndPassword,
@@ -43,11 +45,14 @@ import {
 import { schemaJwt } from "../schemas";
 import { Socket } from "ngx-socket-io";
 
+import { URL_AUTH_authenticate } from "../config";
+
 @Injectable({
   providedIn: "root",
 })
 export class StoreAuth implements OnDestroy {
-  // private $injector = inject(Injector);
+  private $injector = inject(Injector);
+  private $http = inject(HttpClient);
   private $auth = inject(Auth);
   private $io = inject(Socket);
   private $$ = inject(UseUtilsService);
@@ -62,12 +67,14 @@ export class StoreAuth implements OnDestroy {
   private user_s: TOrNoValue<Subscription>;
   private profile_s: TOrNoValue<Subscription>;
   private profileIO_s: TOrNoValue<Subscription>;
+  private accessToken_s: TOrNoValue<Subscription>;
 
   private user$ = userObs(this.$auth);
 
   // auth state
   account = signal<TOrNoValue<IUser>>(null);
   profile = signal<any>(null);
+  access_token = signal<any>(null);
 
   error = computed(() => this.$ps.error());
   processing = computed(() => this.$ps.processing());
@@ -151,6 +158,27 @@ export class StoreAuth implements OnDestroy {
         this.profileIO_s?.unsubscribe();
       });
     });
+    // get api access_token
+    effect((onCleanup) => {
+      const uid = this.uid();
+      untracked(() => {
+        if (!uid) {
+          this.access_token.set(null);
+          return;
+        }
+        // @@
+        this.accessToken_s = this.$http
+          .post(URL_AUTH_authenticate, { uid })
+          .subscribe((res) => {
+            const token = this.$$.get(res, "token");
+            if (!token) return;
+            this.access_token.set(token);
+          });
+      });
+      onCleanup(() => {
+        this.accessToken_s?.unsubscribe();
+      });
+    });
   }
 
   async authenticate(creds: IAuthCreds) {
@@ -230,5 +258,6 @@ export class StoreAuth implements OnDestroy {
     this.user_s?.unsubscribe();
     this.profile_s?.unsubscribe();
     this.profileIO_s?.unsubscribe();
+    this.accessToken_s?.unsubscribe();
   }
 }

@@ -9,6 +9,7 @@ import {
   Renderer2,
   OnDestroy,
   output,
+  booleanAttribute,
 } from "@angular/core";
 import { UseUtilsService } from "../services";
 import { TOrNoValue } from "../types";
@@ -36,7 +37,10 @@ export class AnimatecssDirective implements OnDestroy {
   animateCssAnimationEnd = output<TOrNoValue<Event>>();
 
   // Input to disable animations
-  disabled = input(false);
+  disabled = input(false, {
+    alias: "animateCssDisabled",
+    transform: booleanAttribute,
+  });
 
   duration = input(this.defaultDuration, {
     alias: "animateCssDuration",
