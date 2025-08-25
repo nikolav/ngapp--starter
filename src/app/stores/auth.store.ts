@@ -6,7 +6,7 @@ import {
   computed,
   signal,
   effect,
-  Injector,
+  // Injector,
   untracked,
 } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
@@ -51,7 +51,7 @@ import { URL_AUTH_authenticate } from "../config";
   providedIn: "root",
 })
 export class StoreAuth implements OnDestroy {
-  private $injector = inject(Injector);
+  // private $injector = inject(Injector);
   private $http = inject(HttpClient);
   private $auth = inject(Auth);
   private $io = inject(Socket);
