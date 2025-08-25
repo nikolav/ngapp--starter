@@ -1,19 +1,19 @@
 import { Injectable, signal, inject, computed, effect } from "@angular/core";
 import {
-  onMessage,
+  // onMessage,
   getMessaging,
   getToken,
   isSupported as messagingIsSupported,
 } from "firebase/messaging";
 import type { Messaging } from "firebase/messaging";
+import { onMessage } from "@angular/fire/messaging";
+import { Observable } from "rxjs";
 
 import { NotificationsRequestService } from "./notifications-request.service";
 import { StoreAuth } from "../../stores";
 import { VAPID_KEY } from "../../config";
 import { app as firebaseApp } from "../../config/firebase";
 import { UseUtilsService, AppConfigService } from "../../services";
-import { Observable } from "rxjs";
-import { tap as op_tap } from "rxjs/operators";
 import { TOrNoValue } from "../../types";
 
 @Injectable({
@@ -33,22 +33,14 @@ export class CloudMessagingService {
       {}
     )
   );
-  private service_available = computed(
+  private service_initialized = computed(
     () =>
       null != this.$messaging() &&
       this.$notifications.granted() &&
       this.$auth.isAuth()
   );
 
-  message$ = new Observable((sub) =>
-    onMessage(this.$messaging()!, (msg) => {
-      sub.next(msg);
-    })
-  ).pipe(
-    op_tap((messaging) => {
-      console.log({ messaging });
-    })
-  );
+  message = signal<TOrNoValue<Observable<any>>>(null);
 
   constructor() {
     messagingIsSupported().then((isSupported) => {
@@ -59,7 +51,7 @@ export class CloudMessagingService {
       this.$messaging.set(service);
     });
     effect(async () => {
-      if (!this.service_available()) return;
+      if (!this.service_initialized()) return;
       const tokenClientFCM = await getToken(this.$messaging()!, {
         vapidKey: VAPID_KEY,
       });
@@ -67,6 +59,19 @@ export class CloudMessagingService {
         await this.$auth.profilePatch({
           [this.$config.key.CLOUD_MESSAGING_TOKENS]: { [tokenClientFCM]: true },
         });
+      }
+    });
+    effect(() => {
+      const client = this.$messaging();
+      if (!client) return;
+      if (!this.message()) {
+        this.message.set(
+          new Observable((sub) =>
+            onMessage(client, (msg) => {
+              sub.next(msg);
+            })
+          )
+        );
       }
     });
   }
