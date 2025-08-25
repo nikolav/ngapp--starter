@@ -24,7 +24,7 @@ export class CloudMessagingService {
   private $config = inject(AppConfigService);
   private $auth = inject(StoreAuth);
   private $notifications = inject(NotificationsRequestService);
-  private $messaging = signal<TOrNoValue<Messaging>>(null);
+  private $client = signal<TOrNoValue<Messaging>>(null);
 
   private tokensFCM = computed(() =>
     this.$$.get(
@@ -35,7 +35,7 @@ export class CloudMessagingService {
   );
   private service_initialized = computed(
     () =>
-      null != this.$messaging() &&
+      null != this.$client() &&
       this.$notifications.granted() &&
       this.$auth.isAuth()
   );
@@ -43,16 +43,18 @@ export class CloudMessagingService {
   message = signal<TOrNoValue<Observable<any>>>(null);
 
   constructor() {
+    // setup service
     messagingIsSupported().then((isSupported) => {
       if (!isSupported) {
         throw Error("firebase cloud messaging not supported.");
       }
       const service = getMessaging(firebaseApp);
-      this.$messaging.set(service);
+      this.$client.set(service);
     });
+    // setup fcm-token
     effect(async () => {
       if (!this.service_initialized()) return;
-      const tokenClientFCM = await getToken(this.$messaging()!, {
+      const tokenClientFCM = await getToken(this.$client()!, {
         vapidKey: VAPID_KEY,
       });
       if (!this.$$.has(this.tokensFCM(), tokenClientFCM)) {
@@ -61,8 +63,9 @@ export class CloudMessagingService {
         });
       }
     });
+    // handle foreground messages
     effect(() => {
-      const client = this.$messaging();
+      const client = this.$client();
       if (!client) return;
       if (!this.message()) {
         this.message.set(
