@@ -5,6 +5,7 @@ import {
   TJson,
   TJsonLiteral,
 } from "../schemas/json.schema";
+import { type Subscription } from "rxjs";
 
 export * from "./models";
 
@@ -35,3 +36,5 @@ export type TUploadFiles = Record<string, IUploadFile>;
 export interface ISToreFlagsCache {
   [name: string]: boolean;
 }
+
+export type TManageSubscriptionsCache = Record<string, Subscription>;
