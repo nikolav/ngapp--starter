@@ -19,4 +19,7 @@ export class TopicsService {
       ? `${this.$config.io.IOEVENT_REDIS_CACHE_KEY_UPDATED_prefix}${cache_key}`
       : "";
   }
+  collectionsIoDocsUpdated(topic?: any) {
+    return top ? `${this.$config.key.COLLECTIONS_DOCS_UPDATED}${topic}` : "";
+  }
 }

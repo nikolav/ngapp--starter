@@ -1,10 +1,11 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Component, OnInit, OnDestroy, inject } from "@angular/core";
 import { JsonPipe } from "@angular/common";
 import { ReactiveFormsModule } from "@angular/forms";
 
 import { LayoutDefault } from "../../layouts";
 import { MaterialUIModule, PopperjsModule } from "../../modules";
 import { IconLoading } from "../../components/icons";
+import { ApolloStatusService } from "../../services";
 
 @Component({
   selector: "page-index",
@@ -21,6 +22,9 @@ import { IconLoading } from "../../components/icons";
   providers: [],
 })
 export class IndexComponent implements OnInit, OnDestroy {
+  $dStatus = inject(ApolloStatusService);
+  constructor() {}
+  ok() {}
   ngOnInit() {}
   ngOnDestroy() {}
 }

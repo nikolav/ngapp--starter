@@ -1,11 +1,5 @@
 import { gql } from "apollo-angular";
 
-export const M_test = gql`
-  mutation m_test {
-    test
-  }
-`;
-
 // cacheRedisCommit(cache_key: String!, patch: JsonData, merge: Boolean): JsonData!
 export const M_cacheRedisCommit = gql`
   mutation m_cacheRedisCommit(
@@ -17,21 +11,16 @@ export const M_cacheRedisCommit = gql`
   }
 `;
 
-// collectionsUpsert(topic: String!, data: JsonData!, fields: [String!]!, id: ID): JsonData!
-export const M_collectionsUpsert = gql`
-  mutation m_collectionsUpsert(
-    $topic: String!
-    $data: JsonData!
-    $fields: [String!]!
-    $id: ID
-  ) {
-    collectionsUpsert(topic: $topic, data: $data, fields: $fields, id: $id)
+// collectionsDocsUpsert(topic: String!, patches: [JsonData!]!): JsonData!
+export const M_collectionsDocsUpsert = gql`
+  mutation m_collectionsDocsUpsert($topic: String!, $patches: [JsonData!]!) {
+    collectionsDocsUpsert(topic: $topic, patches: $patches)
   }
 `;
 
-// collectionsDrop(topic: String!, ids: [ID!]): JsonData!
-export const M_collectionsDrop = gql`
-  mutation m_collectionsDrop($topic: String!, $ids: [ID!]) {
-    collectionsDrop(topic: $topic, ids: $ids)
+// collectionsDocsDrop(topic: String!, ids: [ID!]!): JsonData!
+export const M_collectionsDocsDrop = gql`
+  mutation m_collectionsDocsDrop($topic: String!, $ids: [ID!]!) {
+    collectionsDocsDrop(topic: $topic, ids: $ids)
   }
 `;

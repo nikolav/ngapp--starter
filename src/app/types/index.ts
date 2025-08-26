@@ -41,3 +41,14 @@ export type TManageSubscriptionsCache = Record<
   string,
   TOrNoValue<Subscription>
 >;
+export interface IRecordJsonWithMergeFlag {
+  merge?: boolean;
+  data: TRecordJson;
+}
+
+export interface IResultCollectionsDocs {
+  collectionsDocsByTopic: {
+    error: any;
+    status: TRecordJson[];
+  };
+}

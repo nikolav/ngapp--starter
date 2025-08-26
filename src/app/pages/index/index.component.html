@@ -3,5 +3,11 @@
     <h2>
       &#64;page--index
     </h2>
+    <button mat-raised-button (click)="ok()">ok</button>
+    <p>
+      <small>
+        <pre>{{ $dStatus.data() | json}}</pre>
+      </small>
+    </p>
   </section>
 </app-layout-default>

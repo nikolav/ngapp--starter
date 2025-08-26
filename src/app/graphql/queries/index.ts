@@ -1,5 +1,6 @@
 import { gql } from "apollo-angular";
 
+// status: JsonData
 export const Q_status = gql`
   query q_status {
     status
@@ -13,9 +14,9 @@ export const Q_cacheRedisGetCacheByKey = gql`
   }
 `;
 
-// collectionsByTopic(topic: String!, config: JsonData!): JsonData!
-export const Q_collectionsByTopic = gql`
-  query q_collectionsByTopic($topic: String!, $config: JsonData!) {
-    collectionsByTopic(topic: $topic, config: $config)
+// collectionsDocsByTopic(topic: String!, config: JsonData): JsonData!
+export const Q_collectionsDocsByTopic = gql`
+  query q_collectionsDocsByTopic($topic: String!, $config: JsonData) {
+    collectionsDocsByTopic(topic: $topic, config: $config)
   }
 `;

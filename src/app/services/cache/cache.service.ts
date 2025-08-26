@@ -9,6 +9,7 @@ import type {
   IResultApolloCacheService,
 } from "../../types";
 
+// #https://the-guild.dev/graphql/apollo-angular/docs/get-started#installation
 @Injectable({
   providedIn: "root",
 })
