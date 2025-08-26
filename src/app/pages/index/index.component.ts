@@ -6,6 +6,7 @@ import { LayoutDefault } from "../../layouts";
 import { MaterialUIModule } from "../../modules";
 import { IconLoading } from "../../components/icons";
 import { ApolloStatusService } from "../../services";
+import { StoreAuth } from "../../stores";
 
 @Component({
   selector: "page-index",
@@ -22,6 +23,7 @@ import { ApolloStatusService } from "../../services";
 })
 export class IndexComponent implements OnInit, OnDestroy {
   $dStatus = inject(ApolloStatusService);
+  $auth = inject(StoreAuth)
   constructor() {}
   ok() {}
   ngOnInit() {}

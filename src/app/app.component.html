@@ -1,11 +1,11 @@
 <main class="app--main h-full">
   <mat-sidenav-container class="h-full">
-    <mat-sidenav (closedStart)="$flags.off(KEY_FLAGS)" mode="over" [opened]="$flags.pull(KEY_FLAGS)" fixedInViewport
-      [fixedTopGap]="0" [fixedBottomGap]="0">
-      <button mat-button (click)="$flags.toggle(KEY_FLAGS)">toggle</button>
+    <mat-sidenav (closedStart)="$flags.off(isActiveSidenav)" mode="over" [opened]="$flags.pull(isActiveSidenav)"
+      fixedInViewport [fixedTopGap]="0" [fixedBottomGap]="0">
+      <button mat-button (click)="$flags.toggle(isActiveSidenav)">toggle</button>
     </mat-sidenav>
     <mat-sidenav-content class="h-full">
-      <button mat-button (click)="$flags.toggle(KEY_FLAGS)">toggle</button>
+      <button mat-button (click)="$flags.toggle(isActiveSidenav)">toggle</button>
       <div class="app-nav--main flex flex-wrap *gap-3 justify-around">
         <a mat-button routerLink="">home</a>
         <a mat-button routerLink="/app">app</a>

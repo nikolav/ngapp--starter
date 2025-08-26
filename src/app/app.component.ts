@@ -29,8 +29,9 @@ export class AppComponent implements OnInit {
   private $config = inject(AppConfigService);
   private $emitter = inject(EmitterService);
 
+
   // toggle sidenav flags
-  readonly KEY_FLAGS = this.$config.key.CACHE_KEY_STORE_FLAGS;
+  readonly isActiveSidenav = this.$config.key.IS_ACTIVE_APP_SIDENAV;
   readonly $flags = inject(StoreFlags);
 
   constructor() {

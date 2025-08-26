@@ -29,7 +29,7 @@ export class StoreFlagsService {
     );
   }
   pull(name: string) {
-    return this.$$.get(this.store(), name, false);
+    return Boolean(this.store()[name]);
   }
   use(newStore: ISToreFlagsCache) {
     this.store.set(newStore);

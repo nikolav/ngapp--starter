@@ -24,10 +24,7 @@ import {
 } from "@angular/fire/auth";
 import { QueryRef } from "apollo-angular";
 import { Subscription } from "rxjs";
-import {
-  // filter as op_filter,
-  first as op_first,
-} from "rxjs/operators";
+import { take as op_take } from "rxjs/operators";
 
 import type {
   IAuthCreds,
@@ -108,43 +105,17 @@ export class StoreAuth implements OnDestroy {
     this.user_s = this.user$.subscribe((user) => {
       this.account.set(user);
     });
-    // @profile:load-from-cache at app:init
-    // this.$emitter.subject
-    //   .pipe(
-    //     op_filter((event) => this.$config.events.EVENT_APP_INIT === event),
-    //     op_first()
-    //   )
-    //   .subscribe(() => {
-    //     // @app:mounted
-    //     //  profile --sync-start
-    //     effect(
-    //       () => {
-    //         this.profile_s?.unsubscribe();
-    //         const cache_key = this.profileCacheKey();
-    //         if (!cache_key) return;
-    //         this.profile_q = this.$cache.key(cache_key);
-    //         this.profile_s = this.profile_q?.valueChanges.subscribe(
-    //           (result) => {
-    //             this.profile.set(this.$cache.data(result, cache_key));
-    //           }
-    //         );
-    //       },
-    //       { injector: this.$injector }
-    //     );
-    //   });
     // load profile on cache_key
     effect((onCleanup) => {
       let profile_cache_key = this.profileCacheKey();
-      if (!profile_cache_key) {
-        this.profile.set(null);
-        return;
-      }
+      if (!profile_cache_key) return;
       this.profile_q = this.$cache.key(profile_cache_key);
       this.profile_s = this.profile_q?.valueChanges.subscribe((result) => {
         this.profile.set(this.$cache.data(result, profile_cache_key));
       });
       onCleanup(() => {
         this.profile_s?.unsubscribe();
+        this.profile.set(null);
       });
     });
     // reload profile on io
@@ -161,11 +132,8 @@ export class StoreAuth implements OnDestroy {
     // get api access_token
     effect((onCleanup) => {
       const uid = this.uid();
+      if (!uid) return;
       untracked(() => {
-        if (!uid) {
-          this.access_token.set(null);
-          return;
-        }
         // @@
         this.accessToken_s = this.$http
           .post(URL_AUTH_authenticate, { uid })
@@ -177,6 +145,7 @@ export class StoreAuth implements OnDestroy {
       });
       onCleanup(() => {
         this.accessToken_s?.unsubscribe();
+        this.access_token.set(null);
       });
     });
   }
@@ -245,7 +214,7 @@ export class StoreAuth implements OnDestroy {
       profile_cache_key
         ? this.$cache
             .commit(profile_cache_key, patch, merge)
-            ?.pipe(op_first())
+            ?.pipe(op_take(1))
             .subscribe(resolve)
         : reject(null)
     );
