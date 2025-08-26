@@ -48,12 +48,13 @@ export class UseCacheKeyService implements OnDestroy {
   }
   // #magic
   constructor() {
-    effect(() => {
-      if (this.enabled()) {
-        this.start();
-      } else {
+    effect((onCleanup) => {
+      if (!this.enabled()) return;
+      this.start();
+      onCleanup(() => {
         this.destroy();
-      }
+        this.data.set(undefined);
+      });
     });
   }
   ngOnDestroy() {

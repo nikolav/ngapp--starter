@@ -23,8 +23,8 @@ export class CollectionsService<TData = any> implements OnDestroy {
   private q = computed(() => this.$client.topic(this.topic()));
 
   readonly data = signal<TData[]>([]);
-  enabled = computed(() => Boolean(this.topic()));
-  io = computed(() =>
+  readonly enabled = computed(() => Boolean(this.topic()));
+  readonly io = computed(() =>
     this.enabled()
       ? this.$io.fromEvent(this.$topics.collectionsIoDocsUpdated(this.topic()))
       : undefined
@@ -32,12 +32,15 @@ export class CollectionsService<TData = any> implements OnDestroy {
   //##
   constructor() {
     effect((onCleanup) => {
+      if (!this.enabled()) return;
+
+      this.start();
+
       onCleanup(() => {
         this.destroy();
+        // clear stale list when topic changes
+        this.data.set([]);
       });
-      if (this.enabled()) {
-        this.start();
-      }
     });
   }
   //##
@@ -51,7 +54,7 @@ export class CollectionsService<TData = any> implements OnDestroy {
   }
   start() {
     this.$subs.push({
-      data_s: this.q()?.valueChanges.subscribe((res) =>
+      sub1_data: this.q()?.valueChanges.subscribe((res) =>
         this.data.set(this.$client.data(res))
       ),
     });

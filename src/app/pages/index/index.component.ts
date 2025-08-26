@@ -3,7 +3,7 @@ import { JsonPipe } from "@angular/common";
 import { ReactiveFormsModule } from "@angular/forms";
 
 import { LayoutDefault } from "../../layouts";
-import { MaterialUIModule, PopperjsModule } from "../../modules";
+import { MaterialUIModule } from "../../modules";
 import { IconLoading } from "../../components/icons";
 import { ApolloStatusService } from "../../services";
 
@@ -14,7 +14,6 @@ import { ApolloStatusService } from "../../services";
     JsonPipe,
     LayoutDefault,
     MaterialUIModule,
-    PopperjsModule,
     ReactiveFormsModule,
   ],
   templateUrl: "./index.component.html",
