@@ -67,6 +67,7 @@ export class AppConfigService {
     IS_ACTIVE_APP_SIDENAV: "mUYzNU:b7943cb8-b3d4-5921-af05-bfc0b1a36c68",
     CLOUD_MESSAGING_TOKENS:
       "CLOUD_MESSAGING_TOKENS:8cffac51-4e75-5a86-a9b2-a4c5f702b5b0",
+    STORAGE: "STORAGE:0a9496fc-21c9-582c-9d6b-b68419132557",
   };
   events = {
     STORAGE_CHANGE: "STORAGE_CHANGE:c4d1fdfb-8f17-5cff-9dd1-900172f9ad25",

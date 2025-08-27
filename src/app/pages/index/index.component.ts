@@ -5,7 +5,7 @@ import { ReactiveFormsModule } from "@angular/forms";
 import { LayoutDefault } from "../../layouts";
 import { MaterialUIModule } from "../../modules";
 import { IconLoading } from "../../components/icons";
-import { ApolloStatusService } from "../../services";
+import { ApolloStatusService, LocalStorageService } from "../../services";
 import { StoreAuth } from "../../stores";
 
 @Component({
@@ -24,8 +24,14 @@ import { StoreAuth } from "../../stores";
 export class IndexComponent implements OnInit, OnDestroy {
   $dStatus = inject(ApolloStatusService);
   $auth = inject(StoreAuth);
+  $storage = inject(LocalStorageService);
   constructor() {}
-  ok() {}
+  ok() {
+    this.$storage.push({ foo: `d:${Date.now()}`, bar: Math.random() });
+  }
+  ok2() {
+    this.$storage.drop("foo");
+  }
   ngOnInit() {}
   ngOnDestroy() {}
 }

@@ -1,95 +1,105 @@
-import { inject, Injectable, signal } from "@angular/core";
-import { Subscription } from "rxjs";
+import { effect, inject, Injectable, OnDestroy, signal } from "@angular/core";
 import { filter as op_filter } from "rxjs/operators";
 
+import { schemaStoragePatch, schemaStoragePatchField } from "../../schemas";
+import { IEventOnStorage, TRecordJson } from "../../types";
 import {
   AppConfigService,
-  UseUtilsService,
   EmitterService,
-} from "../../services";
-import { TOrNoValue } from "../../types";
-import { schemaStoragePatch, schemaStoragePatchField } from "../../schemas";
+  ManageSubscriptionsService,
+  UseUtilsService,
+} from "../utils";
 
-interface IEventOnStorage {
-  type: string;
-  payload: any;
-  drop?: boolean;
-}
-
-@Injectable({
-  providedIn: "root",
-})
-export class LocalStorageService {
+@Injectable({ providedIn: "root" })
+export class LocalStorageService implements OnDestroy {
   private $$ = inject(UseUtilsService);
   private $config = inject(AppConfigService);
   private $emitter = inject(EmitterService);
-
+  private $subs = new ManageSubscriptionsService();
+  //
+  private localStorage = inject(this.$config.di.TOKEN_localStorage);
   private ON_STORAGE = this.$config.events.STORAGE_CHANGE;
-  private store_s: TOrNoValue<Subscription>;
-
-  localStorage = inject(this.$config.di.TOKEN_localStorage);
-  data = signal<any>({});
-
+  private STORAGE = this.$config.key.STORAGE;
+  //
+  readonly enabled = signal(true);
+  readonly data = signal<TRecordJson>({});
+  //
   constructor() {
-    // @storage pull
-    this.store_s = this.$emitter.subject
-      .pipe(
-        op_filter(
-          (event: IEventOnStorage) =>
-            this.ON_STORAGE === this.$$.get(event, "type")
-        )
-      )
-      .subscribe((event: IEventOnStorage) => {
-        this.data.update((data_) =>
-          true === this.$$.get(event, "drop")
-            ? this.$$.omit(data_, event.payload)
-            : this.$$.assign({}, data_, event.payload)
-        );
+    // sync cache and storage
+    effect(() => {
+      this.dump();
+    });
+    // load on enabled
+    effect((onCleanup) => {
+      if (!this.enabled()) return;
+      this.start();
+      onCleanup(() => {
+        this.destroy();
       });
-    // @init load
+    });
+  }
+  //
+  start() {
     this.sync();
+    this.$subs.push({
+      _s1: this.$emitter.subject
+        .pipe(
+          op_filter(
+            (event: any) => this.ON_STORAGE === this.$$.get(event, "type")
+          )
+        )
+        .subscribe((event: IEventOnStorage) => {
+          this.data.update((data_) =>
+            "push" === event.action
+              ? this.$$.assign({}, data_, event.payload)
+              : this.$$.reduce(
+                  event.payload,
+                  (dd, key) => {
+                    delete dd[key];
+                    return dd;
+                  },
+                  this.$$.clone(data_)
+                )
+          );
+        }),
+    });
   }
-  set(field: string, value: any) {
+  push(patch: TRecordJson) {
     try {
-      const payload = schemaStoragePatch.parse({ [field]: value });
-      this.localStorage.setItem(field, value);
+      const payload = schemaStoragePatch.parse(patch);
       this.$emitter.subject.next(<IEventOnStorage>{
         type: this.ON_STORAGE,
         payload,
+        action: "push",
       });
     } catch (error) {
-      this.$$.onDebug("LocalStorageService --set", error);
+      this.$$.onDebug("LocalStorage2Service --sync", error);
     }
   }
-  drop(field: any) {
+  drop(...keys: string[]) {
     try {
-      const payload = schemaStoragePatchField.parse(field);
-      this.localStorage.removeItem(field);
+      const payload = keys.map((key) => schemaStoragePatchField.parse(key));
       this.$emitter.subject.next(<IEventOnStorage>{
         type: this.ON_STORAGE,
         payload,
-        drop: true,
+        action: "drop",
       });
     } catch (error) {
-      this.$$.onDebug("LocalStorageService --drop", error);
+      this.$$.onDebug("LocalStorage2Service --sync", error);
     }
   }
-  sync() {
-    // load Storage
-    const store_ = <any>{};
-    try {
-      for (let i = 0, l = this.localStorage.length; i < l; i++) {
-        const field = this.localStorage.key(i);
-        if (field) {
-          store_[field] = this.localStorage.getItem(field);
-        }
-      }
-      this.data.set(store_);
-    } catch (error) {
-      this.$$.onDebug("LocalStorageService --sync", error);
-    }
+  //
+  ngOnDestroy() {
+    this.destroy();
   }
   destroy() {
-    this.store_s?.unsubscribe();
+    this.$subs.destroy();
+    this.data.set({});
+  }
+  sync() {
+    this.data.set(JSON.parse(this.localStorage.getItem(this.STORAGE) ?? "{}"));
+  }
+  dump() {
+    this.localStorage.setItem(this.STORAGE, JSON.stringify(this.data()));
   }
 }

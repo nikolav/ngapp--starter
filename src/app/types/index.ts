@@ -52,3 +52,9 @@ export interface IResultCollectionsDocs {
     status: TRecordJson[];
   };
 }
+
+export interface IEventOnStorage {
+  type: string;
+  payload: any;
+  action: "push" | "drop";
+}
