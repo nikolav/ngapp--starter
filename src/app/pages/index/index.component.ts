@@ -23,7 +23,7 @@ import { StoreAuth } from "../../stores";
 })
 export class IndexComponent implements OnInit, OnDestroy {
   $dStatus = inject(ApolloStatusService);
-  $auth = inject(StoreAuth)
+  $auth = inject(StoreAuth);
   constructor() {}
   ok() {}
   ngOnInit() {}

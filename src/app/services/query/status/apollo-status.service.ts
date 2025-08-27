@@ -45,20 +45,18 @@ export class ApolloStatusService implements OnDestroy {
 
   constructor() {
     effect((onCleanup) => {
+      if (!this.enabled()) return;
+      this.start();
       onCleanup(() => {
         this.destroy();
+        this.result.set(undefined);
       });
-      if (this.enabled()) {
-        this.start();
-      }
     });
   }
 
   start() {
     this.$subs.push({
-      sub1_status: this.q()?.valueChanges.subscribe((qres) =>
-        this.result.set(qres)
-      ),
+      _s1: this.q()?.valueChanges.subscribe((res) => this.result.set(res)),
     });
   }
   destroy() {

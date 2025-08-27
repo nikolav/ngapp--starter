@@ -9,3 +9,4 @@ export { coreType } from "./core-type";
 export { cat } from "./cat";
 export { onDebug } from "./on-debug";
 export { deepmerge } from "./deepmerge";
+export { untilDestroyed } from "./until-destroyed";

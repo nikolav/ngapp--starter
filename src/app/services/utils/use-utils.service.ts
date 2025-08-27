@@ -21,6 +21,7 @@ import {
   cat,
   onDebug,
   deepmerge,
+  untilDestroyed,
 } from "../../utils";
 
 const {
@@ -119,6 +120,7 @@ export class UseUtilsService {
   trimStart = trimStart;
   uniqueId = uniqueId;
   unset = unset;
+  untilDestroyed = untilDestroyed;
 
   // sprint-js
   sprintf = sprintf;
