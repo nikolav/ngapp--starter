@@ -27,10 +27,10 @@ export class IndexComponent implements OnInit, OnDestroy {
   $storage = inject(LocalStorageService);
   constructor() {}
   ok() {
-    this.$storage.push({ foo: `d:${Date.now()}`, bar: Math.random() });
+    this.$storage.push({ "foo.bar": `d:${Date.now()}`, baz: Math.random() });
   }
   ok2() {
-    this.$storage.drop("foo");
+    this.$storage.drop("baz");
   }
   ngOnInit() {}
   ngOnDestroy() {}
