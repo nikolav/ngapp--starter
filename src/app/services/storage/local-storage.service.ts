@@ -51,11 +51,18 @@ export class LocalStorageService implements OnDestroy {
         .subscribe((event: IEventOnStorage) => {
           this.data.update((data_) =>
             "push" === event.action
-              ? this.$$.assign({}, data_, event.payload)
+              ? this.$$.reduce(
+                  event.payload,
+                  (dd, value, path) => {
+                    this.$$.set(dd, path, value);
+                    return dd;
+                  },
+                  this.$$.clone(data_)
+                )
               : this.$$.reduce(
                   event.payload,
-                  (dd, key) => {
-                    delete dd[key];
+                  (dd, path) => {
+                    this.$$.unset(dd, path);
                     return dd;
                   },
                   this.$$.clone(data_)
@@ -63,6 +70,9 @@ export class LocalStorageService implements OnDestroy {
           );
         }),
     });
+  }
+  item(path: string) {
+    return this.$$.get(this.data(), path);
   }
   push(patch: TRecordJson) {
     try {
@@ -76,9 +86,9 @@ export class LocalStorageService implements OnDestroy {
       this.$$.onDebug("LocalStorage2Service --sync", error);
     }
   }
-  drop(...keys: string[]) {
+  drop(...paths: string[]) {
     try {
-      const payload = keys.map((key) => schemaStoragePatchField.parse(key));
+      const payload = paths.map((path) => schemaStoragePatchField.parse(path));
       this.$emitter.subject.next(<IEventOnStorage>{
         type: this.ON_STORAGE,
         payload,
