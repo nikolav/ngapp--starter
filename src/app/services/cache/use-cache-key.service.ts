@@ -9,7 +9,6 @@ import {
 import { TopicsService, CacheService } from "../../services";
 import { TOrNoValue } from "../../types";
 import { Subscription } from "rxjs";
-// import { take as op_take } from "rxjs/operators";
 import { Socket } from "ngx-socket-io";
 
 @Injectable()

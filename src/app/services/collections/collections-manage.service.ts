@@ -10,7 +10,6 @@ import type {
   IRecordJsonWithMergeFlag,
   IResultCollectionsDocs,
 } from "../../types";
-import { take as op_take } from "rxjs/operators";
 
 @Injectable({
   providedIn: "root",
@@ -37,26 +36,22 @@ export class CollectionsManageService {
   // collectionsDocsUpsert(topic: String!, patches: [JsonData!]!): JsonData!
   commit(topic: string, patches: IRecordJsonWithMergeFlag[]) {
     return topic
-      ? this.$apollo
-          .mutate({
-            mutation: M_collectionsDocsUpsert,
-            variables: {
-              topic,
-              patches,
-            },
-          })
-          .pipe(op_take(1))
+      ? this.$apollo.mutate({
+          mutation: M_collectionsDocsUpsert,
+          variables: {
+            topic,
+            patches,
+          },
+        })
       : undefined;
   }
   // collectionsDocsDrop(topic: String!, ids: [ID!]!): JsonData!
   rm(topic: string, ids: any[]) {
     return topic
-      ? this.$apollo
-          .mutate({
-            mutation: M_collectionsDocsDrop,
-            variables: { topic, ids },
-          })
-          .pipe(op_take(1))
+      ? this.$apollo.mutate({
+          mutation: M_collectionsDocsDrop,
+          variables: { topic, ids },
+        })
       : undefined;
   }
   data(result: any) {

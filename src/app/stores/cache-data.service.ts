@@ -6,7 +6,7 @@ export class DataCacheService {
   private empty_ = () => <any>{};
   private $$ = inject(UseUtilsService);
   //
-  cache = signal<any>({});
+  readonly cache = signal(<any>{});
   //
   push(patch: Record<string, any>) {
     this.cache.update((d) =>
@@ -22,22 +22,27 @@ export class DataCacheService {
   }
   pull(fields: Record<string, string> | string) {
     // .pull({'x1': 'foo.bar[1]', 'x2': 'bax.y1'})
-    const d = this.cache();
+    const cc = this.cache();
     return this.$$.reduce(
       this.$$.isString(fields) ? { [fields]: fields } : fields,
       (dd, path, field) => {
-        this.$$.set(dd, field, this.$$.get(d, path));
+        this.$$.set(dd, field, this.$$.get(cc, path));
         return dd;
       },
       <any>{}
     );
   }
   unset(...paths: string[]) {
-    this.cache.update((d) => {
-      const res = this.$$.clone(d);
-      this.$$.each(paths, (path) => this.$$.unset(res, path));
-      return res;
-    });
+    this.cache.update((d) =>
+      this.$$.reduce(
+        paths,
+        (dd, path) => {
+          this.$$.unset(dd, path);
+          return dd;
+        },
+        this.$$.clone(d)
+      )
+    );
   }
   use(store: any) {
     this.cache.set(store);

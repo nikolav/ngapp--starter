@@ -24,7 +24,6 @@ import {
 } from "@angular/fire/auth";
 import { QueryRef } from "apollo-angular";
 import { Subscription } from "rxjs";
-import { take as op_take } from "rxjs/operators";
 
 import type {
   IAuthCreds,
@@ -214,8 +213,7 @@ export class StoreAuth implements OnDestroy {
       profile_cache_key
         ? this.$cache
             .commit(profile_cache_key, patch, merge)
-            ?.pipe(op_take(1))
-            .subscribe(resolve)
+            ?.subscribe(resolve)
         : reject(null)
     );
   }
