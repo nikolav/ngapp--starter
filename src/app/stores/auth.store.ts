@@ -130,18 +130,19 @@ export class StoreAuth implements OnDestroy {
     });
     // get api access_token
     effect((onCleanup) => {
-      const idToken = this.account()?.getIdToken();
-      if (!idToken) return;
-      untracked(() => {
-        // @@
-        this.accessToken_s = this.$http
-          .post(URL_AUTH_authenticate, { idToken })
-          .subscribe((res) => {
-            const token = this.$$.get(res, "token");
-            if (!token) return;
-            this.access_token.set(token);
-          });
-      });
+      (async () => {
+        const idToken = await this.account()?.getIdToken();
+        if (!idToken) return;
+        untracked(() => {
+          this.accessToken_s = this.$http
+            .post(URL_AUTH_authenticate, { idToken })
+            .subscribe((res) => {
+              const token = this.$$.get(res, "token");
+              if (!token) return;
+              this.access_token.set(token);
+            });
+        });
+      })();
       onCleanup(() => {
         this.accessToken_s?.unsubscribe();
         this.access_token.set(null);
