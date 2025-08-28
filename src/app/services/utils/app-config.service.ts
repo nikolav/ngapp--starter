@@ -58,8 +58,18 @@ export class AppConfigService {
     auth: {
       KEY_ACCESS_TOKEN,
     },
+    gravatars: {
+      BASE_URL: "https://www.gravatar.com/avatar",
+      MODE: {
+        monsterid: true,
+        wavatar: true,
+        robohash: true,
+      },
+      SIZE: 92,
+    },
   };
   key = {
+    GRAVATARS: "GRAVATARS:e36d2b6d-fe3e-5d4e-a5be-6da9f78e4f21",
     COLLECTIONS_DOCS_UPDATED:
       "COLLECTIONS_DOCS_UPDATED:af973ced-7b7e-5678-8036-db2c3bdcb5e2:",
     AUTH_PROFILE: "AUTH_PROFILE:6cc4d5a2-5585-58fc-8427-ca7067968ef1:",

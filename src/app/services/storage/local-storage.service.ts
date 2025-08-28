@@ -104,7 +104,7 @@ export class LocalStorageService implements OnDestroy {
   }
   destroy() {
     this.$subs.destroy();
-    this.data.set({});
+    // this.data.set({});
   }
   sync() {
     this.data.set(JSON.parse(this.localStorage.getItem(this.STORAGE) ?? "{}"));

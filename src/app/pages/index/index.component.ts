@@ -5,8 +5,8 @@ import { ReactiveFormsModule } from "@angular/forms";
 import { LayoutDefault } from "../../layouts";
 import { MaterialUIModule } from "../../modules";
 import { IconLoading } from "../../components/icons";
-import { ApolloStatusService, LocalStorageService } from "../../services";
-import { StoreAuth } from "../../stores";
+import { ApolloStatusService } from "../../services";
+import { StoreAuth, StoreGravatars } from "../../stores";
 
 @Component({
   selector: "page-index",
@@ -24,13 +24,17 @@ import { StoreAuth } from "../../stores";
 export class IndexComponent implements OnInit, OnDestroy {
   $dStatus = inject(ApolloStatusService);
   $auth = inject(StoreAuth);
-  $storage = inject(LocalStorageService);
-  constructor() {}
+  $gg = inject(StoreGravatars);
+
   ok() {
-    this.$storage.push({ "foo.bar": `d:${Date.now()}`, baz: Math.random() });
+    this.$gg.refresh();
   }
   ok2() {
-    this.$storage.drop("baz");
+    if (this.$gg.enabled()) {
+      this.$gg.disable();
+    } else {
+      this.$gg.enable();
+    }
   }
   ngOnInit() {}
   ngOnDestroy() {}
