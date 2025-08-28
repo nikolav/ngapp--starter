@@ -1,4 +1,3 @@
-import md5 from "md5";
 import { computed, effect, inject, Injectable, OnDestroy } from "@angular/core";
 import { StoreAuth } from "./auth.store";
 import {
@@ -73,7 +72,7 @@ export class GravatarsService implements OnDestroy {
     return `${this.$$.trimEnd(
       this.$config.stores.gravatars.BASE_URL,
       "/"
-    )}/${md5(this.email())}?d=${this.gmode()}&size=${
+    )}/${this.$$.md5(this.email())}?d=${this.gmode()}&size=${
       this.$config.stores.gravatars.SIZE
     }`;
   }

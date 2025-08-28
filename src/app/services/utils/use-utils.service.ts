@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 
 import lodash from "lodash";
 import { v4 as uuid } from "uuid";
+import md5 from "md5";
 
 // #https://github.com/validatorjs/validator.js
 import isEmail from "validator/es/lib/isEmail";
@@ -99,6 +100,7 @@ export class UseUtilsService {
   last = last;
   len = len;
   map = map;
+  md5 = md5;
   merge = merge;
   noop = noop;
   omit = omit;
