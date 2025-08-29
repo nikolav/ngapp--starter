@@ -8,6 +8,8 @@ import { IconLoading } from "../../components/icons";
 import {
   PickFilesService,
   FilesStorageService,
+  DocsService,
+  UseUtilsService,
 } from "../../services";
 
 @Component({
@@ -24,17 +26,28 @@ import {
   providers: [],
 })
 export class IndexComponent implements OnInit, OnDestroy {
-  $files = new PickFilesService();
-  $storage = inject(FilesStorageService);
+  $$ = inject(UseUtilsService);
+  $docs = new DocsService().use("main");
 
   constructor() {}
 
   ok() {
-    this.$storage.ls("/temp").subscribe((ls) => {
-      console.log({ ls });
-    });
+    console.log(this.$docs.data());
   }
-  ok2() {}
+  ok2() {
+    // this.$docs.drop("upndkyfmsal").subscribe((res) => {
+    //   console.log({ res });
+    // });
+    this.$docs
+      .commit({
+        // id: "128W5y63cRu5qSQeDqW0",
+        name: `x:${this.$$.idGen()}`,
+        value: Math.random(),
+      })
+      .subscribe((res) => {
+        console.log({ res });
+      });
+  }
   ngOnInit() {}
   ngOnDestroy() {}
 }

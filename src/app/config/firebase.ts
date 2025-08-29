@@ -6,6 +6,7 @@
 import { initializeApp, getApp, getApps } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getStorage } from "firebase/storage";
+import { getFirestore } from "firebase/firestore";
 // import {
 //   getMessaging,
 //   isSupported as messagingIsSupported,
@@ -52,8 +53,8 @@ export const app =
 
 // Initialize Cloud Firestore and get a reference to the service
 export const auth = getAuth(app);
-// export const db = getFirestore(app);
 export const storage = getStorage(app);
+export const db = getFirestore(app);
 // export const remoteConfig = async () => {
 //   try {
 //     if (await RCIsSupported()) {
