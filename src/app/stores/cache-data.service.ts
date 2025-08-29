@@ -8,6 +8,9 @@ export class DataCacheService {
   //
   readonly cache = signal(<any>{});
   //
+  item(path: string) {
+    return this.$$.get(this.cache(), path);
+  }
   push(patch: Record<string, any>) {
     this.cache.update((d) =>
       this.$$.reduce(

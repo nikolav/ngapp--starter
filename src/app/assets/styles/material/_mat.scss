@@ -46,6 +46,7 @@
       // body-medium: 500 1.15rem/1.3rem Arial,
       // corner-large: 32px,
       // level3: 0 4px 6px 1px var(--mat-sys-surface-dim),
+      // primary-container: #84ffff,
     )
   );
   // ==component:overrides button
@@ -75,6 +76,47 @@
   );
 }
 
+.app-theme-dark {
+  color-scheme: dark;
+}
+.app-theme-light {
+  color-scheme: light;
+}
+.app-density1 {
+  @include mat.theme(
+    (
+      density: -1,
+    )
+  );
+}
+.app-density2 {
+  @include mat.theme(
+    (
+      density: -2,
+    )
+  );
+}
+.app-density3 {
+  @include mat.theme(
+    (
+      density: -3,
+    )
+  );
+}
+.app-density4 {
+  @include mat.theme(
+    (
+      density: -4,
+    )
+  );
+}
+.app-density5 {
+  @include mat.theme(
+    (
+      density: -5,
+    )
+  );
+}
 .app-mat-form-field-underline {
   @include mat.form-field-overrides(
     (
