@@ -1,4 +1,4 @@
-import { computed, inject, Injectable, signal } from "@angular/core";
+import { computed, inject, Injectable } from "@angular/core";
 import { UseProccessMonitorService, UseUtilsService } from "../utils";
 import { Observable } from "rxjs";
 import { PickFileOptions } from "../../types";
@@ -8,7 +8,6 @@ export class PickFilesService {
   private $$ = inject(UseUtilsService);
   private $ps = new UseProccessMonitorService();
   //
-  readonly files = signal<File[]>([]);
   readonly processing = computed(() => Boolean(this.$ps.processing()));
   //
   private _isProgressive(opts: PickFileOptions = {}) {
@@ -30,7 +29,7 @@ export class PickFilesService {
         : undefined,
       excludeAcceptAllOption: Boolean(opts.accept),
     });
-    const files = await Promise.all(handles.map((h) => (h as any).getFile()));
+    const files = await Promise.all(handles.map((h) => h.getFile()));
     return files;
   }
   // Fallback: hidden <input type="file">
@@ -58,7 +57,7 @@ export class PickFilesService {
       const onChange = () => {
         const list = input.files;
         clean();
-        // user canceled or resolve
+        // canceled|resolve
         resolve(this.$$.isEmpty(list) ? [] : Array.from(list!));
       };
 
