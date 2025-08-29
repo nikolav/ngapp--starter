@@ -20,10 +20,8 @@ import { Observable } from "@apollo/client/utilities";
 })
 export class FilesStorageService {
   private $$ = inject(UseUtilsService);
-  private $ps = new UseProccessMonitorService();
+  private $psList = new UseProccessMonitorService();
   private $storage = firebaseStorage;
-
-  readonly processing = computed(() => Boolean(this.$ps.processing()));
 
   upload(files: TUploadFiles, onProgress: any = this.$$.noop) {
     return from(
@@ -71,7 +69,7 @@ export class FilesStorageService {
     return new Observable<FullMetadata[]>((observer) => {
       let metas: FullMetadata[] = [];
       (async () => {
-        this.$ps.begin();
+        this.$psList.begin();
         try {
           const refs = this.$$.get(
             await listAll(ref(this.$storage, path)),
@@ -80,16 +78,16 @@ export class FilesStorageService {
           );
           metas = await Promise.all(refs.map(getMetadata));
         } catch (error) {
-          this.$ps.setError(error);
+          this.$psList.setError(error);
         } finally {
           setTimeout(() => {
-            this.$ps.done(() => {
+            this.$psList.done(() => {
               observer.complete();
             });
           });
         }
-        if (!this.$ps.error()) {
-          this.$ps.successful(() => {
+        if (!this.$psList.error()) {
+          this.$psList.successful(() => {
             observer.next(metas);
           });
         }
