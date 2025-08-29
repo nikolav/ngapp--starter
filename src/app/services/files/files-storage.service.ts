@@ -1,24 +1,30 @@
-import { inject, Injectable } from "@angular/core";
-import { from, map as op_map } from "rxjs";
+import { computed, inject, Injectable } from "@angular/core";
+import { forkJoin, from, map as op_map } from "rxjs";
 import {
-  Storage,
   ref,
   uploadBytesResumable,
   getDownloadURL,
   getMetadata,
   listAll,
   deleteObject,
-} from "@angular/fire/storage";
+  type StorageReference,
+  FullMetadata,
+} from "firebase/storage";
 
 import { TUploadFiles } from "../../types";
-import { UseUtilsService } from "../../services";
+import { UseProccessMonitorService, UseUtilsService } from "../../services";
+import { storage as firebaseStorage } from "../../config/firebase";
+import { Observable } from "@apollo/client/utilities";
 
 @Injectable({
   providedIn: "root",
 })
 export class FilesStorageService {
-  private $storage = inject(Storage);
   private $$ = inject(UseUtilsService);
+  private $ps = new UseProccessMonitorService();
+  private $storage = firebaseStorage;
+
+  readonly processing = computed(() => Boolean(this.$ps.processing()));
 
   upload(files: TUploadFiles, onProgress: any = this.$$.noop) {
     return from(
@@ -62,26 +68,61 @@ export class FilesStorageService {
       // merge all results in one map
     ).pipe(op_map((res) => this.$$.assign({}, ...res)));
   }
-  async ls(path: string) {
-    return [
-      ...(this.$$.get(await listAll(ref(this.$storage, path)), "items") || []),
-    ];
+  ls(path: string) {
+    return new Observable<FullMetadata[]>((observer) => {
+      let metas: FullMetadata[] = [];
+      (async () => {
+        this.$ps.begin();
+        try {
+          const refs = this.$$.get(
+            await listAll(ref(this.$storage, path)),
+            "items",
+            []
+          );
+          metas = await Promise.all(refs.map(getMetadata));
+        } catch (error) {
+          this.$ps.setError(error);
+        } finally {
+          setTimeout(() => {
+            this.$ps.done(() => {
+              observer.complete();
+            });
+          });
+        }
+        if (!this.$ps.error()) {
+          this.$ps.successful(() => {
+            observer.next(metas);
+          });
+        }
+      })();
+    });
   }
-  async rm(pathFilename: string) {
-    return await deleteObject(ref(this.$storage, pathFilename));
-  }
-  async rma(path: string) {
-    return await Promise.all(
-      this.$$.map(
-        await this.ls(path),
-        async (node: any) => await this.rm([path, node.name].join("/"))
+  rm(...fullPaths: string[]) {
+    return forkJoin(
+      fullPaths.map((fullPath) =>
+        from(deleteObject(ref(this.$storage, fullPath)))
       )
     );
   }
-  async url(pathFilename: string) {
-    return await getDownloadURL(ref(this.$storage, pathFilename));
+  rma(path: string) {
+    return new Observable((observer) => {
+      this.ls(path).subscribe((metas) => {
+        if (!this.$$.isEmpty(metas)) {
+          const lsObs = metas.map((meta) =>
+            from(deleteObject(ref(this.$storage, meta.ref?.fullPath)))
+          );
+          forkJoin(lsObs).subscribe(observer);
+        } else {
+          observer.next(null);
+          observer.complete();
+        }
+      });
+    });
   }
-  async info(pathFilename: string) {
-    return await getMetadata(ref(this.$storage, pathFilename));
+  url(pathFilename: string) {
+    return from(getDownloadURL(ref(this.$storage, pathFilename)));
+  }
+  info(pathFilename: string) {
+    return from(getMetadata(ref(this.$storage, pathFilename)));
   }
 }

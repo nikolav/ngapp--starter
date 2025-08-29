@@ -58,3 +58,14 @@ export interface IEventOnStorage {
   payload: any;
   action: "push" | "drop";
 }
+
+export type PickFileOptions = {
+  /** Accept attribute: e.g. "image/*,.pdf,.csv" */
+  accept?: string;
+  /** Allow multiple selection */
+  multiple?: boolean;
+  /** Mobile camera/mic hint: "user" | "environment" */
+  capture?: "user" | "environment";
+  /** Chrome-only directory pick (non-standard) */
+  directory?: boolean; // uses webkitdirectory under the hood
+};

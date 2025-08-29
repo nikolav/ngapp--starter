@@ -42,17 +42,18 @@ import { InMemoryCache } from "@apollo/client/core";
 // #https://github.com/angular/angularfire/blob/main/docs/firestore.md
 import { provideFirebaseApp } from "@angular/fire/app";
 import { provideAuth as provideFirebaseAuth } from "@angular/fire/auth";
-import { provideStorage as provideFirebaseStorage } from "@angular/fire/storage";
+// import { provideStorage as provideFirebaseStorage } from "@angular/fire/storage";
 import {
   app as firebaseApp,
   auth as firebaseAuth,
-  storage as firebaseStorage,
+  // storage as firebaseStorage,
 } from "./config/firebase";
 
 import { ENDPOINT_GRAPHQL, configSocketIO } from "./config";
 import { SocketIoModule } from "ngx-socket-io";
 
 import { TOKEN_foo } from "./keys";
+import { MAT_OPIONS } from "./config";
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -83,11 +84,12 @@ export const appConfig: ApplicationConfig = {
     // ##firebase
     provideFirebaseApp(() => firebaseApp),
     provideFirebaseAuth(() => firebaseAuth),
-    provideFirebaseStorage(() => firebaseStorage),
+    // provideFirebaseStorage(() => firebaseStorage),
     // #provide:custom
     {
       provide: TOKEN_foo,
       useValue: "foobar",
     },
+    ...MAT_OPIONS,
   ],
 };

@@ -3,25 +3,7 @@
     <h2>
       &#64;page--index
     </h2>
-    <button mat-raised-button (click)="ok()" class="app-density1">ok</button>
-    <button mat-raised-button (click)="ok2()">ok2</button>
-    <button mat-raised-button
-      (click)="$auth.authenticate({'email': 'admin@nikolav.rs', 'password': 'admin@nikolav.rs'})">login</button>
-    <button mat-raised-button (click)="$auth.logout()">logout</button>
-    <p>
-      <small>
-        <pre>{{ $gg.store.data() | json }}</pre>
-      </small>
-    </p>
-    <p>
-      <small>
-        <pre>{{ $auth.account() | json }}</pre>
-      </small>
-    </p>
-
-    <mat-card class="mt-2 p-4">
-      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum eveniet delectus eum?</p>
-    </mat-card>
+    <button mat-raised-button (click)="ok()">ok</button>
 
   </section>
 </app-layout-default>

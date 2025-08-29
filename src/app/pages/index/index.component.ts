@@ -1,12 +1,15 @@
-import { Component, OnInit, OnDestroy, inject } from "@angular/core";
+import { Component, OnInit, OnDestroy, effect, inject } from "@angular/core";
 import { JsonPipe } from "@angular/common";
-import { ReactiveFormsModule } from "@angular/forms";
+// import { ReactiveFormsModule } from "@angular/forms";
 
 import { LayoutDefault } from "../../layouts";
 import { MaterialUIModule } from "../../modules";
 import { IconLoading } from "../../components/icons";
-import { ApolloStatusService } from "../../services";
-import { StoreAuth, StoreGravatars } from "../../stores";
+import {
+  PickFilesService,
+  FilesStorageService,
+  UseUtilsService,
+} from "../../services";
 
 @Component({
   selector: "page-index",
@@ -15,27 +18,25 @@ import { StoreAuth, StoreGravatars } from "../../stores";
     JsonPipe,
     LayoutDefault,
     MaterialUIModule,
-    ReactiveFormsModule,
+    // ReactiveFormsModule,
   ],
   templateUrl: "./index.component.html",
   styleUrl: "./index.component.scss",
   providers: [],
 })
 export class IndexComponent implements OnInit, OnDestroy {
-  $dStatus = inject(ApolloStatusService);
-  $auth = inject(StoreAuth);
-  $gg = inject(StoreGravatars);
+  private $$ = inject(UseUtilsService);
+  $files = new PickFilesService();
+  $storage = inject(FilesStorageService);
+
+  constructor() {}
 
   ok() {
-    this.$gg.refresh();
+    this.$storage.ls("/").subscribe((ls) => {
+      console.log({ ls });
+    });
   }
-  ok2() {
-    if (this.$gg.enabled()) {
-      this.$gg.disable();
-    } else {
-      this.$gg.enable();
-    }
-  }
+  ok2() {}
   ngOnInit() {}
   ngOnDestroy() {}
 }
