@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, effect, inject } from "@angular/core";
+import { Component, OnInit, OnDestroy, inject } from "@angular/core";
 import { JsonPipe } from "@angular/common";
 // import { ReactiveFormsModule } from "@angular/forms";
 
@@ -8,7 +8,6 @@ import { IconLoading } from "../../components/icons";
 import {
   PickFilesService,
   FilesStorageService,
-  UseUtilsService,
 } from "../../services";
 
 @Component({
@@ -25,15 +24,14 @@ import {
   providers: [],
 })
 export class IndexComponent implements OnInit, OnDestroy {
-  private $$ = inject(UseUtilsService);
   $files = new PickFilesService();
   $storage = inject(FilesStorageService);
 
   constructor() {}
 
   ok() {
-    this.$files.open().subscribe((files) => {
-      console.log({ files });
+    this.$storage.ls("/temp").subscribe((ls) => {
+      console.log({ ls });
     });
   }
   ok2() {}
