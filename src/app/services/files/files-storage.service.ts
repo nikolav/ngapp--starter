@@ -7,7 +7,6 @@ import {
   getMetadata,
   listAll,
   deleteObject,
-  type StorageReference,
   FullMetadata,
 } from "firebase/storage";
 

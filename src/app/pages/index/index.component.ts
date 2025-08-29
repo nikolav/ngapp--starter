@@ -32,8 +32,8 @@ export class IndexComponent implements OnInit, OnDestroy {
   constructor() {}
 
   ok() {
-    this.$storage.ls("/").subscribe((ls) => {
-      console.log({ ls });
+    this.$files.open().subscribe((files) => {
+      console.log({ files });
     });
   }
   ok2() {}
