@@ -1,4 +1,11 @@
-import { Component, OnInit, inject } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  Renderer2,
+  computed,
+  effect,
+  inject,
+} from "@angular/core";
 import { CommonModule } from "@angular/common";
 import {
   NavigationCancel,
@@ -11,7 +18,12 @@ import {
 } from "@angular/router";
 
 import { MaterialUIModule } from "./modules";
-import { EmitterService, AppConfigService, UseUtilsService } from "./services";
+import {
+  EmitterService,
+  AppConfigService,
+  UseUtilsService,
+  LocalStorageService,
+} from "./services";
 import { StoreFlags } from "./stores";
 import { routeTransitionBlurInOut } from "./assets/route-transitions";
 
@@ -25,14 +37,20 @@ import { routeTransitionBlurInOut } from "./assets/route-transitions";
 })
 export class AppComponent implements OnInit {
   private $router = inject(Router);
+  private $renderer = inject(Renderer2);
+
   private $$ = inject(UseUtilsService);
   private $config = inject(AppConfigService);
   private $emitter = inject(EmitterService);
-
+  private $storage = inject(LocalStorageService);
 
   // toggle sidenav flags
   readonly isActiveSidenav = this.$config.key.IS_ACTIVE_APP_SIDENAV;
   readonly $flags = inject(StoreFlags);
+  // #theme
+  private appThemeDark_ = computed(() =>
+    String(this.$storage.item(this.$config.key.APP_THEME_DARK) || "")
+  );
 
   constructor() {
     this.$router.events.subscribe((event) => {
@@ -47,6 +65,15 @@ export class AppComponent implements OnInit {
         ])
       )
         this.$emitter.subject.next(this.$config.events.ROUTER_NAVIGATION_END);
+    });
+    // toggle html.class @storage:push:[CLASS_APP_THEME_DARK]
+    effect(() => {
+      const clsDark = this.$config.CLASS_APP_THEME_DARK;
+      if (!this.appThemeDark_()) {
+        this.$renderer.removeClass(document.querySelector("html"), clsDark);
+      } else {
+        this.$renderer.addClass(document.querySelector("html"), clsDark);
+      }
     });
   }
   ngOnInit() {

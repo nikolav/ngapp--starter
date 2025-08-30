@@ -27,6 +27,7 @@ export class AppConfigService {
   API_URL_production = API_URL_production;
   API_URL = API_URL;
   ENDPOINT_GRAPHQL = ENDPOINT_GRAPHQL;
+  CLASS_APP_THEME_DARK = "app-theme-dark";
 
   app = {
     PROCESSING: `PROCESSING:510e66b5-2880-5c7a-ae49-aa2f191d2bcc`,
@@ -69,6 +70,7 @@ export class AppConfigService {
     },
   };
   key = {
+    APP_THEME_DARK: "APP_THEME:e234e892-c999-5e8c-805b-ed05d69650a7",
     GRAVATARS: "GRAVATARS:e36d2b6d-fe3e-5d4e-a5be-6da9f78e4f21",
     COLLECTIONS_DOCS_UPDATED:
       "COLLECTIONS_DOCS_UPDATED:af973ced-7b7e-5678-8036-db2c3bdcb5e2:",
