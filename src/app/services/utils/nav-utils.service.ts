@@ -9,7 +9,7 @@ export class NavUtilsService {
   constructor() {}
 
   hardReload(path = "") {
-    const url = new URL(window.location.href);
+    const url = new URL(window.location.origin);
     if (path) {
       url.pathname = this.$$.trim(path, "/");
     }
