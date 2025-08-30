@@ -7,9 +7,9 @@ import type { TOrNoValue } from "../../types";
 })
 export class UseUniqueIdService {
   private $$ = inject(UseUtilsService);
-
   private prefix: string;
-  ID = signal<TOrNoValue<string>>(null);
+
+  ID = signal<TOrNoValue<string>>(undefined);
 
   constructor() {
     this.prefix = `${this.$$.idGen()}:`;

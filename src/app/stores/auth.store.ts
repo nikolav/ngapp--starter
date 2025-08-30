@@ -39,6 +39,7 @@ import {
   CacheService,
   EmitterService,
   AppConfigService,
+  UseUniqueIdService,
 } from "../services";
 import { schemaJwt } from "../schemas";
 import { URL_AUTH_authenticate } from "../config";
@@ -57,6 +58,9 @@ export class StoreAuth implements OnDestroy {
   private $config = inject(AppConfigService);
   private $emitter = inject(EmitterService);
   private $ps = new UseProccessMonitorService();
+
+  // update to run effect to signal app:logout
+  private $uniqIdLogout = new UseUniqueIdService();
 
   private profile_q: TOrNoValue<QueryRef<IResultApolloCacheService>> = null;
 
@@ -150,10 +154,20 @@ export class StoreAuth implements OnDestroy {
     });
     // emit:IEventApp @auth
     effect(() => {
-      this.$emitter.subject.next(<IEventApp>{
-        type: this.$config.events.EVENT_TYPE_AUTH,
-        payload: this.isAuth(),
-      });
+      if (this.isAuth()) {
+        this.$emitter.subject.next(<IEventApp>{
+          type: this.$config.events.EVENT_TYPE_AUTH,
+          payload: true,
+        });
+        return;
+      }
+      // @logout()
+      if (!this.isAuth() && this.$uniqIdLogout.ID()) {
+        this.$emitter.subject.next(<IEventApp>{
+          type: this.$config.events.EVENT_TYPE_AUTH,
+          payload: false,
+        });
+      }
     });
   }
 
@@ -211,6 +225,7 @@ export class StoreAuth implements OnDestroy {
     if (!this.$ps.error())
       this.$ps.successful(() => {
         // @success --auth-logout
+        this.$uniqIdLogout.next();
       });
     console.log("@debug --auth-logout", this.$ps.error());
   }
