@@ -2,7 +2,7 @@ import { effect, inject, Injectable, OnDestroy, signal } from "@angular/core";
 import { filter as op_filter } from "rxjs/operators";
 
 import { schemaStoragePatch, schemaStoragePatchField } from "../../schemas";
-import { IEventOnStorage, TRecordJson } from "../../types";
+import { IEventOnStorage, TOrNoValue, TRecordJson } from "../../types";
 import {
   AppConfigService,
   EmitterService,
@@ -22,7 +22,7 @@ export class LocalStorageService implements OnDestroy {
   private STORAGE = this.$config.key.STORAGE;
   //
   readonly enabled = signal(true);
-  readonly data = signal<TRecordJson>({});
+  readonly data = signal<TOrNoValue<TRecordJson>>(null);
   //
   constructor() {
     // sync cache and storage
@@ -50,7 +50,7 @@ export class LocalStorageService implements OnDestroy {
         )
         .subscribe((event: IEventOnStorage) => {
           this.data.update((data_) =>
-            "push" === event.action
+            data_ && "push" === event.action
               ? this.$$.reduce(
                   event.payload,
                   (dd, value, path) => {
@@ -110,6 +110,7 @@ export class LocalStorageService implements OnDestroy {
     this.data.set(JSON.parse(this.localStorage.getItem(this.STORAGE) ?? "{}"));
   }
   dump() {
-    this.localStorage.setItem(this.STORAGE, JSON.stringify(this.data()));
+    if (this.data())
+      this.localStorage.setItem(this.STORAGE, JSON.stringify(this.data()));
   }
 }
