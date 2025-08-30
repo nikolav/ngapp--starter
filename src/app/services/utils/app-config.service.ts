@@ -31,7 +31,8 @@ export class AppConfigService {
 
   app = {
     PROCESSING: `PROCESSING:510e66b5-2880-5c7a-ae49-aa2f191d2bcc`,
-    ROUTE_PATH_REDIRECT_UNATHENTICATED: "/",
+    ROUTE_PATH_REDIRECT_UNATHENTICATED: "/auth",
+    ROUTE_PATH_REDIRECT_ATHENTICATED: "/",
   };
   // collections:config:mongo
   collections = {
@@ -82,6 +83,7 @@ export class AppConfigService {
     STORAGE: "STORAGE:0a9496fc-21c9-582c-9d6b-b68419132557",
   };
   events = {
+    EVENT_TYPE_AUTH: "EVENT_TYPE_AUTH:fe31b9e2-8ec9-5abf-8694-ac6541f2e8bf",
     STORAGE_CHANGE: "STORAGE_CHANGE:c4d1fdfb-8f17-5cff-9dd1-900172f9ad25",
     EVENT_APP_INIT: "EVENT_APP_INIT:76190ab4-54d8-50b8-8acf-e5fefffabbbb",
     ROUTER_NAVIGATION_START:

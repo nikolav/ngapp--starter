@@ -24,23 +24,23 @@ import {
 } from "@angular/fire/auth";
 import { QueryRef } from "apollo-angular";
 import { Subscription } from "rxjs";
+import { Socket } from "ngx-socket-io";
 
 import type {
   IAuthCreds,
   TOrNoValue,
   IResultApolloCacheService,
+  IEventApp,
 } from "../types";
 import {
   UseUtilsService,
   UseProccessMonitorService,
   TopicsService,
   CacheService,
-  // EmitterService,
-  // AppConfigService,
+  EmitterService,
+  AppConfigService,
 } from "../services";
 import { schemaJwt } from "../schemas";
-import { Socket } from "ngx-socket-io";
-
 import { URL_AUTH_authenticate } from "../config";
 
 @Injectable({
@@ -54,8 +54,8 @@ export class StoreAuth implements OnDestroy {
   private $$ = inject(UseUtilsService);
   private $topics = inject(TopicsService);
   private $cache = inject(CacheService);
-  // private $config = inject(AppConfigService);
-  // private $emitter = inject(EmitterService);
+  private $config = inject(AppConfigService);
+  private $emitter = inject(EmitterService);
   private $ps = new UseProccessMonitorService();
 
   private profile_q: TOrNoValue<QueryRef<IResultApolloCacheService>> = null;
@@ -146,6 +146,13 @@ export class StoreAuth implements OnDestroy {
       onCleanup(() => {
         this.accessToken_s?.unsubscribe();
         this.access_token.set(null);
+      });
+    });
+    // emit:IEventApp @auth
+    effect(() => {
+      this.$emitter.subject.next(<IEventApp>{
+        type: this.$config.events.EVENT_TYPE_AUTH,
+        payload: this.isAuth(),
       });
     });
   }

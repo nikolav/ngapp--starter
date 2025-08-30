@@ -86,6 +86,10 @@ export class LocalStorageService implements OnDestroy {
       this.$$.onDebug("LocalStorage2Service --sync", error);
     }
   }
+  // switch values A and B
+  switch(field: string, A: any, B: any) {
+    this.push({ [field]: A != this.item(field) ? A : B });
+  }
   drop(...paths: string[]) {
     try {
       const payload = paths.map((path) => schemaStoragePatchField.parse(path));
