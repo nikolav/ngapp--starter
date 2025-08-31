@@ -1,17 +1,19 @@
 import { Injectable } from "@angular/core";
 
+// 3rd party
 import lodash from "lodash";
 import { v4 as uuid } from "uuid";
 import md5 from "md5";
-
+import URLParse from "url-parse";
+import qs from "qs";
 // #https://github.com/validatorjs/validator.js
 import isEmail from "validator/es/lib/isEmail";
 import isURL from "validator/es/lib/isURL";
 import isJWT from "validator/es/lib/isJWT";
-
 // #https://github.com/alexei/sprintf.js#readme
 import { sprintf, vsprintf } from "sprintf-js";
 
+// local
 import {
   coreHasOwn,
   isNumeric,
@@ -130,6 +132,10 @@ export class UseUtilsService {
 
   // uuid
   uuid = uuid;
+
+  // urls, paths
+  urlParse = URLParse;
+  qs = qs;
 
   // local
   dumpJson = dumpJson;
