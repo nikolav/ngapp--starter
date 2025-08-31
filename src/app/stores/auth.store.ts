@@ -171,7 +171,7 @@ export class StoreAuth implements OnDestroy {
     });
   }
 
-  async authenticate(creds: IAuthCreds) {
+  async authenticate(creds: IAuthCreds, onError: any = this.$$.noop) {
     let res: TOrNoValue<IUserCredential>;
     try {
       this.$ps.begin();
@@ -183,12 +183,18 @@ export class StoreAuth implements OnDestroy {
     } catch (error) {
       this.$ps.setError(error);
     } finally {
-      this.$ps.done();
+      setTimeout(() => {
+        this.$ps.done();
+      });
     }
-    if (!this.$ps.error())
+    if (!this.$ps.error()) {
       this.$ps.successful(() => {
         // @success --auth-login
+        // pass
       });
+    } else {
+      onError(this.$ps.error());
+    }
     console.log("@debug --auth-login", this.$ps.error());
     return res;
   }
