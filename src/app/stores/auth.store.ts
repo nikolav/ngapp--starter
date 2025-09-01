@@ -78,11 +78,11 @@ export class StoreAuth implements OnDestroy {
 
   error = computed(() => this.$ps.error());
   processing = computed(() => this.$ps.processing());
-  token = computed(() => this.$$.get(this.account(), "accessToken", ""));
-  isAuth = computed(() => schemaJwt.safeParse(this.token()).success);
   uid = computed(() => this.$$.get(this.account(), "uid", ""));
   email = computed(() => this.$$.get(this.account(), "email", ""));
+  isAuth = computed(() => Boolean(this.uid()));
   isAdmin = computed(() => this.$$.get(this.profile(), "isAdmin", false));
+  isAuthApi = computed(() => schemaJwt.safeParse(this.access_token()).success);
   profileCacheKey = computed(() => this.$topics.authProfile(this.uid()));
 
   profileIO = computed(() => {
@@ -94,43 +94,15 @@ export class StoreAuth implements OnDestroy {
 
   debug = computed(() =>
     this.$$.dumpJson({
-      isAuth: this.isAuth(),
-      isAdmin: this.isAdmin(),
-      token: this.token(),
-      uid: this.uid(),
-      email: this.email(),
       account: this.account(),
       profile: this.profile(),
+      access_token: this.access_token(),
     })
   );
 
   constructor() {
     this.user_s = this.user$.subscribe((user) => {
       this.account.set(user);
-    });
-    // load profile on cache_key
-    effect((onCleanup) => {
-      let profile_cache_key = this.profileCacheKey();
-      if (!profile_cache_key) return;
-      this.profile_q = this.$cache.key(profile_cache_key);
-      this.profile_s = this.profile_q?.valueChanges.subscribe((result) => {
-        this.profile.set(this.$cache.data(result, profile_cache_key));
-      });
-      onCleanup(() => {
-        this.profile_s?.unsubscribe();
-        this.profile.set(null);
-      });
-    });
-    // reload profile on io
-    effect((onCleanup) => {
-      if (this.profileCacheKey()) {
-        this.profileIO_s = this.profileIO()!.subscribe(() =>
-          this.profileReload()
-        );
-      }
-      onCleanup(() => {
-        this.profileIO_s?.unsubscribe();
-      });
     });
     // get api access_token
     effect((onCleanup) => {
@@ -150,6 +122,29 @@ export class StoreAuth implements OnDestroy {
       onCleanup(() => {
         this.accessToken_s?.unsubscribe();
         this.access_token.set(null);
+      });
+    });
+    // load profile on cache_key
+    effect((onCleanup) => {
+      if (!this.profileCacheKey() || !this.isAuthApi()) return;
+      this.profile_q = this.$cache.key(this.profileCacheKey());
+      this.profile_s = this.profile_q?.valueChanges.subscribe((result) => {
+        this.profile.set(this.$cache.data(result, this.profileCacheKey()));
+      });
+      onCleanup(() => {
+        this.profile_s?.unsubscribe();
+        this.profile.set(null);
+      });
+    });
+    // reload profile on io
+    effect((onCleanup) => {
+      if (this.profileCacheKey()) {
+        this.profileIO_s = this.profileIO()!.subscribe(() =>
+          this.profileReload()
+        );
+      }
+      onCleanup(() => {
+        this.profileIO_s?.unsubscribe();
       });
     });
     // emit:IEventApp @auth
