@@ -82,7 +82,7 @@ export class StoreAuth implements OnDestroy {
   email = computed(() => this.$$.get(this.account(), "email", ""));
   isAuth = computed(() => Boolean(this.uid()));
   isAdmin = computed(() => this.$$.get(this.profile(), "isAdmin", false));
-  isAuthApi = computed(() => schemaJwt.safeParse(this.access_token()).success);
+  isAuthApi = computed(() => Boolean(this.access_token()));
   profileCacheKey = computed(() => this.$topics.authProfile(this.uid()));
 
   profileIO = computed(() => {
@@ -113,9 +113,13 @@ export class StoreAuth implements OnDestroy {
           this.accessToken_s = this.$http
             .post(URL_AUTH_authenticate, { idToken })
             .subscribe((res) => {
-              const token = this.$$.get(res, "token");
-              if (!token) return;
-              this.access_token.set(token);
+              try {
+                this.access_token.set(
+                  schemaJwt.parse(this.$$.get(res, "token"))
+                );
+              } catch (error) {
+                // pass
+              }
             });
         });
       })();
