@@ -26,7 +26,7 @@ export const routeTransitionBlurInOut = trigger("routeTransitionBlurInOut", [
       { optional: true }
     ),
     // start state for :enter
-    query(":enter", [style({ opacity: 0, filter: "blur(.122rem)" })], {
+    query(":enter", [style({ opacity: 0, filter: "blur(.022rem)" })], {
       optional: true,
     }),
     // run children :leave animations
@@ -39,7 +39,7 @@ export const routeTransitionBlurInOut = trigger("routeTransitionBlurInOut", [
         [
           animate(
             "122ms ease-out",
-            style({ opacity: 0, filter: "blur(.122rem)" })
+            style({ opacity: 0, filter: "blur(.022rem)" })
           ),
         ],
         {
