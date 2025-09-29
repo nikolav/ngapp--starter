@@ -11,19 +11,23 @@ import { Socket } from "ngx-socket-io";
 
 import { TopicsService, CacheService } from "../../services";
 import { TOrNoValue } from "../../types";
+import { StoreAuth } from "../../stores";
 
 @Injectable()
 export class UseCacheKeyService implements OnDestroy {
   private $io = inject(Socket);
+  private $auth = inject(StoreAuth);
   private $topics = inject(TopicsService);
   private $cache = inject(CacheService);
   private cache_key = signal<TOrNoValue<string>>(undefined);
   private q_s: TOrNoValue<Subscription>;
   private q = computed(() => this.$cache.key(this.cache_key()));
   // #public
-  enabled = computed(() => Boolean(this.cache_key()));
-  data = signal<any>(undefined);
-  io = computed(() =>
+  readonly enabled = computed(
+    () => this.$auth.isAuthApi() && Boolean(this.cache_key())
+  );
+  readonly data = signal<any>(undefined);
+  readonly io = computed(() =>
     this.enabled()
       ? this.$io.fromEvent(this.$topics.ioEventOnCache(this.cache_key()))
       : undefined

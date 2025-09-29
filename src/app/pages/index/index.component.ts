@@ -14,6 +14,7 @@ import { IconxModule, MaterialUIModule } from "../../modules";
 import {
   CollectionsService,
   DocsService,
+  UseCacheKeyService,
   UseUtilsService,
 } from "../../services";
 import { StoreAuth } from "../../stores";
@@ -37,8 +38,8 @@ export class IndexComponent implements OnInit, OnDestroy {
   $$ = inject(UseUtilsService);
   $auth = inject(StoreAuth);
   $docs = new DocsService().use("main");
-  $collFoo = new CollectionsService().use(
-    "foo:a5070071-a654-5c71-a7ee-34449cd0d630"
+  $cacheFoo = new UseCacheKeyService().use(
+    "cache:c17c95eb-7a5d-5737-b1fa-cfe5f2de5737"
   );
 
   idToken = computed(() => this.$auth.account()?.getIdToken());
@@ -46,27 +47,19 @@ export class IndexComponent implements OnInit, OnDestroy {
   private io_s: TOrNoValue<Subscription>;
   constructor() {
     effect(() => {
-      if (!this.$collFoo.enabled()) return;
-      this.io_s = this.$collFoo.io()?.subscribe(() => {
-        this.$collFoo.reload();
+      if (!this.$cacheFoo.enabled()) return;
+      this.io_s = this.$cacheFoo.io()?.subscribe(() => {
+        this.$cacheFoo.reload();
       });
     });
   }
 
   ok() {
-    console.log(this.$collFoo.data());
+    console.log(this.$cacheFoo.data());
   }
   ok2() {
-    this.$collFoo
-      .commit([
-        {
-          data: {
-            data: {
-              [`x:${this.$$.idGen()}`]: Math.random(),
-            },
-          },
-        },
-      ])
+    this.$cacheFoo
+      .commit({ [`x:${this.$$.idGen()}`]: Math.random() })
       ?.subscribe((res) => {
         console.log({ res });
       });
