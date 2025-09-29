@@ -1,12 +1,13 @@
 import { Component } from "@angular/core";
+import { RouterModule } from "@angular/router";
 
-import { IconxModule, MaterialUIModule } from "../../modules";
+import { MaterialUIModule } from "../../modules";
 import { LayoutDefault } from "../../layouts";
 import { ICanComponentDeactivate } from "../../types";
 
 @Component({
   selector: "page-app",
-  imports: [LayoutDefault, MaterialUIModule, IconxModule],
+  imports: [LayoutDefault, MaterialUIModule, RouterModule],
   templateUrl: "./app.component.html",
   styleUrls: ["./app.component.scss"],
 })
