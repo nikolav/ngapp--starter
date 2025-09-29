@@ -1,11 +1,12 @@
 import { inject, Injectable } from "@angular/core";
 import { Apollo } from "apollo-angular";
-import { AppConfigService, UseUtilsService } from "../utils";
+
 import {
   Q_collectionsDocsByTopic,
   M_collectionsDocsUpsert,
   M_collectionsDocsDrop,
 } from "../../graphql";
+import { AppConfigService, UseUtilsService } from "../utils";
 import type {
   IRecordJsonWithMergeFlag,
   IResultCollectionsDocs,
