@@ -35,9 +35,9 @@ export class DocsService<T = any> implements OnDestroy {
   private $auth = inject(StoreAuth);
   private $firestore = firebaseFirestore;
   //
-  readonly data = signal<T[]>([]);
   readonly path = signal<TOrNoValue<string>>(null);
   readonly enabled = computed(() => null != this.path() && this.$auth.isAuth());
+  readonly data = signal<T[]>([]);
   //
   private coll_ = computed(() =>
     this.enabled() ? collection(this.$firestore, this.path()!) : null
