@@ -6,10 +6,13 @@ import {
   OnDestroy,
   effect,
 } from "@angular/core";
-import { Subscription } from "rxjs";
 import { Socket } from "ngx-socket-io";
 
-import { TopicsService, CacheService } from "../../services";
+import {
+  TopicsService,
+  CacheService,
+  ManageSubscriptionsService,
+} from "../../services";
 import { TOrNoValue } from "../../types";
 import { StoreAuth } from "../../stores";
 
@@ -20,8 +23,8 @@ export class UseCacheKeyService implements OnDestroy {
   private $topics = inject(TopicsService);
   private $cache = inject(CacheService);
   private cache_key = signal<TOrNoValue<string>>(undefined);
-  private q_s: TOrNoValue<Subscription>;
   private q = computed(() => this.$cache.key(this.cache_key()));
+  private $subs = new ManageSubscriptionsService();
   // #public
   readonly enabled = computed(
     () => this.$auth.isAuthApi() && Boolean(this.cache_key())
@@ -49,12 +52,14 @@ export class UseCacheKeyService implements OnDestroy {
     return await this.q()?.refetch();
   }
   destroy() {
-    this.q_s?.unsubscribe();
+    this.$subs.destroy();
   }
   start() {
-    this.q_s = this.q()?.valueChanges.subscribe((res) =>
-      this.data.set(this.$cache.data(res, this.cache_key()))
-    );
+    this.$subs.push({
+      data: this.q()?.valueChanges.subscribe((res) =>
+        this.data.set(this.$cache.data(res, this.cache_key()))
+      ),
+    });
   }
   use(key: string) {
     this.cache_key.set(key);
