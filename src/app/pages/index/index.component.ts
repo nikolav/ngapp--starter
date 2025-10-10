@@ -12,9 +12,9 @@ import { RouterModule } from "@angular/router";
 import { LayoutDefault } from "../../layouts";
 import { IconxModule, MaterialUIModule } from "../../modules";
 import {
-  CollectionsService,
   DocsService,
   UseCacheKeyService,
+  UseMailService,
   UseUtilsService,
 } from "../../services";
 import { StoreAuth } from "../../stores";
@@ -41,6 +41,7 @@ export class IndexComponent implements OnInit, OnDestroy {
   $cacheFoo = new UseCacheKeyService().use(
     "cache:c17c95eb-7a5d-5737-b1fa-cfe5f2de5737"
   );
+  $mail = inject(UseMailService);
 
   idToken = computed(() => this.$auth.account()?.getIdToken());
 

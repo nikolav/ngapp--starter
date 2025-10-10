@@ -24,3 +24,20 @@ export const M_collectionsDocsDrop = gql`
     collectionsDocsDrop(topic: $topic, ids: $ids)
   }
 `;
+
+// mailSendMessage(to: String!, subject: String!, template: String!, context: JsonData): JsonData!
+export const M_mailSendMessage = gql`
+  mutation m_mailSendMessage(
+    $to: String!
+    $subject: String!
+    $template: String!
+    $context: JsonData
+  ) {
+    mailSendMessage(
+      to: $to
+      subject: $subject
+      template: $template
+      context: $context
+    )
+  }
+`;
