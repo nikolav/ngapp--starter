@@ -3,7 +3,11 @@ import { Subscription } from "rxjs";
 
 import { LayoutDefault } from "../../layouts";
 import { IconxModule, MaterialUIModule } from "../../modules";
-import { UseCacheKeyService, UseUtilsService } from "../../services";
+import {
+  UseCacheKeyService,
+  UseMailService,
+  UseUtilsService,
+} from "../../services";
 import { TOrNoValue } from "../../types/index";
 
 @Component({
@@ -18,6 +22,7 @@ export class IndexComponent implements OnInit, OnDestroy {
   $cacheFoo = new UseCacheKeyService().use(
     "cache:c17c95eb-7a5d-5737-b1fa-cfe5f2de5737"
   );
+  $mail = inject(UseMailService);
 
   private io_s: TOrNoValue<Subscription>;
 
