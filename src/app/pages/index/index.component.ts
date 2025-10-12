@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy, inject, effect } from "@angular/core";
+import { transition, trigger, useAnimation } from "@angular/animations";
 import { Subscription } from "rxjs";
 
 import { LayoutDefault } from "../../layouts";
@@ -9,7 +10,6 @@ import {
   UseUtilsService,
 } from "../../services";
 import { TOrNoValue } from "../../types/index";
-import { transition, trigger, useAnimation } from "@angular/animations";
 import { fade } from "../../assets/animations";
 
 @Component({
