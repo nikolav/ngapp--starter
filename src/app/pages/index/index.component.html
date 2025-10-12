@@ -1,9 +1,13 @@
 <app-layout-default>
   <section class="page--index">
-    <div class="mt-12 text-center">
-      <h1>👋 Zdravo!</h1>
-      <p>Kontakt: <strong>Nikola Vuković</strong> <a class="app-color-primary ms-2"
-          href="mailto:admin@nikolav.rs">&lt;admin&#64;nikolav.rs&gt;</a></p>
+    <h2>
+      &#64;page--index
+    </h2>
+    <button mat-button (click)="boxIsActive.toggle()">ok</button>
+    <div class="flex justify-center">
+      @if(boxIsActive.isActive()) {
+      <div @show class="w-32 h-32 bg-sky-500"></div>
+      }
     </div>
   </section>
 </app-layout-default>
