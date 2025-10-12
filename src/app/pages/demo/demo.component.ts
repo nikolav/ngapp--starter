@@ -5,7 +5,7 @@ import { transition, trigger, useAnimation } from "@angular/animations";
 import { LayoutDefault } from "../../layouts";
 import { MaterialUIModule } from "../../modules";
 import { fade } from "../../assets/animations";
-import { UseToggleFlagService } from "../../services";
+import { UseMailService, UseToggleFlagService } from "../../services";
 
 @Component({
   selector: "app-demo",
@@ -13,7 +13,7 @@ import { UseToggleFlagService } from "../../services";
   templateUrl: "./demo.component.html",
   styleUrl: "./demo.component.scss",
   animations: [
-    trigger("show", [
+    trigger("showHide", [
       transition(
         ":enter",
         useAnimation(fade, {
@@ -44,9 +44,21 @@ import { UseToggleFlagService } from "../../services";
   ],
 })
 export class DemoComponent implements OnDestroy, OnInit {
+  $mail = inject(UseMailService);
+
   boxIsActive = new UseToggleFlagService();
 
   constructor() {}
+
+  ok() {
+    this.$mail
+      .send("admin@nikolav.rs", "hello:1", "blank", {
+        content: "foo:1",
+      })
+      .subscribe((res) => {
+        console.log({ res });
+      });
+  }
 
   ngOnInit() {}
   ngOnDestroy() {}
