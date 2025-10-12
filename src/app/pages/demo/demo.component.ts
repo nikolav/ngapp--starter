@@ -5,8 +5,11 @@ import { transition, trigger, useAnimation } from "@angular/animations";
 import { LayoutDefault } from "../../layouts";
 import { MaterialUIModule } from "../../modules";
 import { fade } from "../../assets/animations";
-import { UseMailService, UseToggleFlagService } from "../../services";
-import { AudioService } from "../../services/audio";
+import {
+  UseMailService,
+  UseToggleFlagService,
+  AudioService,
+} from "../../services";
 
 @Component({
   selector: "app-demo",

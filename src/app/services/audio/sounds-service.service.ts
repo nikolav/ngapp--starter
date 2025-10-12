@@ -15,6 +15,7 @@ export class SoundsService {
   readonly sounds: Record<string, TOrNoValue<Howl>> = {};
 
   init(track: string, options: HowlOptions) {
+    if (this.initialized(track)) return;
     const options_ = this.$$.assign(
       {},
       this.$config.audio.howl.defaults,
@@ -22,13 +23,20 @@ export class SoundsService {
     );
     this.sounds[track] = new Howl(options_);
   }
-  hasTrack(track: string) {
+  initialized(track: string) {
     return null != this.sounds[track];
   }
   isPlaying(track: string) {
     return this.sounds[track]?.playing() ?? false;
   }
+  access(track: string, callback: (howl: Howl) => void) {
+    return this.initialized(track) ? callback(this.sounds[track]!) : undefined;
+  }
   play(track: string) {
-    return this.isPlaying(track) ? undefined : this.sounds[track]?.play();
+    return this.isPlaying(track)
+      ? undefined
+      : this.access(track, (howl) => {
+          howl.play();
+        });
   }
 }
