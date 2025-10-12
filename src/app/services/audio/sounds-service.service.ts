@@ -29,14 +29,13 @@ export class SoundsService {
     return this.sounds[track]?.playing() ?? false;
   }
   access(track: string, callback: (howl: Howl) => void) {
-    return this.initialized(track) ? callback(this.sounds[track]!) : undefined;
+    if (this.initialized(track)) callback(this.sounds[track]);
   }
   play(track: string) {
-    return this.isPlaying(track)
-      ? undefined
-      : this.access(track, (howl) => {
-          howl.play();
-        });
+    if (!this.isPlaying(track))
+      this.access(track, (howl) => {
+        howl.play();
+      });
   }
   each(callback: (howl: Howl, track: string) => void) {
     this.$$.each(this.sounds, callback);
