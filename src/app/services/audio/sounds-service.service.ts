@@ -41,6 +41,16 @@ export class SoundsService {
   each(callback: (howl: Howl, track: string) => void) {
     this.$$.each(this.sounds, callback);
   }
+  len() {
+    return this.$$.reduce(
+      this.sounds,
+      (res, howl) => {
+        res += null != howl ? 1 : 0;
+        return res;
+      },
+      0
+    );
+  }
   destroy(track: string) {
     this.access(track, (howl) => {
       howl.stop();
