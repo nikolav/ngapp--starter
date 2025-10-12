@@ -6,6 +6,7 @@ import { LayoutDefault } from "../../layouts";
 import { MaterialUIModule } from "../../modules";
 import { fade } from "../../assets/animations";
 import { UseMailService, UseToggleFlagService } from "../../services";
+import { AudioService } from "../../services/audio";
 
 @Component({
   selector: "app-demo",
@@ -45,11 +46,11 @@ import { UseMailService, UseToggleFlagService } from "../../services";
 })
 export class DemoComponent implements OnDestroy, OnInit {
   $mail = inject(UseMailService);
-
   boxIsActive = new UseToggleFlagService();
-
-  constructor() {}
-
+  readonly $audio = inject(AudioService);
+  constructor() {
+    this.$audio.init("demo", { src: ["/sample-track.mp3"] });
+  }
   ok() {
     this.$mail
       .send("admin@nikolav.rs", "hello:1", "blank", {

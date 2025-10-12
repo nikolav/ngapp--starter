@@ -1,4 +1,6 @@
 import { Injectable } from "@angular/core";
+import type { HowlOptions } from "howler";
+
 import { APP_NAME, ADMIN_EMAIL } from "../../config/vars.env.public";
 import {
   PRODUCTION,
@@ -102,5 +104,14 @@ export class AppConfigService {
   di = {
     TOKEN_foo,
     TOKEN_localStorage,
+  };
+  audio = {
+    howl: {
+      defaults: <Partial<HowlOptions>>{
+        html5: true,
+        autoplay: false,
+        volume: 0.5,
+      },
+    },
   };
 }
