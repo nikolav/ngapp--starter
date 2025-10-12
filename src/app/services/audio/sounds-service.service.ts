@@ -3,7 +3,6 @@ import { Howl } from "howler";
 import type { HowlOptions } from "howler";
 
 import { AppConfigService, UseUtilsService } from "../utils";
-import { TOrNoValue } from "../../types";
 
 @Injectable({
   providedIn: "root",
@@ -12,7 +11,7 @@ export class SoundsService {
   private $$ = inject(UseUtilsService);
   private $config = inject(AppConfigService);
 
-  readonly sounds: Record<string, TOrNoValue<Howl>> = {};
+  readonly sounds: Record<string, Howl> = {};
 
   init(track: string, options: HowlOptions) {
     if (this.initialized(track)) return;
@@ -38,5 +37,15 @@ export class SoundsService {
       : this.access(track, (howl) => {
           howl.play();
         });
+  }
+  each(callback: (howl: Howl, track: string) => void) {
+    this.$$.each(this.sounds, callback);
+  }
+  destroy(track: string) {
+    this.access(track, (howl) => {
+      howl.stop();
+      howl.unload();
+    });
+    delete this.sounds[track];
   }
 }
