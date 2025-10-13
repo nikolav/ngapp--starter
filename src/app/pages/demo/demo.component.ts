@@ -51,9 +51,6 @@ export class DemoComponent implements OnDestroy, OnInit {
   $mail = inject(UseMailService);
   boxIsActive = new UseToggleFlagService();
   readonly $audio = inject(AudioService);
-  constructor() {
-    this.$audio.init("demo", { src: ["/sample-track.mp3"] });
-  }
   ok() {
     this.$mail
       .send("admin@nikolav.rs", "hello:1", "blank", {
@@ -64,6 +61,8 @@ export class DemoComponent implements OnDestroy, OnInit {
       });
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.$audio.init("demo", { src: ["/sample-track.mp3"] });
+  }
   ngOnDestroy() {}
 }
