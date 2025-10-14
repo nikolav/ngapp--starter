@@ -69,6 +69,7 @@ const {
   trimStart,
   uniqueId,
   unset,
+  without,
 } = lodash;
 
 @Injectable({
@@ -125,6 +126,7 @@ export class UseUtilsService {
   uniqueId = uniqueId;
   unset = unset;
   untilDestroyed = untilDestroyed;
+  without = without;
 
   // sprint-js
   sprintf = sprintf;

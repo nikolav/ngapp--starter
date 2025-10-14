@@ -54,7 +54,8 @@ export class DemoComponent implements OnDestroy, OnInit {
   ok() {
     this.$mail
       .send("admin@nikolav.rs", "hello:1", "blank", {
-        content: "foo:1",
+        content:
+          "<p>Id nulla aute officia incididunt proident mollit eiusmod dolor aliqua eu ad laboris fugiat ex. Reprehenderit ipsum culpa incididunt nulla dolor aute cupidatat et adipisicing ea anim. Laboris cupidatat aute pariatur ullamco cupidatat elit exercitation Lorem duis qui officia. Culpa velit ex eu elit elit amet ex culpa eu eiusmod tempor incididunt. Occaecat magna deserunt eiusmod amet aute nostrud cupidatat ad laboris aliqua esse sint incididunt sit. Reprehenderit tempor incididunt dolor voluptate dolore est qui irure nulla et esse. Sunt deserunt ullamco tempor consectetur occaecat voluptate nulla do pariatur enim elit.</p>",
       })
       .subscribe((res) => {
         console.log({ res });
