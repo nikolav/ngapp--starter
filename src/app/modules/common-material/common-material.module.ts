@@ -1,5 +1,21 @@
 import { NgModule } from "@angular/core";
 
+// # typically imports
+// MatButtonModule,
+// MatIconModule,
+// MatToolbarModule,
+// MatSidenavModule,
+// MatListModule,
+// MatInputModule,
+// MatSelectModule,
+// MatCardModule,
+// MatDialogModule,
+// MatSnackBarModule,
+// MatProgressSpinnerModule,
+// MatTableModule,
+// MatPaginatorModule,
+// MatSortModule
+
 import { MatAutocompleteModule } from "@angular/material/autocomplete";
 import { MatBadgeModule } from "@angular/material/badge";
 import { MatBottomSheetModule } from "@angular/material/bottom-sheet";

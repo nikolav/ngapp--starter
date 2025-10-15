@@ -41,3 +41,39 @@ export const M_mailSendMessage = gql`
     )
   }
 `;
+
+// viberChannelSetupSetWebhook(url: String!, auth_token: String!, is_global: Boolean): JsonData!
+export const M_viberChannelSetupSetWebhook = gql`
+  mutation m_viberChannelSetupSetWebhook(
+    $url: String!
+    $auth_token: String!
+    $is_global: Boolean
+  ) {
+    viberChannelSetupSetWebhook(
+      url: $url
+      auth_token: $auth_token
+      is_global: $is_global
+    )
+  }
+`;
+
+// viberChannelSetupChannelsDrop(channels: [String!]): JsonData!
+export const M_viberChannelSetupChannelsDrop = gql`
+  mutation m_viberChannelSetupChannelsDrop($channels: [String!]) {
+    viberChannelSetupChannelsDrop(channels: $channels)
+  }
+`;
+
+// viberSendTextMessage(payload: JsonData!): JsonData!
+export const M_viberSendTextMessage = gql`
+  mutation m_viberSendTextMessage($payload: JsonData!) {
+    viberSendTextMessage(payload: $payload)
+  }
+`;
+
+// viberSendPictureMessage(payload: JsonData!): JsonData!
+export const M_viberSendPictureMessage = gql`
+  mutation m_viberSendPictureMessage($payload: JsonData!) {
+    viberSendPictureMessage(payload: $payload)
+  }
+`;

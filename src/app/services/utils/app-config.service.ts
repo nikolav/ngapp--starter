@@ -1,8 +1,11 @@
 import { Injectable } from "@angular/core";
 import type { HowlOptions } from "howler";
+import _trim from "lodash/trim";
 
-import { APP_NAME, ADMIN_EMAIL } from "../../config/vars.env.public";
 import {
+  APP_NAME,
+  ADMIN_EMAIL,
+  VIBER_WEBHOOK_PATH,
   PRODUCTION,
   API_URL_production,
   API_URL_dev,
@@ -113,5 +116,9 @@ export class AppConfigService {
         volume: 0.5,
       },
     },
+  };
+  viber = {
+    webhook_url: (channelName: string) =>
+      [API_URL, VIBER_WEBHOOK_PATH, _trim(channelName, "/")].join("/"),
   };
 }
