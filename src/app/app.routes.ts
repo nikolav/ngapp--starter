@@ -45,13 +45,14 @@ export const routes: Routes = [
   //     },
   //   ],
   // },
-  {
-    path: "not-found",
-    component: PageNotFound,
-    data: { animation: "eadf06c1-8885-5364-87f0-256fa0de7c02" },
-  },
+  // {
+  //   path: "not-found",
+  //   component: PageNotFound,
+  //   data: { animation: "eadf06c1-8885-5364-87f0-256fa0de7c02" },
+  // },
   {
     path: "**",
-    redirectTo: "/not-found",
+    redirectTo: "/",
+    // redirectTo: "/not-found",
   },
 ];
