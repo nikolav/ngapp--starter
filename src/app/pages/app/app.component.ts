@@ -1,11 +1,11 @@
 import { Component, computed, inject } from "@angular/core";
 import { RouterModule } from "@angular/router";
+import { AsyncPipe } from "@angular/common";
 
 import { MaterialUIModule } from "../../modules";
 import { LayoutDefault } from "../../layouts";
 import { ICanComponentDeactivate } from "../../types";
 import { StoreAuth } from "../../stores";
-import { AsyncPipe } from "@angular/common";
 
 @Component({
   selector: "page-app",
