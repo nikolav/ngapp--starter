@@ -1,6 +1,6 @@
 import { Component, computed, inject } from "@angular/core";
 import { RouterModule } from "@angular/router";
-import { AsyncPipe } from "@angular/common";
+import { AsyncPipe, JsonPipe } from "@angular/common";
 
 import { MaterialSharedModule } from "../../modules";
 import { LayoutDefault } from "../../layouts";
@@ -8,7 +8,13 @@ import { StoreAuth } from "../../stores";
 
 @Component({
   selector: "page-app",
-  imports: [LayoutDefault, MaterialSharedModule, RouterModule, AsyncPipe],
+  imports: [
+    LayoutDefault,
+    MaterialSharedModule,
+    RouterModule,
+    AsyncPipe,
+    JsonPipe,
+  ],
   templateUrl: "./app.component.html",
   styleUrls: ["./app.component.scss"],
 })
