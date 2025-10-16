@@ -27,7 +27,6 @@ import {
 import { StoreFlags } from "./stores";
 import { routeTransitionBlurInOut } from "./assets/route-transitions";
 import { PortalBottomComponent } from "./components/app";
-import { BlankBaseComponent } from "./components/dev/templates/blank-base/blank-base.component";
 
 @Component({
   selector: "app-root",
@@ -36,8 +35,7 @@ import { BlankBaseComponent } from "./components/dev/templates/blank-base/blank-
     RouterModule,
     MaterialUIModule,
     PortalBottomComponent,
-    BlankBaseComponent
-],
+  ],
   templateUrl: "./app.component.html",
   styleUrls: ["./app.component.scss"],
   providers: [],
