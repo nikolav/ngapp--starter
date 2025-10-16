@@ -42,7 +42,7 @@ export class LocalStorageService implements OnDestroy {
   start() {
     this.sync();
     this.$subs.push({
-      _s1: this.$emitter.subject
+      data: this.$emitter.subject
         .pipe(
           op_filter(
             (event: any) => this.ON_STORAGE === this.$$.get(event, "type")
@@ -83,12 +83,12 @@ export class LocalStorageService implements OnDestroy {
         action: "push",
       });
     } catch (error) {
-      this.$$.onDebug("LocalStorage2Service --sync", error);
+      this.$$.onDebug("LocalStorageService --sync", error);
     }
   }
-  // switch values A and B
-  switch(field: string, A: any, B: any) {
-    this.push({ [field]: A != this.item(field) ? A : B });
+  // switch x <=> y
+  switch(path: string, x: any, y: any) {
+    this.push({ [path]: x != this.item(path) ? x : y });
   }
   drop(...paths: string[]) {
     try {
@@ -99,7 +99,7 @@ export class LocalStorageService implements OnDestroy {
         action: "drop",
       });
     } catch (error) {
-      this.$$.onDebug("LocalStorage2Service --sync", error);
+      this.$$.onDebug("LocalStorageService --sync", error);
     }
   }
   //

@@ -1,6 +1,6 @@
 import { Routes } from "@angular/router";
 
-import { PageApp, PageIndex, PageNotFound, PageDemo } from "./pages";
+import { PageApp, PageIndex, PageDemo } from "./pages";
 // import { AuthGuard, FooDeactivateGuard } from "./middleware/guards";
 
 export const routes: Routes = [
