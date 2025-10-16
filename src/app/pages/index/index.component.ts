@@ -2,13 +2,13 @@ import { Component, OnInit, OnDestroy, effect } from "@angular/core";
 import { Subscription } from "rxjs";
 
 import { LayoutDefault } from "../../layouts";
-import { IconxModule, MaterialUIModule } from "../../modules";
+import { IconxModule, MaterialSharedModule } from "../../modules";
 import { UseCacheKeyService } from "../../services";
 import { TOrNoValue } from "../../types/index";
 
 @Component({
   selector: "page-index",
-  imports: [LayoutDefault, MaterialUIModule, IconxModule],
+  imports: [LayoutDefault, MaterialSharedModule, IconxModule],
   templateUrl: "./index.component.html",
   styleUrl: "./index.component.scss",
 })

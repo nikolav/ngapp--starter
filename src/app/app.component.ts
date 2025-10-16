@@ -17,7 +17,7 @@ import {
   RouterOutlet,
 } from "@angular/router";
 
-import { MaterialUIModule } from "./modules";
+import { MaterialSharedModule } from "./modules";
 import {
   EmitterService,
   AppConfigService,
@@ -29,7 +29,7 @@ import { routeTransitionBlurInOut } from "./assets/route-transitions";
 
 @Component({
   selector: "app-root",
-  imports: [CommonModule, RouterModule, MaterialUIModule],
+  imports: [CommonModule, RouterModule, MaterialSharedModule],
   templateUrl: "./app.component.html",
   styleUrls: ["./app.component.scss"],
   providers: [],
