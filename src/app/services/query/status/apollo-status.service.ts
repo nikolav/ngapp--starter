@@ -7,41 +7,25 @@ import {
   effect,
 } from "@angular/core";
 import { Apollo } from "apollo-angular";
-import { type ApolloQueryResult } from "@apollo/client/core";
 
 import { Q_status } from "../../../graphql";
-import {
-  AppConfigService,
-  ManageSubscriptionsService,
-  UseUtilsService,
-} from "../../../services";
-import type { TOrNoValue } from "../../../types";
+import { ManageSubscriptionsService, UseUtilsService } from "../../../services";
+import { StoreAuth } from "../../../stores";
 
 @Injectable({
   providedIn: "root",
 })
 export class ApolloStatusService implements OnDestroy {
-  private $$ = inject(UseUtilsService);
-  private $config = inject(AppConfigService);
-  private $subs = new ManageSubscriptionsService();
-  private $apollo = inject(Apollo);
-  //
-  private q = computed(() =>
-    this.enabled()
-      ? this.$apollo.watchQuery({
-          query: Q_status,
-          pollInterval: this.$config.graphql.QUERY_POLL_INTERVAL,
-          variables: {},
-        })
-      : undefined
-  );
+  protected $$ = inject(UseUtilsService);
+  protected $apollo = inject(Apollo);
+  protected $auth = inject(StoreAuth);
+  protected $subs = new ManageSubscriptionsService();
 
-  // status: JsonData
-  readonly result = signal<TOrNoValue<ApolloQueryResult<any>>>(undefined);
-  readonly enabled = signal(true);
-  readonly error = computed(() => this.result()?.error);
-  readonly loading = computed(() => this.result()?.loading ?? false);
-  readonly data = computed(() => this.$$.get(this.result(), "data.status", {}));
+  protected q = this.$apollo.watchQuery({
+    query: Q_status,
+  });
+  readonly enabled = computed(() => this.$auth.isAuthApi());
+  readonly data = signal<any>(undefined);
 
   constructor() {
     effect((onCleanup) => {
@@ -49,23 +33,25 @@ export class ApolloStatusService implements OnDestroy {
       this.start();
       onCleanup(() => {
         this.destroy();
-        this.result.set(undefined);
+        this.data.set(undefined);
       });
     });
   }
-
   start() {
     this.$subs.push({
-      _s1: this.q()?.valueChanges.subscribe((res) => this.result.set(res)),
+      data: this.q.valueChanges.subscribe((res) => {
+        this.data.set(this.$$.get(res, "data.status"));
+      }),
     });
+  }
+  reload() {
+    return this.q.refetch();
   }
   destroy() {
     this.$subs.destroy();
   }
-  async reload() {
-    return await this.q()?.refetch();
-  }
+
   ngOnDestroy() {
-    this.$subs.destroy();
+    this.destroy();
   }
 }

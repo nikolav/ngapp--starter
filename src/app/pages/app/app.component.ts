@@ -4,7 +4,6 @@ import { AsyncPipe, JsonPipe } from "@angular/common";
 
 import { MaterialUIModule } from "../../modules";
 import { LayoutDefault } from "../../layouts";
-import { ICanComponentDeactivate } from "../../types";
 import { StoreAuth } from "../../stores";
 
 @Component({
@@ -13,12 +12,7 @@ import { StoreAuth } from "../../stores";
   templateUrl: "./app.component.html",
   styleUrls: ["./app.component.scss"],
 })
-export class AppComponent implements ICanComponentDeactivate {
+export class AppComponent {
   readonly $auth = inject(StoreAuth);
-
   idToken = computed(() => this.$auth.account()?.getIdToken());
-
-  canDeactivate() {
-    return true;
-  }
 }
