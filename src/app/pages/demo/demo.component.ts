@@ -2,13 +2,13 @@ import { Component, OnDestroy, OnInit } from "@angular/core";
 import { transition, trigger, useAnimation } from "@angular/animations";
 
 import { LayoutDefault } from "../../layouts";
-import { MaterialUIModule } from "../../modules";
+import { MaterialSharedModule } from "../../modules";
 import { fade } from "../../assets/animations";
 import { UseToggleFlagService } from "../../services";
 
 @Component({
   selector: "app-demo",
-  imports: [LayoutDefault, MaterialUIModule],
+  imports: [LayoutDefault, MaterialSharedModule],
   templateUrl: "./demo.component.html",
   styleUrl: "./demo.component.scss",
   animations: [

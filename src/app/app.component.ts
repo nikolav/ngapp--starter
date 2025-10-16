@@ -17,7 +17,7 @@ import {
   RouterOutlet,
 } from "@angular/router";
 
-import { MaterialUIModule } from "./modules";
+import { MaterialSharedModule } from "./modules";
 import {
   EmitterService,
   AppConfigService,
@@ -33,7 +33,7 @@ import { PortalBottomComponent } from "./components/app";
   imports: [
     CommonModule,
     RouterModule,
-    MaterialUIModule,
+    MaterialSharedModule,
     PortalBottomComponent,
   ],
   templateUrl: "./app.component.html",

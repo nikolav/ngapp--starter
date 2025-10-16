@@ -1,10 +1,10 @@
 import { Component, OnInit } from "@angular/core";
-import { MaterialUIModule } from "../../modules";
+import { MaterialSharedModule } from "../../modules";
 import { LayoutDefault } from "../../layouts";
 
 @Component({
   selector: "page-not-found",
-  imports: [MaterialUIModule, LayoutDefault],
+  imports: [MaterialSharedModule, LayoutDefault],
   templateUrl: "./not-found.component.html",
   styleUrl: "./not-found.component.scss",
 })
