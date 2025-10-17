@@ -4,8 +4,9 @@
       &#64;page--demo
     </h2>
     <div>
-      <button mat-button (click)="boxIsActive.toggle()">ok</button>
+      <button mat-button (click)="boxIsActive.toggle()" i18n>OK</button>
     </div>
+    <p i18n>Welcome</p>
     <div class="flex justify-center">
       @if(boxIsActive.isActive()) {
       <div @showHide class="w-32 h-32 app-bg-primary rounded-full"></div>
