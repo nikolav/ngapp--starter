@@ -7,7 +7,7 @@
       "i18n": {
         "sourceLocale": "en-US",
         "locales": {
-          "sr-RS": "src/app/locales/messages.sr.xlf"
+          "sr": "src/app/locales/messages.sr.xlf"
         }
       },
       "projectType": "application",
@@ -24,7 +24,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "localize": ["en-US", "sr-RS"],
+            "localize": ["en", "sr"],
             "outputPath": "dist/ngapp",
             "index": "src/index.html",
             "browser": "src/main.ts",
