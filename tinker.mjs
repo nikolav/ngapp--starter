@@ -1,9 +1,8 @@
+function foo(strings, ...values) {
+  console.log({ strings });
+  console.log({ values });
+  return values.join(":");
+}
 
-
-import URLParse from "url-parse";
-
-console.log(
-  new URLParse('http://nikolav:admin@foo.com:8081/bar?x=1#baz')
-)
-
-
+const result = foo`x-${"y"}-z`;
+console.log(result); // Hello Nikola!
