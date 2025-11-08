@@ -61,8 +61,7 @@ export class CloudMessagingService {
 
       // don’t block the effect; run async work inside
       (async () => {
-        const client = this.$client()!;
-        const tokenClientFCM = await getToken(client, {
+        const tokenClientFCM = await getToken(this.$client()!, {
           vapidKey: VAPID_KEY,
         });
 
@@ -82,17 +81,15 @@ export class CloudMessagingService {
 
     // 3) Provide foreground messages stream once client exists
     effect(() => {
-      const client = this.$client();
-      if (!client) return;
-      if (!this.messages()) {
-        this.messages.set(
-          new Observable((observer) =>
-            onMessage(client, (dd) => {
-              observer.next(dd);
-            })
-          )
-        );
-      }
+      if (null != this.messages()) return;
+      if (null == this.$client()) return;
+      this.messages.set(
+        new Observable((observer) =>
+          onMessage(this.$client()!, (payload) => {
+            observer.next(payload);
+          })
+        )
+      );
     });
 
     // 4) Cleanup token on logout or permission revoked

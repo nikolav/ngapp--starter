@@ -1,11 +1,10 @@
 import { Injectable, signal } from "@angular/core";
 
-
 @Injectable({
   providedIn: "root",
 })
 export class NotificationsRequestService {
-   granted = signal(false);
+  granted = signal(false);
 
   constructor() {
     this.request();
