@@ -1,11 +1,4 @@
-import {
-  Injectable,
-  computed,
-  inject,
-  signal,
-  OnDestroy,
-  effect,
-} from "@angular/core";
+import { Injectable, computed, inject, signal, effect } from "@angular/core";
 import { Socket } from "ngx-socket-io";
 
 import {
@@ -17,7 +10,7 @@ import { TOrNoValue } from "../../types";
 import { StoreAuth } from "../../stores";
 
 @Injectable()
-export class UseCacheKeyService implements OnDestroy {
+export class UseCacheKeyService {
   private $io = inject(Socket);
   private $auth = inject(StoreAuth);
   private $topics = inject(TopicsService);
@@ -64,8 +57,5 @@ export class UseCacheKeyService implements OnDestroy {
   use(key: string) {
     this.cache_key.set(key);
     return this;
-  }
-  ngOnDestroy() {
-    this.destroy();
   }
 }

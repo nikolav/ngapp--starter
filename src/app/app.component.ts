@@ -49,10 +49,10 @@ export class AppComponent implements OnInit {
   private $config = inject(AppConfigService);
   private $emitter = inject(EmitterService);
   private $storage = inject(LocalStorageService);
+  readonly $flags = inject(StoreFlags);
 
   // toggle sidenav flags
   readonly isActiveSidenav = this.$config.key.IS_ACTIVE_APP_SIDENAV;
-  readonly $flags = inject(StoreFlags);
   // #theme
   private appThemeDark_ = computed(() =>
     String(this.$storage.item(this.$config.key.APP_THEME_DARK) || "")

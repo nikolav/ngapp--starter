@@ -10,9 +10,8 @@ import { Overlay } from "@angular/cdk/overlay";
 })
 export class PortalBottomComponent implements AfterViewInit {
   private $overlay = inject(Overlay);
-
   portalBottom = viewChild("portalBottom", { read: CdkPortal });
-  ngAfterViewInit(): void {
+  ngAfterViewInit() {
     const overlayRef = this.$overlay.create({
       positionStrategy: this.$overlay.position().global().bottom(),
       hasBackdrop: false,
