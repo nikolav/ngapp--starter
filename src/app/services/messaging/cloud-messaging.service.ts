@@ -46,13 +46,17 @@ export class CloudMessagingService {
   constructor() {
     // 1) setup client messaging
     (async () => {
-      if (!(await messagingIsSupported())) {
-        throw Error(
-          "Firebase Cloud Messaging is not supported in this browser."
-        );
+      try {
+        if (!(await messagingIsSupported())) {
+          throw Error(
+            "Firebase Cloud Messaging is not supported in this browser."
+          );
+        }
+        const service = getMessaging(firebaseApp);
+        this.$client.set(service);
+      } catch (error) {
+        // pass
       }
-      const service = getMessaging(firebaseApp);
-      this.$client.set(service);
     })();
 
     // 2) fetch/persist FCM token whenever service becomes ready
