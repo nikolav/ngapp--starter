@@ -1,8 +1,8 @@
 import { Directive, inject, ViewContainerRef } from "@angular/core";
 
 @Directive({
-  selector: "[appPlaceholderHandle]",
-  exportAs: "placeholderHandleDirective",
+  selector: "[placeholderHandle]",
+  exportAs: "placeholderHandle",
 })
 export class PlaceholderHandleDirective {
   readonly viewContainerRef = inject(ViewContainerRef);
