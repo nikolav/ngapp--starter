@@ -34,6 +34,9 @@ export class StoreMain {
       <any>{}
     );
   }
+  item(path: string) {
+    return this.pull({ value: path })["value"];
+  }
   exists(path: string) {
     return this.$$.has(this.store(), path);
   }

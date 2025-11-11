@@ -1,5 +1,6 @@
 import { inject, Injectable } from "@angular/core";
-import { forkJoin, from, map as op_map } from "rxjs";
+import { Observable, from, forkJoin } from "rxjs";
+import { map as op_map } from "rxjs/operators";
 import {
   ref,
   uploadBytesResumable,
@@ -10,19 +11,18 @@ import {
   FullMetadata,
 } from "firebase/storage";
 
-import { TUploadFiles } from "../../types";
-import { UseProccessMonitorService, UseUtilsService } from "../../services";
 import { storage as firebaseStorage } from "../../config/firebase";
-import { Observable } from "@apollo/client/utilities";
+import { UseProccessMonitorService, UseUtilsService } from "../../services";
+import { TUploadFiles } from "../../types";
 
 @Injectable({
   providedIn: "root",
 })
 export class FilesStorageService {
   private $$ = inject(UseUtilsService);
-  private $psList = new UseProccessMonitorService();
-  private $storage = firebaseStorage;
+  private $ps = new UseProccessMonitorService();
 
+  // .upload({ foo1: { file: File{}, path?: 'temp/foo.txt' }, ... })
   upload(files: TUploadFiles, onProgress: any = this.$$.noop) {
     return from(
       Promise.all(
@@ -36,7 +36,7 @@ export class FilesStorageService {
               ]
                 .filter(Boolean)
                 .join("/");
-              const refStorageNode = ref(this.$storage, pathFilename);
+              const refStorageNode = ref(firebaseStorage, pathFilename);
               const uploadTask = uploadBytesResumable(refStorageNode, file);
               uploadTask.on(
                 "state_changed",
@@ -69,25 +69,25 @@ export class FilesStorageService {
     return new Observable<FullMetadata[]>((observer) => {
       let metas: FullMetadata[] = [];
       (async () => {
-        this.$psList.begin();
+        this.$ps.begin();
         try {
           const refs = this.$$.get(
-            await listAll(ref(this.$storage, path)),
+            await listAll(ref(firebaseStorage, path)),
             "items",
             []
           );
           metas = await Promise.all(refs.map(getMetadata));
         } catch (error) {
-          this.$psList.setError(error);
+          this.$ps.setError(error);
         } finally {
           setTimeout(() => {
-            this.$psList.done(() => {
+            this.$ps.done(() => {
               observer.complete();
             });
           });
         }
-        if (!this.$psList.error()) {
-          this.$psList.successful(() => {
+        if (!this.$ps.error()) {
+          this.$ps.successful(() => {
             observer.next(metas);
           });
         }
@@ -97,7 +97,7 @@ export class FilesStorageService {
   rm(...fullPaths: string[]) {
     return forkJoin(
       fullPaths.map((fullPath) =>
-        from(deleteObject(ref(this.$storage, fullPath)))
+        from(deleteObject(ref(firebaseStorage, fullPath)))
       )
     );
   }
@@ -106,7 +106,7 @@ export class FilesStorageService {
       this.ls(path).subscribe((metas) => {
         if (!this.$$.isEmpty(metas)) {
           const lsObs = metas.map((meta) =>
-            from(deleteObject(ref(this.$storage, meta.ref?.fullPath)))
+            from(deleteObject(ref(firebaseStorage, meta.ref?.fullPath)))
           );
           forkJoin(lsObs).subscribe(observer);
         } else {
@@ -117,9 +117,9 @@ export class FilesStorageService {
     });
   }
   url(pathFilename: string) {
-    return from(getDownloadURL(ref(this.$storage, pathFilename)));
+    return from(getDownloadURL(ref(firebaseStorage, pathFilename)));
   }
   info(pathFilename: string) {
-    return from(getMetadata(ref(this.$storage, pathFilename)));
+    return from(getMetadata(ref(firebaseStorage, pathFilename)));
   }
 }

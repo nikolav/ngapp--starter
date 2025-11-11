@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, effect } from "@angular/core";
+import { Component, OnDestroy, effect } from "@angular/core";
 import { Subscription } from "rxjs";
 
 import { LayoutDefault } from "../../layouts";
@@ -12,7 +12,7 @@ import { TOrNoValue } from "../../types/index";
   templateUrl: "./index.component.html",
   styleUrl: "./index.component.scss",
 })
-export class IndexComponent implements OnInit, OnDestroy {
+export class IndexComponent implements OnDestroy {
   $cacheFoo = new UseCacheKeyService().use(
     "cache:c17c95eb-7a5d-5737-b1fa-cfe5f2de5737"
   );
@@ -36,7 +36,6 @@ export class IndexComponent implements OnInit, OnDestroy {
   destroy() {
     this.io_s?.unsubscribe();
   }
-  ngOnInit() {}
   ngOnDestroy() {
     this.destroy();
   }
