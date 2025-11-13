@@ -25,6 +25,7 @@ import {
   onDebug,
   deepmerge,
   untilDestroyed,
+  b64tob,
 } from "../../utils";
 
 const {
@@ -150,6 +151,7 @@ export class UseUtilsService {
   coreType = coreType;
   cat = cat;
   onDebug = onDebug;
+  b64tob = b64tob;
 
   // globals
   Math = Math;
