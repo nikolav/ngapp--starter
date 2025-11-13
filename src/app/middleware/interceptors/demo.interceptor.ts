@@ -1,4 +1,5 @@
-import { HttpInterceptorFn, HttpEventType } from "@angular/common/http";
+import { HttpEventType } from "@angular/common/http";
+import type { HttpInterceptorFn } from "@angular/common/http";
 import { tap } from "rxjs/operators";
 
 export const demoInterceptor: HttpInterceptorFn = (req, next) => {

@@ -10,7 +10,6 @@ export class UseProccessMonitorService {
   error = signal<TOrNoValue<any>>(null);
   success = signal<TOrNoValue<boolean>>(null);
 
-  // constructor() {}
   begin(callback: any = this.$$.noop) {
     this.error.set(null);
     this.success.set(false);

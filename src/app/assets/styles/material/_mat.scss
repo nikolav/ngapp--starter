@@ -11,7 +11,7 @@
         (
           primary: my-theme.$primary-palette,
           tertiary: my-theme.$tertiary-palette,
-          // theme-type: light,
+          // theme-type: light | dark | color-scheme,
           theme-type: color-scheme
         ),
       // typography: Roboto,
@@ -39,23 +39,23 @@
 // =====================
 :root {
   // ==theme:overrides
-  @include mat.theme-overrides(
-    (
-      // primary: #ebdcff,
-      // on-primary: #230f46,
-      // body-medium: 500 1.15rem/1.3rem Arial,
-      // corner-large: 32px,
-      // level3: 0 4px 6px 1px var(--mat-sys-surface-dim),
-      // primary-container: #84ffff,
-    )
-  );
+  // @include mat.theme-overrides(
+  //   (
+  //     // primary: #ebdcff,
+  //     // on-primary: #230f46,
+  //     // body-medium: 500 1.15rem/1.3rem Arial,
+  //     // corner-large: 32px,
+  //     // level3: 0 4px 6px 1px var(--mat-sys-surface-dim),
+  //     // primary-container: #84ffff,
+  //   )
+  // );
   // ==component:overrides button
-  @include mat.button-overrides(
-    (
-      //
-      // filled-container-shape: 0.22rem,
-    )
-  );
+  // @include mat.button-overrides(
+  //   (
+  //     //
+  //     // filled-container-shape: 0.22rem,
+  //   )
+  // );
   // ==component:overrides card
   @include mat.card-overrides(
     (
