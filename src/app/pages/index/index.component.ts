@@ -1,10 +1,7 @@
-import { Component, OnInit, OnDestroy, effect } from "@angular/core";
-import { Subscription } from "rxjs";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 
 import { LayoutDefault } from "../../layouts";
 import { IconxModule, MaterialSharedModule } from "../../modules";
-import { UseCacheKeyService } from "../../services";
-import { TOrNoValue } from "../../types/index";
 
 @Component({
   selector: "page-index",
@@ -13,32 +10,10 @@ import { TOrNoValue } from "../../types/index";
   styleUrl: "./index.component.scss",
 })
 export class IndexComponent implements OnInit, OnDestroy {
-  $cacheFoo = new UseCacheKeyService().use(
-    "cache:c17c95eb-7a5d-5737-b1fa-cfe5f2de5737"
-  );
+  constructor() {}
 
-  private io_s: TOrNoValue<Subscription>;
-
-  constructor() {
-    effect((onCleanup) => {
-      this.io_s = this.$cacheFoo.io()?.subscribe(() => {
-        this.$cacheFoo.reload();
-      });
-      onCleanup(() => {
-        this.io_s?.unsubscribe();
-      });
-    });
-  }
-
-  ok() {
-    console.log(this.$cacheFoo.data());
-  }
-  destroy() {
-    this.io_s?.unsubscribe();
-  }
+  ok() {}
   ngOnInit() {}
-  ngOnDestroy() {
-    this.destroy();
-  }
+  ngOnDestroy() {}
 }
 //

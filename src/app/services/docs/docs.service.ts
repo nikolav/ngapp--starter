@@ -14,8 +14,8 @@ import {
   onSnapshot,
   setDoc,
   serverTimestamp,
-  type Unsubscribe,
 } from "firebase/firestore";
+import type { Unsubscribe } from "firebase/firestore";
 import { Observable } from "rxjs";
 
 //
@@ -33,14 +33,13 @@ const withTimestamps = (node: any) => ({
 export class DocsService<T = any> implements OnDestroy {
   private $$ = inject(UseUtilsService);
   private $auth = inject(StoreAuth);
-  private $firestore = firebaseFirestore;
   //
   readonly path = signal<TOrNoValue<string>>(null);
   readonly enabled = computed(() => null != this.path() && this.$auth.isAuth());
   readonly data = signal<T[]>([]);
   //
-  private coll_ = computed(() =>
-    this.enabled() ? collection(this.$firestore, this.path()!) : null
+  private coll = computed(() =>
+    this.enabled() ? collection(firebaseFirestore, this.path()!) : null
   );
   private data_s: TOrNoValue<Unsubscribe>;
   //
@@ -50,6 +49,7 @@ export class DocsService<T = any> implements OnDestroy {
       this.start();
       onCleanup(() => {
         this.destroy();
+        this.data.set([]);
       });
     });
   }
@@ -63,10 +63,10 @@ export class DocsService<T = any> implements OnDestroy {
           const dd = withTimestamps(patch);
           observer.next(
             ID
-              ? await setDoc(doc(this.coll_()!, ID), this.$$.omit(dd, "id"), {
+              ? await setDoc(doc(this.coll()!, ID), this.$$.omit(dd, "id"), {
                   merge,
                 })
-              : await addDoc(this.coll_()!, dd)
+              : await addDoc(this.coll()!, dd)
           );
         } catch (error) {
           observer.error(error);
@@ -85,7 +85,9 @@ export class DocsService<T = any> implements OnDestroy {
           if (!this.enabled) throw "DocsService:disabled";
           observer.next(
             await Promise.all(
-              ids.map((id) => deleteDoc(doc(this.$firestore, this.path()!, id)))
+              ids.map((id) =>
+                deleteDoc(doc(firebaseFirestore, this.path()!, id))
+              )
             )
           );
         } catch (error) {
@@ -99,7 +101,7 @@ export class DocsService<T = any> implements OnDestroy {
     });
   }
   start() {
-    this.data_s = onSnapshot(this.coll_()!, (snapshot) => {
+    this.data_s = onSnapshot(this.coll()!, (snapshot) => {
       this.data.set(
         Array.from(snapshot.docs, (doc) => <T>{ ...doc.data(), id: doc.id })
       );
@@ -111,7 +113,6 @@ export class DocsService<T = any> implements OnDestroy {
   }
   destroy() {
     this.data_s?.();
-    this.data.set([]);
   }
   ngOnDestroy() {
     this.destroy();
