@@ -30,6 +30,8 @@ import {
   withInterceptors,
 } from "@angular/common/http";
 
+import { provideCharts, withDefaultRegisterables } from "ng2-charts";
+
 import {
   logRequestInterceptor,
   authRequestInterceptor,
@@ -84,6 +86,7 @@ export const appConfig: ApplicationConfig = {
       provide: TOKEN_foo,
       useValue: "foobar",
     },
+    provideCharts(withDefaultRegisterables()),
     ...MAT_OPIONS,
   ],
 };
