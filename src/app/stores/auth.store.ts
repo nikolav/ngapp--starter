@@ -11,17 +11,19 @@ import {
 } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import {
-  Auth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
-  // sign-in, sign-out, token observables
-  // #https://github.com/angular/angularfire/blob/main/docs/auth.md#convenience-observables
+} from "firebase/auth";
+// sign-in, sign-out, token observables
+// #https://github.com/angular/angularfire/blob/main/docs/auth.md#convenience-observables
+import {
+  Auth,
   user as userObs,
-  // idToken as idTokenObs,
   type User as IUser,
   type UserCredential as IUserCredential,
 } from "@angular/fire/auth";
+
 import { QueryRef } from "apollo-angular";
 import { Subscription } from "rxjs";
 import { Socket } from "ngx-socket-io";
@@ -172,8 +174,8 @@ export class StoreAuth implements OnDestroy {
 
   async authenticate(creds: IAuthCreds) {
     let res: TOrNoValue<IUserCredential>;
+    this.$ps.begin();
     try {
-      this.$ps.begin();
       res = await signInWithEmailAndPassword(
         this.$auth,
         creds.email,
@@ -189,7 +191,6 @@ export class StoreAuth implements OnDestroy {
     if (!this.$ps.error()) {
       this.$ps.successful(() => {
         // @success --auth-login
-        // pass
       });
     }
     console.log("@debug --auth-login", this.$ps.error());
@@ -197,8 +198,8 @@ export class StoreAuth implements OnDestroy {
   }
   async register(creds: IAuthCreds) {
     let res: TOrNoValue<IUserCredential>;
+    this.$ps.begin();
     try {
-      this.$ps.begin();
       res = await createUserWithEmailAndPassword(
         this.$auth,
         creds.email,
@@ -207,7 +208,9 @@ export class StoreAuth implements OnDestroy {
     } catch (error) {
       this.$ps.setError(error);
     } finally {
-      this.$ps.done();
+      setTimeout(() => {
+        this.$ps.done();
+      });
     }
     if (!this.$ps.error())
       this.$ps.successful(() => {
@@ -217,13 +220,15 @@ export class StoreAuth implements OnDestroy {
     return res;
   }
   async logout() {
+    this.$ps.begin();
     try {
-      this.$ps.begin();
       await signOut(this.$auth);
     } catch (error) {
       this.$ps.setError(error);
     } finally {
-      this.$ps.done();
+      setTimeout(() => {
+        this.$ps.done();
+      });
     }
     if (!this.$ps.error())
       this.$ps.successful(() => {
