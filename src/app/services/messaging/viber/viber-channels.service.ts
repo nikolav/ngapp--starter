@@ -43,7 +43,7 @@ export class ViberChannelsService {
       : undefined;
   }
   // viberChannelSetupSetWebhook(url: String!, auth_token: String!, is_global: Boolean): JsonData!
-  channelsSetup(name: string, auth_token: string, is_global = false) {
+  init(name: string, auth_token: string, is_global = false) {
     return this.enabled()
       ? this.$apollo.mutate({
           mutation: M_viberChannelSetupSetWebhook,
@@ -56,7 +56,7 @@ export class ViberChannelsService {
       : undefined;
   }
   // viberChannelSetupChannelsDrop(channels: [String!]): JsonData!
-  channelsDrop(...channels: string[]) {
+  drop(...channels: string[]) {
     return this.enabled()
       ? this.$apollo.mutate({
           mutation: M_viberChannelSetupChannelsDrop,

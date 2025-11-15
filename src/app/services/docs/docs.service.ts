@@ -49,6 +49,7 @@ export class DocsService<T = any> implements OnDestroy {
       this.start();
       onCleanup(() => {
         this.destroy();
+        this.data.set([]);
       });
     });
   }
@@ -108,7 +109,6 @@ export class DocsService<T = any> implements OnDestroy {
   }
   destroy() {
     this.data_s?.();
-    this.data.set([]);
   }
   ngOnDestroy() {
     this.destroy();
