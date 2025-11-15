@@ -8,7 +8,6 @@ import {
 } from "../services";
 
 // type TGravatarsCache = Record<string, { enabled: boolean; src: string }>;
-
 @Injectable({
   providedIn: "root",
 })
@@ -21,8 +20,7 @@ export class GravatarsService implements OnDestroy {
   readonly store = new UseCacheKeyService().use(this.$config.key.GRAVATARS);
   readonly enabled = computed(
     () =>
-      this.$auth.isAuth() &&
-      false !== this.$$.get(this.store.data(), `[${this.$auth.uid()}].enabled`)
+      true === this.$$.get(this.store.data(), `[${this.$auth.uid()}].enabled`)
   );
   readonly src = computed(() =>
     this.enabled()
@@ -32,30 +30,29 @@ export class GravatarsService implements OnDestroy {
   //
   constructor() {
     effect(() => {
-      if (this.enabled()) this.start();
+      if (this.store.enabled()) this.start();
     });
   }
   //
   refresh() {
-    if (this.enabled())
-      this.store
-        .commit({ [this.$auth.uid()]: { src: this.url() } })
-        ?.subscribe();
+    return this.store.enabled()
+      ? this.store.commit({ [this.$auth.uid()]: { src: this.url() } })
+      : undefined;
   }
   enable() {
-    return this.store
-      .commit({ [this.$auth.uid()]: { enabled: true } })
-      ?.subscribe();
+    return this.store.enabled()
+      ? this.store.commit({ [this.$auth.uid()]: { enabled: true } })
+      : undefined;
   }
   disable() {
-    return this.store
-      .commit({ [this.$auth.uid()]: { enabled: false } })
-      ?.subscribe();
+    return this.store.enabled()
+      ? this.store.commit({ [this.$auth.uid()]: { enabled: false } })
+      : undefined;
   }
   //
   start() {
     this.$subs.push({
-      _s1: this.store.io()?.subscribe(() => {
+      onStore: this.store.io()?.subscribe(() => {
         this.store.reload();
       }),
     });
