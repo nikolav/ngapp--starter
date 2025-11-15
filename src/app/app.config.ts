@@ -30,7 +30,9 @@ import {
   withInterceptors,
 } from "@angular/common/http";
 
+// #https://valor-software.com/ng2-charts/
 import { provideCharts, withDefaultRegisterables } from "ng2-charts";
+// import { chartsRegistrations_BASE } from "./config";
 
 import {
   logRequestInterceptor,
@@ -87,6 +89,7 @@ export const appConfig: ApplicationConfig = {
       useValue: "foobar",
     },
     provideCharts(withDefaultRegisterables()),
+    // provideCharts({ registerables: [...chartsRegistrations_BASE] }),
     ...MAT_OPIONS,
   ],
 };

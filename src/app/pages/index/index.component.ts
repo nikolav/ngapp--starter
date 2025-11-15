@@ -10,8 +10,6 @@ import { IconxModule, MaterialSharedModule } from "../../modules";
   styleUrl: "./index.component.scss",
 })
 export class IndexComponent implements OnInit, OnDestroy {
-  constructor() {}
-
   ok() {}
   ngOnInit() {}
   ngOnDestroy() {}
