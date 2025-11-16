@@ -6,7 +6,7 @@ import {
   M_collectionsDocsUpsert,
   M_collectionsDocsDrop,
 } from "../../graphql";
-import { AppConfigService, UseUtilsService } from "../utils";
+import { UseUtilsService } from "../utils";
 import type {
   IRecordJsonWithMergeFlag,
   IResultCollectionsDocs,
@@ -17,7 +17,6 @@ import type {
 })
 export class CollectionsManageService {
   private $$ = inject(UseUtilsService);
-  private $config = inject(AppConfigService);
   private $apollo = inject(Apollo);
 
   // collectionsDocsByTopic(topic: String!, config: JsonData): JsonData!
@@ -29,7 +28,6 @@ export class CollectionsManageService {
             topic,
             config: null,
           },
-          pollInterval: this.$config.graphql.QUERY_POLL_INTERVAL,
         })
       : undefined;
   }
