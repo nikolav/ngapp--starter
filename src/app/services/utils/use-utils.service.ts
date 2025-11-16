@@ -12,6 +12,8 @@ import isURL from "validator/es/lib/isURL";
 import isJWT from "validator/es/lib/isJWT";
 // #https://github.com/alexei/sprintf.js#readme
 import { sprintf, vsprintf } from "sprintf-js";
+// #https://github.com/eturino/ts-parse-boolean
+import parseBoolean from "@eturino/ts-parse-boolean";
 
 // local
 import {
@@ -152,6 +154,9 @@ export class UseUtilsService {
   cat = cat;
   onDebug = onDebug;
   b64tob = b64tob;
+
+  // 3rd party
+  parseBoolean = parseBoolean;
 
   // globals
   Math = Math;

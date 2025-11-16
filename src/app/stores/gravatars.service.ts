@@ -1,4 +1,4 @@
-import { computed, effect, inject, Injectable, OnDestroy } from "@angular/core";
+import { computed, effect, inject, Injectable } from "@angular/core";
 import { StoreAuth } from "./auth.store";
 import {
   AppConfigService,
@@ -11,16 +11,17 @@ import {
 @Injectable({
   providedIn: "root",
 })
-export class GravatarsService implements OnDestroy {
+export class GravatarsService {
   private $$ = inject(UseUtilsService);
   private $config = inject(AppConfigService);
   private $auth = inject(StoreAuth);
   private $subs = new ManageSubscriptionsService();
   //
   readonly store = new UseCacheKeyService().use(this.$config.key.GRAVATARS);
-  readonly enabled = computed(
-    () =>
-      true === this.$$.get(this.store.data(), `[${this.$auth.uid()}].enabled`)
+  readonly enabled = computed(() =>
+    this.$$.parseBoolean(
+      this.$$.get(this.store.data(), `[${this.$auth.uid()}].enabled`)
+    )
   );
   readonly src = computed(() =>
     this.enabled()
@@ -59,10 +60,6 @@ export class GravatarsService implements OnDestroy {
   }
   destroy() {
     this.$subs.destroy();
-  }
-  //
-  ngOnDestroy() {
-    this.destroy();
   }
   //
   private url() {
