@@ -38,7 +38,8 @@ export class CloudMessagingService {
     () =>
       null != this.$client() &&
       this.$notifications.granted() &&
-      this.$auth.isAuth()
+      // this.$auth.isAuth()
+      this.$auth.isAuthApi()
   );
 
   messages = signal<TOrNoValue<Observable<any>>>(null);
