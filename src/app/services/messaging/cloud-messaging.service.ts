@@ -1,4 +1,5 @@
 import { Injectable, signal, inject, computed, effect } from "@angular/core";
+import { Observable } from "rxjs";
 import {
   onMessage,
   getMessaging,
@@ -7,12 +8,11 @@ import {
   // deleteToken as deleteFCMToken,
 } from "firebase/messaging";
 import type { Messaging } from "firebase/messaging";
-import { Observable } from "rxjs";
 
-import { NotificationsRequestService } from "./notifications-request.service";
 import { StoreAuth } from "../../stores";
-import { app as firebaseApp } from "../../config/firebase";
+import { NotificationsRequestService } from "./notifications-request.service";
 import { UseUtilsService, AppConfigService } from "../../services";
+import { app as firebaseApp } from "../../config/firebase";
 import { TOrNoValue } from "../../types";
 import { VAPID_KEY } from "../../config";
 
@@ -34,7 +34,7 @@ export class CloudMessagingService {
       {}
     )
   );
-  private service_ready = computed(
+  private serviceAvailable = computed(
     () =>
       null != this.$client() &&
       this.$notifications.granted() &&
@@ -62,7 +62,7 @@ export class CloudMessagingService {
 
     // 2) fetch/persist FCM token whenever service becomes ready
     effect(() => {
-      if (!this.service_ready()) return;
+      if (!this.serviceAvailable()) return;
 
       // don’t block the effect; run async work inside
       (async () => {
@@ -122,7 +122,7 @@ export class CloudMessagingService {
   // # Optional helper: call when you want to force-refresh the token
   // async refreshToken() {
   //   let token: TOrNoValue<string>;
-  //   if (this.service_ready()) {
+  //   if (this.serviceAvailable()) {
   //     const client = this.$client()!;
 
   //     token = await getToken(client, {

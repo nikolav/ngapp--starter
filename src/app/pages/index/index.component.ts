@@ -22,13 +22,13 @@ export class IndexComponent implements OnInit, OnDestroy {
   private $files = inject(FilesStorageS3Service);
   private $d = inject(DatetimeService);
 
-  pickFiles = new PickFilesService();
+  filePicker = new PickFilesService();
 
   ok() {
     // this.$files.ls("upload/").subscribe((res) => {
     //   console.log({ res });
     // });
-    this.pickFiles
+    this.filePicker
       .open({ multiple: true })
       .pipe(
         mergeMap((files) => {
@@ -36,7 +36,7 @@ export class IndexComponent implements OnInit, OnDestroy {
             this.$$.reduce(
               files,
               (acc, file) => {
-                acc[`upload/${this.$d.utcnow(this.$d.FORMAT.d)}/${file.name}`] =
+                acc[`upload/${this.$d.utcnow(this.$d.FORMAT.D)}/${file.name}`] =
                   { file };
                 return acc;
               },

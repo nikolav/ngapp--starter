@@ -87,6 +87,7 @@ export class DatetimeService {
 
   readonly FORMAT = {
     d: "DD-MM-YYYY",
+    D: "YYYY-MM-DD",
   };
 
   utcnow(template?: string) {

@@ -107,7 +107,7 @@ export class FilesStorageS3Service {
           key,
           forceDownload,
         },
-        fetchPolicy: "network-only",
+        // fetchPolicy: "network-only",
       })
       .pipe(
         opMap((res) =>
@@ -182,7 +182,7 @@ export class FilesStorageS3Service {
         variables: {
           key,
         },
-        fetchPolicy: "network-only",
+        // fetchPolicy: "network-only",
       })
       .pipe(opMap((res) => this.$$.get(res, "data.awsUploadObjectMetadata")));
   }
