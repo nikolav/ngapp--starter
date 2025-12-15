@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 
 import dayjs from "dayjs";
-import "dayjs/locale/sr";
+// import "dayjs/locale/sr";
 
 // plugins
 
@@ -42,7 +42,7 @@ import pluginLocalizedFormat from "dayjs/plugin/localizedFormat";
 // dayjs/plugin/isBetween
 
 // use .sr locale globally
-dayjs.locale("sr");
+// dayjs.locale("sr");
 
 // https://day.js.org/docs/en/parse/utc#:~:text=While%20in%20UTC%20mode%2C%20all%20display%20methods%20will%20display%20in%20UTC%20time%20instead%20of%20local%20time.
 //  To switch from UTC to local time, you can use dayjs#utc or dayjs#local.
@@ -84,4 +84,12 @@ dayjs.extend(pluginLocalizedFormat);
 })
 export class DatetimeService {
   dayjs = dayjs;
+
+  readonly TEMPLATE = {
+    d: "DD-MM-YYYY",
+  };
+
+  utcnow(template?: string) {
+    return this.dayjs.utc().format(template);
+  }
 }
