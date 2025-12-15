@@ -20,7 +20,7 @@ import {
 export class IndexComponent implements OnInit, OnDestroy {
   private $$ = inject(UseUtilsService);
   private $files = inject(FilesStorageS3Service);
-  private $datetime = inject(DatetimeService);
+  private $d = inject(DatetimeService);
 
   pickFiles = new PickFilesService();
 
@@ -36,11 +36,8 @@ export class IndexComponent implements OnInit, OnDestroy {
             this.$$.reduce(
               files,
               (acc, file) => {
-                acc[
-                  `upload/${this.$datetime.utcnow(this.$datetime.TEMPLATE.d)}/${
-                    file.name
-                  }`
-                ] = { file };
+                acc[`upload/${this.$d.utcnow(this.$d.FORMAT.d)}/${file.name}`] =
+                  { file };
                 return acc;
               },
               <any>{}

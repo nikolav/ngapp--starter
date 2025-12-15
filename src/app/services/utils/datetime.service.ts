@@ -85,7 +85,7 @@ dayjs.extend(pluginLocalizedFormat);
 export class DatetimeService {
   dayjs = dayjs;
 
-  readonly TEMPLATE = {
+  readonly FORMAT = {
     d: "DD-MM-YYYY",
   };
 
