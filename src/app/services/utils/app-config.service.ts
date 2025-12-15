@@ -104,7 +104,11 @@ export class AppConfigService {
     IOEVENT_REDIS_CACHE_KEY_UPDATED_prefix:
       "IOEVENT_REDIS_CACHE_KEY_UPDATED:Fx8FtARWgQ:",
   };
-  re = {};
+  re = {
+    SKIP_AUTHORIZATION_TOKEN_URLS: [
+      /^https:\/\/[^/]+\.s3(\.[a-z0-9-]+)?\.amazonaws\.com\//i,
+    ],
+  };
   // di tokens
   di = {
     TOKEN_foo,
@@ -122,5 +126,10 @@ export class AppConfigService {
   viber = {
     webhook_url: (channelName: string) =>
       [API_URL, VIBER_WEBHOOK_PATH, _trim(channelName, "/")].join("/"),
+  };
+  services = {
+    aws: {
+      AWS_UPLOAD_S3_PREFIX: "upload/",
+    },
   };
 }

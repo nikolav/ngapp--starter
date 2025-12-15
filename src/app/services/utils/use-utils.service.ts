@@ -35,6 +35,7 @@ const {
   debounce,
   clone,
   each,
+  entries,
   escapeRegExp,
   every,
   filter,
@@ -90,6 +91,7 @@ export class UseUtilsService {
   debounce = debounce;
   deepmerge = deepmerge;
   each = each;
+  entries = entries;
   escapeRegExp = escapeRegExp;
   every = every;
   filter = filter;

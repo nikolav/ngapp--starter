@@ -77,3 +77,17 @@ export const M_viberSendPictureMessage = gql`
     viberSendPictureMessage(payload: $payload)
   }
 `;
+
+// awsUploadDeleteObject(key: String!): JsonData!
+export const M_awsUploadDeleteObject = gql`
+  mutation m_awsUploadDeleteObject($key: String!) {
+    awsUploadDeleteObject(key: $key)
+  }
+`;
+
+// awsUploadDeleteObjectsAllUnderPrefix(prefix: String): JsonData!
+export const M_awsUploadDeleteObjectsAllUnderPrefix = gql`
+  mutation m_awsUploadDeleteObjectsAllUnderPrefix($prefix: String) {
+    awsUploadDeleteObjectsAllUnderPrefix(prefix: $prefix)
+  }
+`;
