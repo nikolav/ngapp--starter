@@ -92,7 +92,7 @@ export class FilesStorageS3Service {
           );
       }, this.CONCURENCY),
       opReduce(
-        (acc, curr) => this.$$.assign(acc, curr),
+        (acc, curr) => this.$$.copy(acc, curr),
         <Record<string, boolean>>{}
       )
     );
@@ -151,7 +151,7 @@ export class FilesStorageS3Service {
         this.CONCURENCY
       ),
       opReduce(
-        (acc, curr) => this.$$.assign(acc, curr),
+        (acc, curr) => this.$$.copy(acc, curr),
         <Record<string, string>>{}
       )
     );

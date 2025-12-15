@@ -91,3 +91,18 @@ export const M_awsUploadDeleteObjectsAllUnderPrefix = gql`
     awsUploadDeleteObjectsAllUnderPrefix(prefix: $prefix)
   }
 `;
+
+// cacheRedisDropPathsAtKey(cache_key: String!, paths: [String!]!, separator: String): JsonData!
+export const M_cacheRedisDropPathsAtKey = gql`
+  mutation m_cacheRedisDropPathsAtKey(
+    $cache_key: String!
+    $paths: [String!]!
+    $separator: String
+  ) {
+    cacheRedisDropPathsAtKey(
+      cache_key: $cache_key
+      paths: $paths
+      separator: $separator
+    )
+  }
+`;

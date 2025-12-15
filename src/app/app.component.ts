@@ -80,15 +80,13 @@ export class AppComponent implements OnInit {
     });
 
     // @cloud-messaging onMessage --emit
-    effect(() => {
-      this.$cm.messages()?.subscribe((payload) => {
-        // debug
-        console.log("@debug cloud-messaging", { payload });
-        // emitter next --global
-        this.$emitter.subject.next({
-          type: this.$config.events.EVENT_CLOUDMESSAGING_ONMESSAGE,
-          payload,
-        });
+    this.$cm.messages.subscribe((payload) => {
+      // debug
+      console.log("@debug cloud-messaging", { payload });
+      // emitter next --global
+      this.$emitter.subject.next({
+        type: this.$config.events.EVENT_CLOUDMESSAGING_ONMESSAGE,
+        payload,
       });
     });
   }

@@ -28,6 +28,7 @@ import {
   deepmerge,
   untilDestroyed,
   b64tob,
+  error$,
 } from "../../utils";
 
 const {
@@ -156,6 +157,7 @@ export class UseUtilsService {
   cat = cat;
   onDebug = onDebug;
   b64tob = b64tob;
+  error$ = error$;
 
   // 3rd party
   parseBoolean = parseBoolean;
@@ -164,4 +166,7 @@ export class UseUtilsService {
   Math = Math;
   Date = Date;
   JSON = JSON;
+
+  // etc.
+  copy = Object.assign.bind(Object);
 }

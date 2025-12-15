@@ -1,5 +1,5 @@
 import { Injectable, signal, inject, computed, effect } from "@angular/core";
-import { Observable } from "rxjs";
+import { Subject } from "rxjs";
 import {
   onMessage,
   getMessaging,
@@ -42,7 +42,8 @@ export class CloudMessagingService {
       this.$auth.isAuthApi()
   );
 
-  messages = signal<TOrNoValue<Observable<any>>>(null);
+  // messages = signal<TOrNoValue<Observable<any>>>(null);
+  readonly messages = new Subject<any>();
 
   constructor() {
     // 1) setup client messaging
@@ -85,16 +86,21 @@ export class CloudMessagingService {
     });
 
     // 3) Provide foreground messages stream once client exists
-    effect(() => {
-      if (null != this.messages()) return;
-      if (null == this.$client()) return;
-      this.messages.set(
-        new Observable((observer) =>
-          onMessage(this.$client()!, (payload) => {
-            observer.next(payload);
-          })
-        )
-      );
+    effect((onCleanup) => {
+      // if (null != this.messages()) return;
+      // if (null == this.$client()) return;
+      // this.messages.set(
+      //   new Observable((observer) =>
+      //     onMessage(this.$client()!, (payload) => {
+      //       observer.next(payload);
+      //     })
+      //   )
+      // );
+      if (!this.serviceAvailable()) return;
+      const unsubscribe = onMessage(this.$client()!, (payload) => {
+        this.messages.next(payload);
+      });
+      onCleanup(unsubscribe);
     });
 
     // 4) Cleanup token on logout or permission revoked

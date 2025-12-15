@@ -14,8 +14,8 @@ export class UseCacheKeyService {
   private $io = inject(Socket);
   private $auth = inject(StoreAuth);
   private $topics = inject(TopicsService);
-  private $cache = inject(CacheService);
   private cache_key = signal<TOrNoValue<string>>(undefined);
+  readonly $cache = inject(CacheService);
   private q = computed(() => this.$cache.key(this.cache_key()));
   private $subs = new ManageSubscriptionsService();
   // #public
