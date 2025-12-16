@@ -1,4 +1,5 @@
 import { Injectable, computed, inject, signal, effect } from "@angular/core";
+import { from as oFrom } from "rxjs";
 import { Socket } from "ngx-socket-io";
 
 import {
@@ -41,8 +42,9 @@ export class UseCacheKeyService {
   commit(patch: any, merge = true) {
     return this.$cache.commit(this.cache_key(), patch, merge);
   }
-  async reload() {
-    return await this.q()?.refetch();
+  reload() {
+    const q = this.q();
+    return oFrom(q ? q.refetch() : Promise.reject());
   }
   destroy() {
     this.$subs.destroy();

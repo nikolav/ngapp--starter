@@ -33,7 +33,7 @@ export class CacheService {
   }
 
   commit(cache_key: any, patch: TOrNoValue<TRecordJson>, merge = true) {
-    return cache_key
+    return cache_key && !this.$$.isEmpty(patch)
       ? this.$apollo.mutate({
           mutation: M_cacheRedisCommit,
           variables: {
@@ -42,7 +42,7 @@ export class CacheService {
             merge,
           },
         })
-      : undefined;
+      : this.$$.error$();
   }
 
   // cacheRedisDropPathsAtKey(cache_key: String!, paths: [String!]!, separator: String): JsonData!

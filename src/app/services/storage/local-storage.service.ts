@@ -1,5 +1,5 @@
 import { effect, inject, Injectable, OnDestroy, signal } from "@angular/core";
-import { filter as op_filter } from "rxjs/operators";
+import { filter as opFilter } from "rxjs/operators";
 
 import { schemaStoragePatch, schemaStoragePatchField } from "../../schemas";
 import { IEventOnStorage, TOrNoValue, TRecordJson } from "../../types";
@@ -44,7 +44,7 @@ export class LocalStorageService implements OnDestroy {
     this.$subs.push({
       data: this.$emitter.subject
         .pipe(
-          op_filter(
+          opFilter(
             (event: any) => this.ON_STORAGE === this.$$.get(event, "type")
           )
         )
@@ -108,7 +108,6 @@ export class LocalStorageService implements OnDestroy {
   }
   destroy() {
     this.$subs.destroy();
-    // this.data.set({});
   }
   sync() {
     this.data.set(JSON.parse(this.localStorage.getItem(this.STORAGE) ?? "{}"));

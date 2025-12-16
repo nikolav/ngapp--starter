@@ -3,7 +3,7 @@ import { Component, OnInit, OnDestroy, inject } from "@angular/core";
 import { LayoutDefault } from "../../layouts";
 import { IconxModule, MaterialSharedModule } from "../../modules";
 import {
-  FilesStorageS3Service,
+  LocalStorageService,
   // UseUtilsService,
 } from "../../services";
 
@@ -14,12 +14,11 @@ import {
   styleUrl: "./index.component.scss",
 })
 export class IndexComponent implements OnInit, OnDestroy {
-  // private $$ = inject(UseUtilsService);
-  private $files = inject(FilesStorageS3Service);
+  private $localStorage = inject(LocalStorageService);
 
   ok() {
-    this.$files.ls("upload/").subscribe((res) => {
-      console.log({ res });
+    this.$localStorage.push({
+      x1: Math.random(),
     });
   }
   ngOnInit() {}

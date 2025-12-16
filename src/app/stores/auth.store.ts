@@ -25,7 +25,13 @@ import {
 } from "@angular/fire/auth";
 
 import { QueryRef } from "apollo-angular";
-import { Subscription } from "rxjs";
+import {
+  Subscription,
+  catchError,
+  mergeMap,
+  from as oFrom,
+  of as oOf,
+} from "rxjs";
 import { Socket } from "ngx-socket-io";
 
 import type {
@@ -87,12 +93,11 @@ export class StoreAuth implements OnDestroy {
   isAuthApi = computed(() => Boolean(this.access_token()));
   profileCacheKey = computed(() => this.$topics.authProfile(this.uid()));
 
-  profileIO = computed(() => {
-    const cache_key = this.profileCacheKey();
-    return cache_key
-      ? this.$io.fromEvent(this.$topics.ioEventOnCache(cache_key))
-      : undefined;
-  });
+  profileIO = computed(() =>
+    this.profileCacheKey()
+      ? this.$io.fromEvent(this.$topics.ioEventOnCache(this.profileCacheKey()))
+      : undefined
+  );
 
   debug = computed(() =>
     this.$$.dumpJson({
@@ -134,7 +139,7 @@ export class StoreAuth implements OnDestroy {
     effect((onCleanup) => {
       if (!this.profileCacheKey() || !this.isAuthApi()) return;
       this.profile_q = this.$cache.key(this.profileCacheKey());
-      this.profile_s = this.profile_q?.valueChanges.subscribe((result) => {
+      this.profile_s = this.profile_q!.valueChanges.subscribe((result) => {
         this.profile.set(this.$cache.data(result, this.profileCacheKey()));
       });
       onCleanup(() => {
@@ -144,11 +149,14 @@ export class StoreAuth implements OnDestroy {
     });
     // reload profile on io
     effect((onCleanup) => {
-      if (this.profileCacheKey()) {
-        this.profileIO_s = this.profileIO()!.subscribe(() =>
-          this.profileReload()
-        );
-      }
+      const io = this.profileIO();
+      if (!io) return;
+      this.profileIO_s = io
+        .pipe(
+          mergeMap(() => this.profileReload()),
+          catchError(() => oOf(null))
+        )
+        .subscribe();
       onCleanup(() => {
         this.profileIO_s?.unsubscribe();
       });
@@ -237,21 +245,12 @@ export class StoreAuth implements OnDestroy {
       });
     console.log("@debug --auth-logout", this.$ps.error());
   }
-
-  async profilePatch(patch: any, merge = true) {
-    const profile_cache_key = this.profileCacheKey();
-    return new Promise((resolve, reject) =>
-      profile_cache_key
-        ? this.$cache
-            .commit(profile_cache_key, patch, merge)
-            ?.subscribe(resolve)
-        : reject(null)
-    );
+  profilePatch(patch: any, merge = true) {
+    return this.$cache.commit(this.profileCacheKey(), patch, merge);
   }
-  async profileReload() {
-    return await this.profile_q?.refetch();
+  profileReload() {
+    return oFrom(this.profile_q ? this.profile_q.refetch() : Promise.reject());
   }
-
   ngOnDestroy() {
     this.user_s?.unsubscribe();
     this.profile_s?.unsubscribe();

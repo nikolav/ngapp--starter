@@ -1,5 +1,5 @@
 import { Injectable, signal, inject, computed, effect } from "@angular/core";
-import { Subject } from "rxjs";
+import { catchError, Subject, of as oOf, from as oFrom } from "rxjs";
 import {
   onMessage,
   getMessaging,
@@ -27,22 +27,17 @@ export class CloudMessagingService {
   private $notifications = inject(NotificationsRequestService);
   private $client = signal<TOrNoValue<Messaging>>(null);
 
+  private deviceToken = signal<TOrNoValue<string>>(undefined);
   private tokensFCM = computed(() =>
-    this.$$.get(
-      this.$auth.profile(),
-      this.$config.key.CLOUD_MESSAGING_TOKENS,
-      {}
-    )
+    this.$$.get(this.$auth.profile(), this.$config.key.CLOUD_MESSAGING_TOKENS)
   );
   private serviceAvailable = computed(
     () =>
       null != this.$client() &&
       this.$notifications.granted() &&
-      // this.$auth.isAuth()
       this.$auth.isAuthApi()
   );
 
-  // messages = signal<TOrNoValue<Observable<any>>>(null);
   readonly messages = new Subject<any>();
 
   constructor() {
@@ -57,45 +52,42 @@ export class CloudMessagingService {
         const service = getMessaging(firebaseApp);
         this.$client.set(service);
       } catch (error) {
-        // pass
+        // ignore
       }
     })();
 
-    // 2) fetch/persist FCM token whenever service becomes ready
+    // 2) fetch FCM token whenever service becomes ready
     effect(() => {
       if (!this.serviceAvailable()) return;
-
-      // don’t block the effect; run async work inside
-      (async () => {
-        const tokenClientFCM = await getToken(this.$client()!, {
-          vapidKey: VAPID_KEY,
+      oFrom(getToken(this.$client()!, { vapidKey: VAPID_KEY }))
+        .pipe(catchError(() => oOf(undefined)))
+        .subscribe((tokenClientFCM) => {
+          this.deviceToken.set(tokenClientFCM);
         });
-
-        // user may have blocked notifications
-        if (!tokenClientFCM) return;
-
-        // save fcm-token
-        if (!this.$$.has(this.tokensFCM(), tokenClientFCM)) {
-          await this.$auth.profilePatch({
-            [this.$config.key.CLOUD_MESSAGING_TOKENS]: {
-              [tokenClientFCM]: true,
-            },
-          });
-        }
-      })();
     });
 
-    // 3) Provide foreground messages stream once client exists
+    // 3) persist fcm device token
+    // @fcm-token && @tokens:
+    //   check if fcm-token exists
+    effect(() => {
+      if (
+        !this.serviceAvailable() ||
+        !(this.deviceToken() && this.tokensFCM()) ||
+        this.deviceToken()! in this.tokensFCM()
+      )
+        return;
+      this.$auth
+        .profilePatch({
+          [this.$config.key.CLOUD_MESSAGING_TOKENS]: {
+            [this.deviceToken()!]: true,
+          },
+        })
+        .pipe(catchError(() => oOf(undefined)))
+        .subscribe();
+    });
+
+    // 4) Provide foreground messages stream once client exists
     effect((onCleanup) => {
-      // if (null != this.messages()) return;
-      // if (null == this.$client()) return;
-      // this.messages.set(
-      //   new Observable((observer) =>
-      //     onMessage(this.$client()!, (payload) => {
-      //       observer.next(payload);
-      //     })
-      //   )
-      // );
       if (!this.serviceAvailable()) return;
       const unsubscribe = onMessage(this.$client()!, (payload) => {
         this.messages.next(payload);
@@ -103,7 +95,7 @@ export class CloudMessagingService {
       onCleanup(unsubscribe);
     });
 
-    // 4) Cleanup token on logout or permission revoked
+    // 5) Cleanup token on logout or permission revoked
     // effect(() => {
     //   const client = this.$client();
     //   const isAuth = this.$auth.isAuth();
@@ -135,7 +127,7 @@ export class CloudMessagingService {
   //       vapidKey: VAPID_KEY,
   //     });
 
-  //     if (token && !this.$$.has(this.tokensFCM(), token)) {
+  //     if (token && !this.$$.hasOwn(this.tokensFCM(), token)) {
   //       await this.$auth.profilePatch({
   //         [this.$config.key.CLOUD_MESSAGING_TOKENS]: { [token]: true },
   //       });

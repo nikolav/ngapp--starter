@@ -148,6 +148,7 @@ export class UseUtilsService {
   // local
   dumpJson = dumpJson;
   coreHasOwn = coreHasOwn;
+  hasOwn = coreHasOwn;
   parseShellInput = parseShellInput;
   idGen = idGen;
   True = () => true;
