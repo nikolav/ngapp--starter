@@ -6,9 +6,9 @@ import {
   computed,
   signal,
   effect,
-  // Injector,
-  untracked,
 } from "@angular/core";
+import { Subscription, mergeMap, from as oFrom, of as oOf } from "rxjs";
+import { catchError } from "rxjs/operators";
 import { HttpClient } from "@angular/common/http";
 import {
   createUserWithEmailAndPassword,
@@ -19,19 +19,12 @@ import {
 // #https://github.com/angular/angularfire/blob/main/docs/auth.md#convenience-observables
 import {
   Auth,
-  user as userObs,
+  user as user$$,
   type User as IUser,
-  type UserCredential as IUserCredential,
+  // type UserCredential as IUserCredential,
 } from "@angular/fire/auth";
 
 import { QueryRef } from "apollo-angular";
-import {
-  Subscription,
-  catchError,
-  mergeMap,
-  from as oFrom,
-  of as oOf,
-} from "rxjs";
 import { Socket } from "ngx-socket-io";
 
 import type {
@@ -42,7 +35,6 @@ import type {
 } from "../types";
 import {
   UseUtilsService,
-  UseProccessMonitorService,
   TopicsService,
   CacheService,
   EmitterService,
@@ -65,7 +57,6 @@ export class StoreAuth implements OnDestroy {
   private $cache = inject(CacheService);
   private $config = inject(AppConfigService);
   private $emitter = inject(EmitterService);
-  private $ps = new UseProccessMonitorService();
 
   // update to run effect to signal app:logout
   private $uniqIdLogout = new UseUniqueIdService();
@@ -77,15 +68,13 @@ export class StoreAuth implements OnDestroy {
   private profileIO_s: TOrNoValue<Subscription>;
   private accessToken_s: TOrNoValue<Subscription>;
 
-  private user$ = userObs(this.$auth);
+  private user$ = user$$(this.$auth);
 
   // auth state
   account = signal<TOrNoValue<IUser>>(null);
   profile = signal<any>(null);
   access_token = signal<any>(null);
 
-  error = computed(() => this.$ps.error());
-  processing = computed(() => this.$ps.processing());
   uid = computed(() => this.$$.get(this.account(), "uid", ""));
   email = computed(() => this.$$.get(this.account(), "email", ""));
   isAuth = computed(() => Boolean(this.uid()));
@@ -113,23 +102,25 @@ export class StoreAuth implements OnDestroy {
     });
     // get api access_token
     effect((onCleanup) => {
-      (async () => {
-        const idToken = await this.account()?.getIdToken();
-        if (!idToken) return;
-        untracked(() => {
-          this.accessToken_s = this.$http
-            .post(URL_AUTH_authenticate, { idToken })
-            .subscribe((res) => {
-              try {
-                this.access_token.set(
-                  schemaJwt.parse(this.$$.get(res, "token"))
-                );
-              } catch (error) {
-                // pass
-              }
-            });
+      this.accessToken_s = oFrom(
+        this.account() ? this.account()!.getIdToken() : Promise.reject()
+      )
+        .pipe(
+          catchError(() => oOf(null)),
+          mergeMap((idToken) => {
+            return idToken
+              ? this.$http.post(URL_AUTH_authenticate, { idToken })
+              : this.$$.error$();
+          })
+        )
+        .pipe(catchError(() => oOf(null)))
+        .subscribe((res) => {
+          try {
+            this.access_token.set(schemaJwt.parse(this.$$.get(res, "token")));
+          } catch (error) {
+            // token invalid; ignore
+          }
         });
-      })();
       onCleanup(() => {
         this.accessToken_s?.unsubscribe();
         this.access_token.set(null);
@@ -180,70 +171,18 @@ export class StoreAuth implements OnDestroy {
     });
   }
 
-  async authenticate(creds: IAuthCreds) {
-    let res: TOrNoValue<IUserCredential>;
-    this.$ps.begin();
-    try {
-      res = await signInWithEmailAndPassword(
-        this.$auth,
-        creds.email,
-        creds.password
-      );
-    } catch (error) {
-      this.$ps.setError(error);
-    } finally {
-      setTimeout(() => {
-        this.$ps.done();
-      });
-    }
-    if (!this.$ps.error()) {
-      this.$ps.successful(() => {
-        // @success --auth-login
-      });
-    }
-    console.log("@debug --auth-login", this.$ps.error());
-    return res;
+  authenticate(creds: IAuthCreds) {
+    return oFrom(
+      signInWithEmailAndPassword(this.$auth, creds.email, creds.password)
+    );
   }
-  async register(creds: IAuthCreds) {
-    let res: TOrNoValue<IUserCredential>;
-    this.$ps.begin();
-    try {
-      res = await createUserWithEmailAndPassword(
-        this.$auth,
-        creds.email,
-        creds.password
-      );
-    } catch (error) {
-      this.$ps.setError(error);
-    } finally {
-      setTimeout(() => {
-        this.$ps.done();
-      });
-    }
-    if (!this.$ps.error())
-      this.$ps.successful(() => {
-        // @success --auth-register
-      });
-    console.log("@debug --auth-register", this.$ps.error());
-    return res;
+  register(creds: IAuthCreds) {
+    return oFrom(
+      createUserWithEmailAndPassword(this.$auth, creds.email, creds.password)
+    );
   }
-  async logout() {
-    this.$ps.begin();
-    try {
-      await signOut(this.$auth);
-    } catch (error) {
-      this.$ps.setError(error);
-    } finally {
-      setTimeout(() => {
-        this.$ps.done();
-      });
-    }
-    if (!this.$ps.error())
-      this.$ps.successful(() => {
-        // @success --auth-logout
-        this.$uniqIdLogout.next();
-      });
-    console.log("@debug --auth-logout", this.$ps.error());
+  logout() {
+    return oFrom(signOut(this.$auth));
   }
   profilePatch(patch: any, merge = true) {
     return this.$cache.commit(this.profileCacheKey(), patch, merge);
