@@ -21,13 +21,13 @@ import { VAPID_KEY } from "../../config";
   providedIn: "root",
 })
 export class CloudMessagingService {
+  private $notifications = inject(NotificationsRequestService);
+  private $auth = inject(StoreAuth);
   private $$ = inject(UseUtilsService);
   private $config = inject(AppConfigService);
-  private $auth = inject(StoreAuth);
-  private $notifications = inject(NotificationsRequestService);
-  private $client = signal<TOrNoValue<Messaging>>(null);
 
   private deviceToken = signal<TOrNoValue<string>>(undefined);
+  private $client = signal<TOrNoValue<Messaging>>(null);
   private tokensFCM = computed(() =>
     this.$$.get(this.$auth.profile(), this.$config.key.CLOUD_MESSAGING_TOKENS)
   );
