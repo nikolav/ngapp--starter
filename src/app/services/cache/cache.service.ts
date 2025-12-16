@@ -42,7 +42,7 @@ export class CacheService {
             merge,
           },
         })
-      : this.$$.error$();
+      : this.$$.error$$();
   }
 
   // cacheRedisDropPathsAtKey(cache_key: String!, paths: [String!]!, separator: String): JsonData!
@@ -61,7 +61,7 @@ export class CacheService {
           .pipe(
             opMap((res) => this.$$.get(res, "data.cacheRedisDropPathsAtKey"))
           )
-      : this.$$.error$();
+      : this.$$.error$$();
   }
 
   data(result: any, cache_key: any) {

@@ -28,7 +28,7 @@ import {
   deepmerge,
   untilDestroyed,
   b64tob,
-  error$,
+  error$$,
 } from "../../utils";
 
 const {
@@ -158,7 +158,7 @@ export class UseUtilsService {
   cat = cat;
   onDebug = onDebug;
   b64tob = b64tob;
-  error$ = error$;
+  error$$ = error$$;
 
   // 3rd party
   parseBoolean = parseBoolean;

@@ -110,7 +110,7 @@ export class StoreAuth implements OnDestroy {
           mergeMap((idToken) => {
             return idToken
               ? this.$http.post(URL_AUTH_authenticate, { idToken })
-              : this.$$.error$();
+              : this.$$.error$$();
           })
         )
         .pipe(catchError(() => oOf(null)))
