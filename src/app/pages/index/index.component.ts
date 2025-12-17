@@ -15,6 +15,7 @@ import {
 })
 export class IndexComponent implements OnInit, OnDestroy {
   private $localStorage = inject(LocalStorageService);
+  readonly links = ["foo", "bar"];
 
   ok() {
     this.$localStorage.push({

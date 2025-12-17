@@ -1,9 +1,15 @@
 <app-layout-default>
   <section class="page--index">
-    <h2>
-      &#64;page--index
-    </h2>
-    <p i18n>Hello</p>
-    <button mat-raised-button (click)="ok()">ok</button>
+    <!-- --page-index -->
+    <mat-selection-list #shoes>
+      @for (shoe of links; track shoe) {
+      <mat-list-option>{{shoe}}</mat-list-option>
+      }
+    </mat-selection-list>
+
+    <p>
+      Options selected: {{shoes.selectedOptions.selected.length}}
+    </p>
+
   </section>
 </app-layout-default>
