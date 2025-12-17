@@ -1,6 +1,11 @@
 import { Injectable, inject } from "@angular/core";
+import { map as opMap } from "rxjs/operators";
 import { Apollo } from "apollo-angular";
-import { Q_cacheRedisGetCacheByKey, M_cacheRedisCommit } from "../../graphql";
+import {
+  Q_cacheRedisGetCacheByKey,
+  M_cacheRedisCommit,
+  M_cacheRedisDropPathsAtKey,
+} from "../../graphql";
 import { UseUtilsService } from "../../services";
 import type {
   TOrNoValue,
@@ -28,7 +33,7 @@ export class CacheService {
   }
 
   commit(cache_key: any, patch: TOrNoValue<TRecordJson>, merge = true) {
-    return cache_key
+    return cache_key && !this.$$.isEmpty(patch)
       ? this.$apollo.mutate({
           mutation: M_cacheRedisCommit,
           variables: {
@@ -37,7 +42,26 @@ export class CacheService {
             merge,
           },
         })
-      : undefined;
+      : this.$$.error$$();
+  }
+
+  // cacheRedisDropPathsAtKey(cache_key: String!, paths: [String!]!, separator: String): JsonData!
+  drop(cache_key: any, paths: string[], separator?: string) {
+    return cache_key && !this.$$.isEmpty(paths)
+      ? this.$apollo
+          .mutate({
+            mutation: M_cacheRedisDropPathsAtKey,
+            variables: {
+              cache_key,
+              paths,
+              separator,
+            },
+            fetchPolicy: "network-only",
+          })
+          .pipe(
+            opMap((res) => this.$$.get(res, "data.cacheRedisDropPathsAtKey"))
+          )
+      : this.$$.error$$();
   }
 
   data(result: any, cache_key: any) {

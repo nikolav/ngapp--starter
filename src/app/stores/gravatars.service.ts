@@ -1,4 +1,4 @@
-import { computed, effect, inject, Injectable, OnDestroy } from "@angular/core";
+import { computed, effect, inject, Injectable } from "@angular/core";
 import { StoreAuth } from "./auth.store";
 import {
   AppConfigService,
@@ -8,21 +8,20 @@ import {
 } from "../services";
 
 // type TGravatarsCache = Record<string, { enabled: boolean; src: string }>;
-
 @Injectable({
   providedIn: "root",
 })
-export class GravatarsService implements OnDestroy {
+export class GravatarsService {
   private $$ = inject(UseUtilsService);
   private $config = inject(AppConfigService);
   private $auth = inject(StoreAuth);
   private $subs = new ManageSubscriptionsService();
   //
   readonly store = new UseCacheKeyService().use(this.$config.key.GRAVATARS);
-  readonly enabled = computed(
-    () =>
-      this.$auth.isAuth() &&
-      false !== this.$$.get(this.store.data(), `[${this.$auth.uid()}].enabled`)
+  readonly enabled = computed(() =>
+    this.$$.parseBoolean(
+      this.$$.get(this.store.data(), `[${this.$auth.uid()}].enabled`)
+    )
   );
   readonly src = computed(() =>
     this.enabled()
@@ -32,40 +31,35 @@ export class GravatarsService implements OnDestroy {
   //
   constructor() {
     effect(() => {
-      if (this.enabled()) this.start();
+      if (this.store.enabled()) this.start();
     });
   }
   //
   refresh() {
-    if (this.enabled())
-      this.store
-        .commit({ [this.$auth.uid()]: { src: this.url() } })
-        ?.subscribe();
+    return this.store.enabled()
+      ? this.store.commit({ [this.$auth.uid()]: { src: this.url() } })
+      : undefined;
   }
   enable() {
-    return this.store
-      .commit({ [this.$auth.uid()]: { enabled: true } })
-      ?.subscribe();
+    return this.store.enabled()
+      ? this.store.commit({ [this.$auth.uid()]: { enabled: true } })
+      : undefined;
   }
   disable() {
-    return this.store
-      .commit({ [this.$auth.uid()]: { enabled: false } })
-      ?.subscribe();
+    return this.store.enabled()
+      ? this.store.commit({ [this.$auth.uid()]: { enabled: false } })
+      : undefined;
   }
   //
   start() {
     this.$subs.push({
-      _s1: this.store.io()?.subscribe(() => {
+      onStore: this.store.io()?.subscribe(() => {
         this.store.reload();
       }),
     });
   }
   destroy() {
     this.$subs.destroy();
-  }
-  //
-  ngOnDestroy() {
-    this.destroy();
   }
   //
   private url() {

@@ -11,3 +11,4 @@ export { onDebug } from "./on-debug";
 export { deepmerge } from "./deepmerge";
 export { untilDestroyed } from "./until-destroyed";
 export { b64tob } from "./b64tob";
+export { error$$ } from "./error-observable";

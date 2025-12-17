@@ -12,6 +12,8 @@ import isURL from "validator/es/lib/isURL";
 import isJWT from "validator/es/lib/isJWT";
 // #https://github.com/alexei/sprintf.js#readme
 import { sprintf, vsprintf } from "sprintf-js";
+// #https://github.com/eturino/ts-parse-boolean
+import parseBoolean from "@eturino/ts-parse-boolean";
 
 // local
 import {
@@ -26,6 +28,7 @@ import {
   deepmerge,
   untilDestroyed,
   b64tob,
+  error$$,
 } from "../../utils";
 
 const {
@@ -33,6 +36,7 @@ const {
   debounce,
   clone,
   each,
+  entries,
   escapeRegExp,
   every,
   filter,
@@ -88,6 +92,7 @@ export class UseUtilsService {
   debounce = debounce;
   deepmerge = deepmerge;
   each = each;
+  entries = entries;
   escapeRegExp = escapeRegExp;
   every = every;
   filter = filter;
@@ -143,6 +148,7 @@ export class UseUtilsService {
   // local
   dumpJson = dumpJson;
   coreHasOwn = coreHasOwn;
+  hasOwn = coreHasOwn;
   parseShellInput = parseShellInput;
   idGen = idGen;
   True = () => true;
@@ -152,9 +158,16 @@ export class UseUtilsService {
   cat = cat;
   onDebug = onDebug;
   b64tob = b64tob;
+  error$$ = error$$;
+
+  // 3rd party
+  parseBoolean = parseBoolean;
 
   // globals
   Math = Math;
   Date = Date;
   JSON = JSON;
+
+  // etc.
+  copy = Object.assign.bind(Object);
 }

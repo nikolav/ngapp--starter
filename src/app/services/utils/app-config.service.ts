@@ -88,6 +88,8 @@ export class AppConfigService {
     STORAGE: "STORAGE:0a9496fc-21c9-582c-9d6b-b68419132557",
   };
   events = {
+    EVENT_CLOUDMESSAGING_ONMESSAGE:
+      "EVENT_CLOUDMESSAGING_ONMESSAGE:709b7391-e4c9-5154-8ec7-5d0ba98efa3e",
     EVENT_TYPE_AUTH: "EVENT_TYPE_AUTH:fe31b9e2-8ec9-5abf-8694-ac6541f2e8bf",
     STORAGE_CHANGE: "STORAGE_CHANGE:c4d1fdfb-8f17-5cff-9dd1-900172f9ad25",
     EVENT_APP_INIT: "EVENT_APP_INIT:76190ab4-54d8-50b8-8acf-e5fefffabbbb",
@@ -102,7 +104,11 @@ export class AppConfigService {
     IOEVENT_REDIS_CACHE_KEY_UPDATED_prefix:
       "IOEVENT_REDIS_CACHE_KEY_UPDATED:Fx8FtARWgQ:",
   };
-  re = {};
+  re = {
+    SKIP_AUTHORIZATION_TOKEN_URLS: [
+      /^https:\/\/[^/]+\.s3(\.[a-z0-9-]+)?\.amazonaws\.com\//i,
+    ],
+  };
   // di tokens
   di = {
     TOKEN_foo,
@@ -120,5 +126,10 @@ export class AppConfigService {
   viber = {
     webhook_url: (channelName: string) =>
       [API_URL, VIBER_WEBHOOK_PATH, _trim(channelName, "/")].join("/"),
+  };
+  services = {
+    aws: {
+      AWS_UPLOAD_S3_PREFIX: "upload/",
+    },
   };
 }

@@ -23,6 +23,7 @@ import {
   AppConfigService,
   UseUtilsService,
   LocalStorageService,
+  CloudMessagingService,
 } from "./services";
 import { StoreFlags } from "./stores";
 import { routeTransitionBlurInOut } from "./assets/route-transitions";
@@ -50,6 +51,8 @@ export class AppComponent implements OnInit {
   private $emitter = inject(EmitterService);
   private $storage = inject(LocalStorageService);
   readonly $flags = inject(StoreFlags);
+
+  private $cm = inject(CloudMessagingService);
 
   // toggle sidenav flags
   readonly isActiveSidenav = this.$config.key.IS_ACTIVE_APP_SIDENAV;
@@ -80,6 +83,17 @@ export class AppComponent implements OnInit {
       } else {
         this.$renderer.addClass(document.querySelector("html"), clsDark);
       }
+    });
+
+    // @cloud-messaging onMessage --emit
+    this.$cm.messages.subscribe((payload) => {
+      // debug
+      console.log("@debug cloud-messaging", { payload });
+      // emitter next --global
+      this.$emitter.subject.next({
+        type: this.$config.events.EVENT_CLOUDMESSAGING_ONMESSAGE,
+        payload,
+      });
     });
   }
   ngOnInit() {
