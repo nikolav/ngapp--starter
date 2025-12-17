@@ -70,6 +70,5 @@ export type PickFileOptions = {
 
 //##
 export type { TRecordJson, TJson, TJsonLiteral, MaybeAsync as TMaybeAsync };
-export * from "./models";
-
 export type { ChartData, ChartOptions, ChartType } from "chart.js";
+export * from "./models";
