@@ -6,19 +6,24 @@ import {
   TopicsService,
   CacheService,
   ManageSubscriptionsService,
+  UseUtilsService,
 } from "../../services";
 import { TOrNoValue } from "../../types";
 import { StoreAuth } from "../../stores";
 
 @Injectable()
 export class UseCacheKeyService {
+  static readonly ERR_IO = "ERR_IO:74f6d3b0-819d-54ed-b43c-4236024e0da8";
+
   private $io = inject(Socket);
   private $auth = inject(StoreAuth);
   private $topics = inject(TopicsService);
-  private cache_key = signal<TOrNoValue<string>>(undefined);
+  private $$ = inject(UseUtilsService);
+  private $sbs = new ManageSubscriptionsService();
   readonly $cache = inject(CacheService);
+
+  private cache_key = signal<TOrNoValue<string>>(undefined);
   private q = computed(() => this.$cache.key(this.cache_key()));
-  private $subs = new ManageSubscriptionsService();
   // #public
   readonly enabled = computed(
     () => this.$auth.isAuthApi() && Boolean(this.cache_key())
@@ -27,13 +32,13 @@ export class UseCacheKeyService {
   readonly io = computed(() =>
     this.enabled()
       ? this.$io.fromEvent(this.$topics.ioEventOnCache(this.cache_key()))
-      : undefined
+      : this.$$.error$$()
   );
   constructor() {
-    effect((onCleanup) => {
+    effect((cleanup) => {
       if (!this.enabled()) return;
       this.start();
-      onCleanup(() => {
+      cleanup(() => {
         this.destroy();
         this.data.set(undefined);
       });
@@ -42,15 +47,18 @@ export class UseCacheKeyService {
   commit(patch: any, merge = true) {
     return this.$cache.commit(this.cache_key(), patch, merge);
   }
+  drop(paths: string[], separator?: string) {
+    return this.$cache.drop(this.cache_key(), paths, separator);
+  }
   reload() {
     const q = this.q();
     return oFrom(q ? q.refetch() : Promise.reject());
   }
   destroy() {
-    this.$subs.destroy();
+    this.$sbs.destroy();
   }
   start() {
-    this.$subs.push({
+    this.$sbs.push({
       data: this.q()?.valueChanges.subscribe((res) =>
         this.data.set(this.$cache.data(res, this.cache_key()))
       ),

@@ -59,7 +59,8 @@ export class AppConfigService {
   };
   graphql = {
     // ~10min autoreload*
-    QUERY_POLL_INTERVAL: 712345,
+    // QUERY_POLL_INTERVAL: 712345,
+    QUERY_POLL_INTERVAL: undefined,
   };
   stores = {
     auth: {

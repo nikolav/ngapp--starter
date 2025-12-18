@@ -43,6 +43,14 @@ export interface IRecordJsonWithMergeFlag {
   data: TRecordJson;
 }
 
+export interface ICollectionsPatchInput {
+  merge?: boolean;
+  data: {
+    id?: any;
+    data: TRecordJson;
+  };
+}
+
 export interface IResultCollectionsDocs {
   collectionsDocsByTopic: {
     error: any;
@@ -70,6 +78,5 @@ export type PickFileOptions = {
 
 //##
 export type { TRecordJson, TJson, TJsonLiteral, MaybeAsync as TMaybeAsync };
-export * from "./models";
-
 export type { ChartData, ChartOptions, ChartType } from "chart.js";
+export * from "./models";

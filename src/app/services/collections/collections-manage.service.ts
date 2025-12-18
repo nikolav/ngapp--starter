@@ -6,9 +6,9 @@ import {
   M_collectionsDocsUpsert,
   M_collectionsDocsDrop,
 } from "../../graphql";
-import { UseUtilsService } from "../utils";
+import { AppConfigService, UseUtilsService } from "../utils";
 import type {
-  IRecordJsonWithMergeFlag,
+  ICollectionsPatchInput,
   IResultCollectionsDocs,
 } from "../../types";
 
@@ -16,25 +16,18 @@ import type {
   providedIn: "root",
 })
 export class CollectionsManageService {
-  private $$ = inject(UseUtilsService);
   private $apollo = inject(Apollo);
+  private $$ = inject(UseUtilsService);
+  private $config = inject(AppConfigService);
 
   // collectionsDocsByTopic(topic: String!, config: JsonData): JsonData!
-  topic(topic: string) {
-    return topic
-      ? this.$apollo.watchQuery<IResultCollectionsDocs>({
-          query: Q_collectionsDocsByTopic,
-          variables: {
-            topic,
-            config: null,
-          },
-        })
-      : undefined;
+  topic(topic: string, config?: any) {
+    return topic ? this._wq(topic, config) : undefined;
   }
 
   // collectionsDocsUpsert(topic: String!, patches: [JsonData!]!): JsonData!
-  commit(topic: string, patches: IRecordJsonWithMergeFlag[]) {
-    return topic
+  commit(topic: string, patches: ICollectionsPatchInput[]) {
+    return topic && !this.$$.isEmpty(patches)
       ? this.$apollo.mutate({
           mutation: M_collectionsDocsUpsert,
           variables: {
@@ -42,18 +35,32 @@ export class CollectionsManageService {
             patches,
           },
         })
-      : undefined;
+      : this.$$.error$$();
   }
+
   // collectionsDocsDrop(topic: String!, ids: [ID!]!): JsonData!
   rm(topic: string, ids: any[]) {
-    return topic
+    return topic && !this.$$.isEmpty(ids)
       ? this.$apollo.mutate({
           mutation: M_collectionsDocsDrop,
           variables: { topic, ids },
         })
-      : undefined;
+      : this.$$.error$$();
   }
+
   data(result: any) {
     return this.$$.get(result, "data.collectionsDocsByTopic.status");
+  }
+
+  //
+  private _wq(topic: string, config: any) {
+    return this.$apollo.watchQuery<IResultCollectionsDocs>({
+      query: Q_collectionsDocsByTopic,
+      variables: {
+        topic,
+        config,
+      },
+      pollInterval: this.$config.graphql.QUERY_POLL_INTERVAL,
+    });
   }
 }
