@@ -67,10 +67,8 @@ export class DocsService<T = any> implements OnDestroy {
                 (async () => {
                   try {
                     const ID = this.$$.get(patch, "data.id");
-                    const merge = this.$$.get(patch, "merge", true);
-                    const dd = withTimestamps(
-                      this.$$.omit(this.$$.get(patch, "data"), "id")
-                    );
+                    const merge = patch.merge ?? true;
+                    const dd = withTimestamps(this.$$.omit(patch.data, ["id"]));
                     obs.next({
                       result: ID
                         ? await setDoc(doc(this.coll()!, ID), dd, {
@@ -93,7 +91,7 @@ export class DocsService<T = any> implements OnDestroy {
           // format response
           map((result) => ({
             success: !this.$$.some(result, (node) =>
-              this.$$.has(node, "error")
+              this.$$.hasOwn(node, "error")
             ),
             result,
           }))
