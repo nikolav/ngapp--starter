@@ -19,7 +19,7 @@ export class UseCacheKeyService {
   private $auth = inject(StoreAuth);
   private $topics = inject(TopicsService);
   private $$ = inject(UseUtilsService);
-  private $subs = new ManageSubscriptionsService();
+  private $sbs = new ManageSubscriptionsService();
   readonly $cache = inject(CacheService);
 
   private cache_key = signal<TOrNoValue<string>>(undefined);
@@ -35,10 +35,10 @@ export class UseCacheKeyService {
       : this.$$.error$$()
   );
   constructor() {
-    effect((onCleanup) => {
+    effect((cleanup) => {
       if (!this.enabled()) return;
       this.start();
-      onCleanup(() => {
+      cleanup(() => {
         this.destroy();
         this.data.set(undefined);
       });
@@ -52,10 +52,10 @@ export class UseCacheKeyService {
     return oFrom(q ? q.refetch() : Promise.reject());
   }
   destroy() {
-    this.$subs.destroy();
+    this.$sbs.destroy();
   }
   start() {
-    this.$subs.push({
+    this.$sbs.push({
       data: this.q()?.valueChanges.subscribe((res) =>
         this.data.set(this.$cache.data(res, this.cache_key()))
       ),

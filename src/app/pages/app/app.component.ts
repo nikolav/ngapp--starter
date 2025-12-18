@@ -27,7 +27,7 @@ import { catchError, mergeMap, of } from "rxjs";
 export class AppComponent implements OnDestroy {
   readonly $auth = inject(StoreAuth);
   private $$ = inject(UseUtilsService);
-  private $subs = new ManageSubscriptionsService();
+  private $sbs = new ManageSubscriptionsService();
   readonly $cache = new UseCacheKeyService().use(
     "@cc:c891f690-e661-5690-a31d-786878712397"
   );
@@ -39,12 +39,12 @@ export class AppComponent implements OnDestroy {
     const iofield = "onio";
     effect((cleanup) => {
       if (this.$cache.enabled()) this.cacheIOStart(iofield);
-      cleanup(() => this.$subs.clear(iofield));
+      cleanup(() => this.$sbs.clear(iofield));
     });
   }
 
   cacheIOStart(field: any) {
-    this.$subs.push({
+    this.$sbs.push({
       [field]: this.$cache
         .io()
         .pipe(
@@ -68,7 +68,7 @@ export class AppComponent implements OnDestroy {
   }
 
   destroy() {
-    this.$subs.destroy();
+    this.$sbs.destroy();
   }
 
   //
