@@ -6,7 +6,7 @@ import {
   M_cacheRedisCommit,
   M_cacheRedisDropPathsAtKey,
 } from "../../graphql";
-import { UseUtilsService } from "../../services";
+import { AppConfigService, UseUtilsService } from "../../services";
 import type {
   TRecordJson,
   IResultApolloCacheService,
@@ -23,32 +23,21 @@ export class CacheService {
 
   private $apollo = inject(Apollo);
   private $$ = inject(UseUtilsService);
+  private $config = inject(AppConfigService);
 
   key$$(cache_key: any) {
     return new Observable((observer) => {
       if (!cache_key) {
         observer.error(this.ERR_CACHEKEY_EMPTY);
       } else {
-        observer.next(
-          this.$apollo.watchQuery<IResultApolloCacheService>({
-            query: Q_cacheRedisGetCacheByKey,
-            variables: { cache_key },
-          })
-        );
+        observer.next(this._wq(cache_key));
       }
       observer.complete();
     });
   }
 
   key(cache_key: any) {
-    return cache_key
-      ? this.$apollo.watchQuery<IResultApolloCacheService>({
-          query: Q_cacheRedisGetCacheByKey,
-          variables: {
-            cache_key,
-          },
-        })
-      : undefined;
+    return cache_key ? this._wq(cache_key) : undefined;
   }
 
   commit(cache_key: any, patch: TOrNoValue<TRecordJson>, merge = true) {
@@ -86,5 +75,15 @@ export class CacheService {
       result,
       `data.cacheRedisGetCacheByKey.status.cache["${cache_key}"]`
     );
+  }
+
+  private _wq(cache_key: any) {
+    return this.$apollo.watchQuery<IResultApolloCacheService>({
+      query: Q_cacheRedisGetCacheByKey,
+      variables: {
+        cache_key,
+      },
+      pollInterval: this.$config.graphql.QUERY_POLL_INTERVAL,
+    });
   }
 }
