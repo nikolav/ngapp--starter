@@ -62,11 +62,9 @@ export class GravatarsService {
       onStore: this.store
         .io()
         .pipe(
-          catchError(() => of(this.ERRIO)),
-          mergeMap((res) =>
-            this.ERRIO == res ? this.$$.null$$() : this.store.reload()
-          ),
-          catchError(this.$$.null$$)
+          catchError(this.$$.empty$$),
+          mergeMap(() => this.store.reload()),
+          catchError(this.$$.empty$$)
         )
         .subscribe(),
     });
