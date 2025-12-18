@@ -12,6 +12,19 @@
       </small>
     </p>
   </section>
+
+  <div>
+    <p>
+      <small>
+        <pre>{{ $g.store.data() | json}}</pre>
+      </small>
+    </p>
+    <img [src]="$g.src()">
+    <button mat-button (click)="$g.refresh().subscribe()">g:refresh</button>
+    <button mat-button (click)="$g.enable().subscribe()">g:enable</button>
+    <button mat-button (click)="$g.disable().subscribe()">g:disable</button>
+  </div>
+
   <div>
     <small>
       <pre>{{ $coll.data() | json}}</pre>

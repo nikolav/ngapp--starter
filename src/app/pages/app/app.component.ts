@@ -4,7 +4,7 @@ import { AsyncPipe, JsonPipe } from "@angular/common";
 
 import { MaterialSharedModule } from "../../modules";
 import { LayoutDefault } from "../../layouts";
-import { StoreAuth } from "../../stores";
+import { StoreAuth, StoreGravatars } from "../../stores";
 import {
   CollectionsService,
   ManageSubscriptionsService,
@@ -31,6 +31,7 @@ export class AppComponent implements OnDestroy {
   readonly $coll = new CollectionsService().use(
     "coll:083438bb-e00d-5a6e-9ae2-4617f25580c0"
   );
+  readonly $g = inject(StoreGravatars);
 
   idToken = computed(() => this.$auth.account()?.getIdToken());
 
