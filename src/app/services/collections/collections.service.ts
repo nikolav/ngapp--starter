@@ -80,6 +80,11 @@ export class CollectionsService<TData = any> implements OnDestroy {
     return this;
   }
 
+  // @@
+  static init<T = any>(topic: string) {
+    return new CollectionsService<T>().use(topic);
+  }
+
   protected start() {
     this.$sbs.push({
       data: this.q()?.valueChanges.subscribe((res) =>
