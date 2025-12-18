@@ -47,6 +47,9 @@ export class UseCacheKeyService {
   commit(patch: any, merge = true) {
     return this.$cache.commit(this.cache_key(), patch, merge);
   }
+  drop(paths: string[], separator?: string) {
+    return this.$cache.drop(this.cache_key(), paths, separator);
+  }
   reload() {
     const q = this.q();
     return oFrom(q ? q.refetch() : Promise.reject());

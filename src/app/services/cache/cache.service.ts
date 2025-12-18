@@ -65,7 +65,6 @@ export class CacheService {
               paths,
               separator,
             },
-            fetchPolicy: "network-only",
           })
           .pipe(map((res) => this.$$.get(res, "data.cacheRedisDropPathsAtKey")))
       : this.$$.error$$();
