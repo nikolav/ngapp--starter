@@ -19,7 +19,8 @@ import { Observable } from "rxjs";
   providedIn: "root",
 })
 export class CacheService {
-  readonly ERR_CACHEKEY_EMPTY = "@err:d0c2a135-aaff-5f1f-be19-0a9057991135";
+  static readonly ERR_CACHEKEY_EMPTY =
+    "ERR_CACHEKEY_EMPTY:57221b6a-81de-52a0-a95a-3f1f2e212574";
 
   private $apollo = inject(Apollo);
   private $$ = inject(UseUtilsService);
@@ -28,7 +29,7 @@ export class CacheService {
   key$$(cache_key: any) {
     return new Observable((observer) => {
       if (!cache_key) {
-        observer.error(this.ERR_CACHEKEY_EMPTY);
+        observer.error(CacheService.ERR_CACHEKEY_EMPTY);
       } else {
         observer.next(this._wq(cache_key));
       }

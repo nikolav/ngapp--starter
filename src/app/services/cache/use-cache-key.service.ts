@@ -13,6 +13,8 @@ import { StoreAuth } from "../../stores";
 
 @Injectable()
 export class UseCacheKeyService {
+  static readonly ERR_IO = "ERR_IO:74f6d3b0-819d-54ed-b43c-4236024e0da8";
+
   private $io = inject(Socket);
   private $auth = inject(StoreAuth);
   private $topics = inject(TopicsService);

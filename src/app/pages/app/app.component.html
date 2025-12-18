@@ -14,11 +14,8 @@
   </section>
   <div>
     <small>
-      <pre>{{ $g.store.data() | json }}</pre>
+      <pre>{{ $cache.data() | json}}</pre>
     </small>
   </div>
-  <img [src]="$g.src()">
-  <button mat-button (click)="$g.refresh().subscribe()">g:refresh</button>
-  <button mat-button (click)="$g.enable().subscribe()">g:enable</button>
-  <button mat-button (click)="$g.disable().subscribe()">g:disable</button>
+  <button mat-button (click)="cachePush()">cache:push</button>
 </app-layout-default>

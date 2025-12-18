@@ -9,7 +9,7 @@ export class ManageSubscriptionsService {
 
   clear(...keys: string[]) {
     keys.forEach((key) => {
-      if (this.$$.coreHasOwn(this.cache, key)) {
+      if (this.$$.hasOwn(this.cache, key)) {
         this.cache[key]?.unsubscribe();
         delete this.cache[key];
       }
