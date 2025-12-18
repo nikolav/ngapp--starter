@@ -75,6 +75,13 @@ export type PickFileOptions = {
   /** Chrome-only directory pick (non-standard) */
   directory?: boolean; // uses webkitdirectory under the hood
 };
+export interface IDocsPatchInput {
+  merge?: boolean;
+  data: {
+    id?: any;
+    [key: string]: unknown;
+  };
+}
 
 //##
 export type { TRecordJson, TJson, TJsonLiteral, MaybeAsync as TMaybeAsync };
