@@ -12,7 +12,7 @@ import { JsonPipe } from "@angular/common";
 })
 export class IndexComponent implements OnInit, OnDestroy {
   private $$ = inject(UseUtilsService);
-  readonly $dd = new DocsService().use("main:2");
+  readonly $dd = DocsService.init("main:2");
   ok() {
     this.$dd
       .commit([

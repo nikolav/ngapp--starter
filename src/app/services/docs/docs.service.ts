@@ -139,6 +139,11 @@ export class DocsService<T = any> implements OnDestroy {
     return this;
   }
 
+  // @@
+  static init(path: string) {
+    return new DocsService().use(path);
+  }
+
   ngOnDestroy() {
     this.destroy();
   }
