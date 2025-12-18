@@ -1,12 +1,7 @@
-import { Component, OnInit, OnDestroy, inject } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 
 import { LayoutDefault } from "../../layouts";
 import { IconxModule, MaterialSharedModule } from "../../modules";
-import {
-  LocalStorageService,
-  // UseUtilsService,
-} from "../../services";
-
 @Component({
   selector: "page-index",
   imports: [LayoutDefault, MaterialSharedModule, IconxModule],
@@ -14,14 +9,7 @@ import {
   styleUrl: "./index.component.scss",
 })
 export class IndexComponent implements OnInit, OnDestroy {
-  private $localStorage = inject(LocalStorageService);
-  readonly links = ["foo", "bar"];
-
-  ok() {
-    this.$localStorage.push({
-      x1: Math.random(),
-    });
-  }
+  ok() {}
   ngOnInit() {}
   ngOnDestroy() {}
 }
