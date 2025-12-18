@@ -6,6 +6,7 @@ import {
   TopicsService,
   CacheService,
   ManageSubscriptionsService,
+  UseUtilsService,
 } from "../../services";
 import { TOrNoValue } from "../../types";
 import { StoreAuth } from "../../stores";
@@ -15,10 +16,12 @@ export class UseCacheKeyService {
   private $io = inject(Socket);
   private $auth = inject(StoreAuth);
   private $topics = inject(TopicsService);
-  private cache_key = signal<TOrNoValue<string>>(undefined);
-  readonly $cache = inject(CacheService);
-  private q = computed(() => this.$cache.key(this.cache_key()));
+  private $$ = inject(UseUtilsService);
   private $subs = new ManageSubscriptionsService();
+  readonly $cache = inject(CacheService);
+
+  private cache_key = signal<TOrNoValue<string>>(undefined);
+  private q = computed(() => this.$cache.key(this.cache_key()));
   // #public
   readonly enabled = computed(
     () => this.$auth.isAuthApi() && Boolean(this.cache_key())
@@ -27,7 +30,7 @@ export class UseCacheKeyService {
   readonly io = computed(() =>
     this.enabled()
       ? this.$io.fromEvent(this.$topics.ioEventOnCache(this.cache_key()))
-      : undefined
+      : this.$$.error$$()
   );
   constructor() {
     effect((onCleanup) => {

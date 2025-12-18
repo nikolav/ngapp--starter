@@ -1,4 +1,6 @@
 import { computed, effect, inject, Injectable } from "@angular/core";
+import { catchError, of } from "rxjs";
+import { mergeMap } from "rxjs/operators";
 import { StoreAuth } from "./auth.store";
 import {
   AppConfigService,
@@ -12,20 +14,22 @@ import {
   providedIn: "root",
 })
 export class GravatarsService {
+  private readonly ERRIO = "@error:io:1d6b726f-0717-5897-80f9-18c9e3e8232e";
   private $$ = inject(UseUtilsService);
   private $config = inject(AppConfigService);
   private $auth = inject(StoreAuth);
   private $subs = new ManageSubscriptionsService();
-  //
   readonly store = new UseCacheKeyService().use(this.$config.key.GRAVATARS);
+  // @@
   readonly enabled = computed(() =>
     this.$$.parseBoolean(
-      this.$$.get(this.store.data(), `[${this.$auth.uid()}].enabled`)
+      this.$$.get(this.store.data(), `${this.$auth.uid()}.enabled`)
     )
   );
+  // @@
   readonly src = computed(() =>
     this.enabled()
-      ? this.$$.get(this.store.data(), `[${this.$auth.uid()}].src`)
+      ? this.$$.get(this.store.data(), `${this.$auth.uid()}.src`)
       : ""
   );
   //
@@ -34,28 +38,37 @@ export class GravatarsService {
       if (this.store.enabled()) this.start();
     });
   }
-  //
+  // @@
   refresh() {
-    return this.store.enabled()
+    return this.enabled()
       ? this.store.commit({ [this.$auth.uid()]: { src: this.url() } })
-      : undefined;
+      : this.$$.empty$$();
   }
+  // @@
   enable() {
-    return this.store.enabled()
-      ? this.store.commit({ [this.$auth.uid()]: { enabled: true } })
-      : undefined;
+    return this.enabled()
+      ? this.$$.empty$$()
+      : this.store.commit({ [this.$auth.uid()]: { enabled: true } });
   }
+  // @@
   disable() {
-    return this.store.enabled()
+    return this.enabled()
       ? this.store.commit({ [this.$auth.uid()]: { enabled: false } })
-      : undefined;
+      : this.$$.empty$$();
   }
   //
   start() {
     this.$subs.push({
-      onStore: this.store.io()?.subscribe(() => {
-        this.store.reload();
-      }),
+      onStore: this.store
+        .io()
+        .pipe(
+          catchError(() => of(this.ERRIO)),
+          mergeMap((res) =>
+            this.ERRIO == res ? this.$$.null$$() : this.store.reload()
+          ),
+          catchError(this.$$.null$$)
+        )
+        .subscribe(),
     });
   }
   destroy() {

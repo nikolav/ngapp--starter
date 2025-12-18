@@ -29,6 +29,8 @@ import {
   untilDestroyed,
   b64tob,
   error$$,
+  empty$$,
+  null$$,
 } from "../../utils";
 
 const {
@@ -159,6 +161,8 @@ export class UseUtilsService {
   onDebug = onDebug;
   b64tob = b64tob;
   error$$ = error$$;
+  empty$$ = empty$$;
+  null$$ = null$$;
 
   // 3rd party
   parseBoolean = parseBoolean;
