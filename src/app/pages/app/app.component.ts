@@ -28,7 +28,7 @@ export class AppComponent implements OnDestroy {
   readonly $auth = inject(StoreAuth);
   private $$ = inject(UseUtilsService);
   private $sbs = new ManageSubscriptionsService();
-  readonly $coll = new CollectionsService().use(
+  readonly $coll = CollectionsService.init(
     "coll:083438bb-e00d-5a6e-9ae2-4617f25580c0"
   );
   readonly $g = inject(StoreGravatars);
