@@ -43,6 +43,14 @@ export interface IRecordJsonWithMergeFlag {
   data: TRecordJson;
 }
 
+export interface ICollectionsPatchInput {
+  merge?: boolean;
+  data: {
+    id?: any;
+    data: TRecordJson;
+  };
+}
+
 export interface IResultCollectionsDocs {
   collectionsDocsByTopic: {
     error: any;

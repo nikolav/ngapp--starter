@@ -6,11 +6,11 @@ import { MaterialSharedModule } from "../../modules";
 import { LayoutDefault } from "../../layouts";
 import { StoreAuth } from "../../stores";
 import {
+  CollectionsService,
   ManageSubscriptionsService,
-  UseCacheKeyService,
   UseUtilsService,
 } from "../../services";
-import { catchError, mergeMap, of } from "rxjs";
+import { catchError, mergeMap } from "rxjs";
 
 @Component({
   selector: "page-app",
@@ -28,42 +28,47 @@ export class AppComponent implements OnDestroy {
   readonly $auth = inject(StoreAuth);
   private $$ = inject(UseUtilsService);
   private $sbs = new ManageSubscriptionsService();
-  readonly $cache = new UseCacheKeyService().use(
-    "@cc:c891f690-e661-5690-a31d-786878712397"
+  readonly $coll = new CollectionsService().use(
+    "coll:083438bb-e00d-5a6e-9ae2-4617f25580c0"
   );
 
   idToken = computed(() => this.$auth.account()?.getIdToken());
 
   constructor() {
-    // @cache:io reload
-    const iofield = "onio";
+    const iocoll = "iocoll";
     effect((cleanup) => {
-      if (this.$cache.enabled()) this.cacheIOStart(iofield);
-      cleanup(() => this.$sbs.clear(iofield));
+      if (!this.$coll.enabled()) return;
+      this.startCollIO(iocoll);
+      cleanup(() => this.$sbs.clear(iocoll));
     });
   }
 
-  cacheIOStart(field: any) {
+  startCollIO(field: any) {
     this.$sbs.push({
-      [field]: this.$cache
+      [field]: this.$coll
         .io()
         .pipe(
-          catchError(() => of(UseCacheKeyService.ERR_IO)),
-          mergeMap((res) =>
-            UseCacheKeyService.ERR_IO == res
-              ? this.$$.null$$()
-              : this.$cache.reload()
-          ),
-          catchError(this.$$.null$$)
+          catchError(this.$$.empty$$),
+          mergeMap(() => this.$coll.reload()),
+          catchError(this.$$.empty$$)
         )
         .subscribe(),
     });
   }
 
-  cachePush() {
-    this.$cache
-      .commit({ foo: Math.random() })
-      .pipe(catchError(this.$$.null$$))
+  collPush() {
+    this.$coll
+      .commit([
+        {
+          data: {
+            data: {
+              "x:1": this.$$.idGen(),
+              "x:2": this.$$.idGen(),
+            },
+          },
+        },
+      ])
+      .pipe(catchError(this.$$.empty$$))
       .subscribe();
   }
 

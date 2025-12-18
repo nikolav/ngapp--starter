@@ -1,5 +1,6 @@
 import { z } from "zod";
 import isJWT from "validator/es/lib/isJWT";
+import { schemaJsonDataRecord } from "./json.schema";
 
 export { schemaJsonData, schemaJsonDataRecord } from "./json.schema";
 export * from "./transforms";
@@ -16,3 +17,12 @@ export const schemaStoragePatch = z.record(
   schemaStoragePatchField,
   z.unknown().nullish()
 );
+
+export const schemaCollectionsRecord = z.object({
+  merge: z.nullish(z.boolean()),
+  data: z.object({
+    id: z.nullish(z.any()),
+    data: schemaJsonDataRecord,
+  }),
+});
+export const schemaCollectionsRecordList = z.array(schemaCollectionsRecord);

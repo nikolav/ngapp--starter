@@ -6,73 +6,92 @@ import {
   OnDestroy,
   signal,
 } from "@angular/core";
+import { from } from "rxjs";
 import { Socket } from "ngx-socket-io";
+
 import { CollectionsManageService } from "./collections-manage.service";
-import { ManageSubscriptionsService, TopicsService } from "../utils";
-import { IRecordJsonWithMergeFlag } from "../../types";
+import {
+  ManageSubscriptionsService,
+  TopicsService,
+  UseUtilsService,
+} from "../utils";
+import { ICollectionsPatchInput } from "../../types";
 import { StoreAuth } from "../../stores";
 
 // #https://the-guild.dev/graphql/apollo-angular/docs/get-started#installation
 @Injectable()
 export class CollectionsService<TData = any> implements OnDestroy {
-  private $client = inject(CollectionsManageService);
-  private $subs = new ManageSubscriptionsService();
-  private $topics = inject(TopicsService);
   private $io = inject(Socket);
+
   private $auth = inject(StoreAuth);
+  private $client = inject(CollectionsManageService);
+  private $topics = inject(TopicsService);
+  private $$ = inject(UseUtilsService);
+  private $sbs = new ManageSubscriptionsService();
 
   private topic = signal<string>("");
   private q = computed(() => this.$client.topic(this.topic()));
 
-  readonly data = signal<TData[]>([]);
-  readonly enabled = computed(
-    () => this.$auth.isAuthApi() && Boolean(this.topic())
+  readonly enabled = computed(() =>
+    Boolean(this.$auth.isAuthApi() && this.topic())
   );
+  readonly data = signal<TData[]>([]);
   readonly io = computed(() =>
     this.enabled()
       ? this.$io.fromEvent(this.$topics.collectionsIoDocsUpdated(this.topic()))
-      : undefined
+      : this.$$.error$$()
   );
-  //##
+  // ##
   constructor() {
-    effect((onCleanup) => {
+    effect((cleanup) => {
       if (!this.enabled()) return;
-
       this.start();
-
-      onCleanup(() => {
+      cleanup(() => {
         this.destroy();
         // clear stale list when topic changes
         this.data.set([]);
       });
     });
   }
-  //##
-  commit(patches: IRecordJsonWithMergeFlag[]) {
+
+  // @@
+  commit(patches: ICollectionsPatchInput[]) {
     return this.enabled()
       ? this.$client.commit(this.topic(), patches)
-      : undefined;
+      : this.$$.error$$();
   }
+
+  // @@
   rm(...ids: any[]) {
-    return this.enabled() ? this.$client.rm(this.topic(), ids) : undefined;
+    return this.enabled()
+      ? this.$client.rm(this.topic(), ids)
+      : this.$$.error$$();
   }
-  start() {
-    this.$subs.push({
+
+  // @@
+  reload() {
+    const q = this.q();
+    return from(q ? q.refetch() : Promise.reject());
+  }
+
+  // @@
+  use(topic: string) {
+    this.topic.set(topic);
+    return this;
+  }
+
+  protected start() {
+    this.$sbs.push({
       data: this.q()?.valueChanges.subscribe((res) =>
         this.data.set(this.$client.data(res))
       ),
     });
   }
-  async reload() {
-    return await this.q()?.refetch();
+
+  protected destroy() {
+    this.$sbs.destroy();
   }
-  destroy() {
-    this.$subs.destroy();
-  }
-  use(topic: string) {
-    this.topic.set(topic);
-    return this;
-  }
+
   // ##
   ngOnDestroy() {
     this.destroy();
