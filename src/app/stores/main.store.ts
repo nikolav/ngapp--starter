@@ -8,15 +8,15 @@ import { UseUtilsService } from "../services";
 export class StoreMain {
   private $$ = inject(UseUtilsService);
 
-  store = signal(<any>{});
+  readonly store = signal(<any>{});
 
   push(patch: any) {
     this.store.update((store_) =>
       this.$$.reduce(
         patch,
-        (res, value, path) => {
-          this.$$.set(res, path, value);
-          return res;
+        (acc, value, path) => {
+          this.$$.set(acc, path, value);
+          return acc;
         },
         this.$$.clone(store_)
       )
@@ -24,15 +24,17 @@ export class StoreMain {
   }
   // pull({ 'a': 'foo.bar[1]', 'b': 'x.y' })
   pull(fields: Record<string, string>) {
-    const store_ = this.store();
     return this.$$.reduce(
       fields,
-      (res, path, field) => {
-        this.$$.set(res, field, this.$$.get(store_, path));
-        return res;
+      (acc, path, field) => {
+        this.$$.set(acc, field, this.item(path));
+        return acc;
       },
       <any>{}
     );
+  }
+  item(path: string, DEFAULT?: any) {
+    return this.$$.get(this.store(), path, DEFAULT);
   }
   exists(path: string) {
     return this.$$.has(this.store(), path);
@@ -45,9 +47,9 @@ export class StoreMain {
     this.store.update((store_) =>
       this.$$.reduce(
         paths,
-        (res, path) => {
-          this.$$.unset(res, path);
-          return res;
+        (acc, path) => {
+          this.$$.unset(acc, path);
+          return acc;
         },
         this.$$.clone(store_)
       )
