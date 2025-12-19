@@ -11,24 +11,20 @@ export class StoreFlagsService {
   readonly store = signal(<ISToreFlagsCache>{});
 
   push(flags: ISToreFlagsCache) {
-    return this.store.update((storeCurrent) =>
-      this.$$.assign(<ISToreFlagsCache>{}, storeCurrent, flags)
+    this.store.update((storeCurrent) =>
+      this.$$.copy(<ISToreFlagsCache>{}, storeCurrent, flags)
     );
   }
   on(name: string) {
-    return this.push(<ISToreFlagsCache>{ [name]: true });
+    this.push(<ISToreFlagsCache>{ [name]: true });
   }
   off(name: string) {
-    return this.push(<ISToreFlagsCache>{ [name]: false });
+    this.push(<ISToreFlagsCache>{ [name]: false });
   }
   toggle(name: string) {
-    return this.store.update((storeCurrent) =>
-      this.$$.assign(<ISToreFlagsCache>{}, storeCurrent, <ISToreFlagsCache>{
-        [name]: !storeCurrent[name],
-      })
-    );
+    this.push(<ISToreFlagsCache>{ [name]: !this.item(name) });
   }
-  pull(name: string) {
+  item(name: string) {
     return Boolean(this.store()[name]);
   }
   use(newStore: ISToreFlagsCache) {
