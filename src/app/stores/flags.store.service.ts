@@ -22,11 +22,7 @@ export class StoreFlagsService {
     this.push(<ISToreFlagsCache>{ [name]: false });
   }
   toggle(name: string) {
-    this.store.update((storeCurrent) =>
-      this.$$.copy(<ISToreFlagsCache>{}, storeCurrent, {
-        [name]: !storeCurrent[name],
-      })
-    );
+    this.push(<ISToreFlagsCache>{ [name]: !this.item(name) });
   }
   item(name: string) {
     return Boolean(this.store()[name]);
