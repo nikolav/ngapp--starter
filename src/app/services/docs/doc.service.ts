@@ -1,5 +1,5 @@
 import { computed, effect, inject, Injectable, signal } from "@angular/core";
-import { from, Observable, of } from "rxjs";
+import { Observable, of } from "rxjs";
 import { mergeMap, catchError } from "rxjs/operators";
 import {
   deleteField,
@@ -55,27 +55,47 @@ export class DocService {
   // @@
   commit(patch: TOrNoValue<TRecordJson>, merge = true) {
     return this.enabled() && (merge ? !this.$$.isEmpty(patch) : patch)
-      ? from(setDoc(this.docRef()!, withTimestamps(patch), { merge }))
-      : this.$$.error$$();
+      ? new Observable((obs) => {
+          (async () => {
+            try {
+              obs.next({
+                result: await setDoc(this.docRef()!, withTimestamps(patch), {
+                  merge,
+                }),
+              });
+            } catch (error) {
+              obs.error(error);
+            }
+          })();
+        }).pipe(catchError((error) => of({ error })))
+      : this.$$.error$$({ error: "DocService service/input error" });
   }
 
   // @@
   drop(...fields: string[]) {
     return this.enabled() && !this.$$.isEmpty(fields)
-      ? from(
-          updateDoc(
-            this.docRef()!,
-            this.$$.reduce(
-              fields,
-              (acc, field) => {
-                acc[field] = deleteField();
-                return acc;
-              },
-              withTimestamps(<any>{})
-            )
-          )
-        )
-      : this.$$.error$$();
+      ? new Observable((obs) => {
+          (async () => {
+            try {
+              obs.next({
+                result: await updateDoc(
+                  this.docRef()!,
+                  this.$$.reduce(
+                    fields,
+                    (acc, field) => {
+                      acc[field] = deleteField();
+                      return acc;
+                    },
+                    withTimestamps(<any>{})
+                  )
+                ),
+              });
+            } catch (error) {
+              obs.error(error);
+            }
+          })();
+        }).pipe(catchError((error) => of({ error })))
+      : this.$$.error$$({ error: "DocService service/input error" });
   }
 
   // ##
