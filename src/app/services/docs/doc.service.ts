@@ -31,8 +31,8 @@ export class DocService {
   private $sbs = new ManageSubscriptionsService();
   protected data_s: TOrNoValue<Unsubscribe>;
 
-  protected ID = signal<TOrNoValue<string>>(undefined);
-
+  // @@
+  readonly ID = signal<TOrNoValue<string>>(undefined);
   // @@
   readonly enabled = computed(() => Boolean(this.ID() && this.$auth.isAuth()));
   // @@
