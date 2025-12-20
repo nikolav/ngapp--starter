@@ -33,7 +33,9 @@ export class DocService {
 
   protected ID = signal<TOrNoValue<string>>(undefined);
 
+  // @@
   readonly enabled = computed(() => Boolean(this.ID() && this.$auth.isAuth()));
+  // @@
   readonly data = signal<TOrNoValue<TRecordJson>>(undefined);
 
   protected readonly docRef = computed(() =>
