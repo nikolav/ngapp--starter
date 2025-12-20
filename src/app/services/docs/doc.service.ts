@@ -19,6 +19,7 @@ import {
   UseUtilsService,
 } from "../utils";
 import { TOrNoValue, TRecordJson } from "../../types";
+import { schemaFirestoreDocPath } from "../../schemas";
 
 @Injectable()
 export class DocService {
@@ -29,8 +30,9 @@ export class DocService {
   private $config = inject(AppConfigService);
   private $sbs = new ManageSubscriptionsService();
 
+  protected ID = signal<TOrNoValue<string>>(undefined);
+
   readonly data = signal<TOrNoValue<TRecordJson>>(undefined);
-  readonly ID = signal<TOrNoValue<string>>(undefined);
   readonly enabled = computed(() => Boolean(this.ID() && this.$auth.isAuth()));
 
   protected readonly docRef = computed(() =>
@@ -100,7 +102,7 @@ export class DocService {
 
   // ##
   protected use(TOKEN: string) {
-    this.ID.set(TOKEN);
+    this.ID.set(schemaFirestoreDocPath.parse(TOKEN));
     return this;
   }
 
