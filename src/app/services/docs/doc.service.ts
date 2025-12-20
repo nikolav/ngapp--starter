@@ -29,18 +29,18 @@ export class DocService {
   private $auth = inject(StoreAuth);
   private $config = inject(AppConfigService);
   private $sbs = new ManageSubscriptionsService();
+  protected data_s: TOrNoValue<Unsubscribe>;
 
   protected ID = signal<TOrNoValue<string>>(undefined);
 
-  readonly data = signal<TOrNoValue<TRecordJson>>(undefined);
   readonly enabled = computed(() => Boolean(this.ID() && this.$auth.isAuth()));
+  readonly data = signal<TOrNoValue<TRecordJson>>(undefined);
 
   protected readonly docRef = computed(() =>
     this.enabled()
       ? doc(dbFirestore, this.$config.services.firebase.doc.CACHE, this.ID()!)
       : null
   );
-  protected data_s: TOrNoValue<Unsubscribe>;
 
   protected constructor() {
     // sync/cleanup data @enabled
