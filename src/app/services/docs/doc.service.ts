@@ -42,7 +42,7 @@ export class DocService {
   );
   protected data_s: TOrNoValue<Unsubscribe>;
 
-  constructor() {
+  protected constructor() {
     // sync/cleanup data @enabled
     effect((cleanup) => {
       if (!this.enabled()) return;
