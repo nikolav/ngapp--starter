@@ -1,9 +1,9 @@
-import { Component, OnInit, OnDestroy, inject } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
+import { JsonPipe } from "@angular/common";
 
 import { LayoutDefault } from "../../layouts";
 import { IconxModule, MaterialSharedModule } from "../../modules";
-import { DocsService, UseUtilsService } from "../../services";
-import { JsonPipe } from "@angular/common";
+import { DocService } from "../../services";
 @Component({
   selector: "page-index",
   imports: [LayoutDefault, MaterialSharedModule, IconxModule, JsonPipe],
@@ -11,21 +11,15 @@ import { JsonPipe } from "@angular/common";
   styleUrl: "./index.component.scss",
 })
 export class IndexComponent implements OnInit, OnDestroy {
-  private $$ = inject(UseUtilsService);
-  readonly $dd = DocsService.init("main:2");
+  readonly $d = DocService.init("d:ufPEIPPeweTIX");
   ok() {
-    this.$dd
-      .commit([
-        {
-          data: {
-            name: `x:${this.$$.idGen()}`,
-            value: Math.random(),
-          },
-        },
-      ])
-      .subscribe((res) => {
-        console.log({ res });
-      });
+    this.$d
+      .commit({
+        "x:1": Math.random(),
+        "x:2": Math.random(),
+      })
+      .subscribe();
+    // this.$d.drop("x:2").subscribe();
   }
   ngOnInit() {}
   ngOnDestroy() {}

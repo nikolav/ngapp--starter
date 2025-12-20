@@ -1,6 +1,6 @@
 // convert base64 to Blob
 export const b64tob = (dBase64: string, mimetype = "", sliceSize = 1024) => {
-  const parts: Uint8Array<ArrayBuffer>[] = [];
+  const parts = [];
   for (
     let offset = 0, bytesStr = atob(dBase64), len = bytesStr.length;
     offset < len;

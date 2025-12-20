@@ -132,5 +132,10 @@ export class AppConfigService {
     aws: {
       AWS_UPLOAD_S3_PREFIX: "upload/",
     },
+    firebase: {
+      doc: {
+        ROOT: "CACHEd:e6f0656d-4a00-56fc-8fa5-881b1942323e",
+      },
+    },
   };
 }
