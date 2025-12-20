@@ -35,7 +35,7 @@ export class DocService {
 
   protected readonly docRef = computed(() =>
     this.enabled()
-      ? doc(dbFirestore, this.$config.services.firebase.doc.ROOT, this.ID()!)
+      ? doc(dbFirestore, this.$config.services.firebase.doc.CACHE, this.ID()!)
       : null
   );
   protected data_s: TOrNoValue<Unsubscribe>;
