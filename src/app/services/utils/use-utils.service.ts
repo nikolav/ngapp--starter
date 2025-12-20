@@ -31,6 +31,7 @@ import {
   error$$,
   empty$$,
   null$$,
+  StatusResult,
 } from "../../utils";
 
 const {
@@ -163,6 +164,7 @@ export class UseUtilsService {
   error$$ = error$$;
   empty$$ = empty$$;
   null$$ = null$$;
+  res = StatusResult;
 
   // 3rd party
   parseBoolean = parseBoolean;

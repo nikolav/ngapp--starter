@@ -4,6 +4,7 @@ import { JsonPipe } from "@angular/common";
 import { LayoutDefault } from "../../layouts";
 import { IconxModule, MaterialSharedModule } from "../../modules";
 import { DocService } from "../../services";
+
 @Component({
   selector: "page-index",
   imports: [LayoutDefault, MaterialSharedModule, IconxModule, JsonPipe],

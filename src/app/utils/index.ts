@@ -13,3 +13,4 @@ export { untilDestroyed } from "./until-destroyed";
 export { b64tob } from "./b64tob";
 export { error$$ } from "./error-observable";
 export { empty$$, null$$ } from "./void-observable";
+export { StatusResult } from "./status-result";
