@@ -111,8 +111,8 @@ export class DocService {
 
   //
   destroy() {
-    this.$sbs.destroy();
     this.data_s?.();
+    this.$sbs.destroy();
   }
 
   // ##
