@@ -88,12 +88,24 @@ export class DocService {
   protected start() {
     this.$sbs.push({
       data: new Observable((obs) => {
-        this.data_s = onSnapshot(this.docRef()!, (snapshot) => {
-          obs.next(snapshot);
-        });
+        this.data_s = onSnapshot(
+          this.docRef()!,
+          (snapshot) => {
+            obs.next(snapshot);
+          },
+          (error) => {
+            obs.next(error);
+          }
+        );
       })
         .pipe(
-          catchError(this.$$.empty$$),
+          catchError((error) => {
+            // @debug:error
+            console.log("@debug error DocService");
+            console.error(error);
+
+            return this.$$.empty$$();
+          }),
           mergeMap(
             (snapshot: any) =>
               snapshot.exists()
