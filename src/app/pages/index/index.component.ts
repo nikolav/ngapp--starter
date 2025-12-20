@@ -1,13 +1,23 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { JsonPipe } from "@angular/common";
 
+import {
+  IconxModule,
+  MaterialSharedModule,
+  CoreModulesShared,
+} from "../../modules";
 import { LayoutDefault } from "../../layouts";
-import { IconxModule, MaterialSharedModule } from "../../modules";
 import { DocService } from "../../services";
 
 @Component({
   selector: "page-index",
-  imports: [LayoutDefault, MaterialSharedModule, IconxModule, JsonPipe],
+  imports: [
+    CoreModulesShared,
+    MaterialSharedModule,
+    LayoutDefault,
+    IconxModule,
+    JsonPipe,
+  ],
   templateUrl: "./index.component.html",
   styleUrl: "./index.component.scss",
 })
