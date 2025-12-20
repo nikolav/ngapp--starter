@@ -100,10 +100,9 @@ export class DocService {
                 ? of({ ...snapshot.data(), id: snapshot.id })
                 : new Observable((obs) => {
                     (async (newd) => {
-                      //
                       try {
                         await setDoc(this.docRef()!, newd);
-                        obs.next(newd);
+                        obs.next({ ...newd, id: this.ID() });
                       } catch (error) {
                         obs.error(error);
                       }
