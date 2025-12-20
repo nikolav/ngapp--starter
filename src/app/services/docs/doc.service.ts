@@ -44,7 +44,8 @@ export class DocService {
       : null
   );
 
-  protected constructor() {
+  //
+  constructor() {
     // sync/cleanup data @enabled
     effect((cleanup) => {
       if (!this.enabled()) return;
@@ -102,10 +103,16 @@ export class DocService {
       : this.$$.error$$({ error: "DocService service/input error" });
   }
 
-  // ##
-  protected use(TOKEN: string) {
+  //
+  use(TOKEN: string) {
     this.ID.set(schemaFirestoreDocPath.parse(TOKEN));
     return this;
+  }
+
+  //
+  destroy() {
+    this.$sbs.destroy();
+    this.data_s?.();
   }
 
   // ##
@@ -152,12 +159,6 @@ export class DocService {
           this.data.set(dd);
         }),
     });
-  }
-
-  // ##
-  protected destroy() {
-    this.$sbs.destroy();
-    this.data_s?.();
   }
 
   // @@
