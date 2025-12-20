@@ -19,8 +19,7 @@ export const schemaFirestoreDocPath = z
     const parts = p.split("/");
     return 1 === parts.length % 2 && parts.every((part) => 0 < part.length);
   });
-export const schemaStatusResultDump_ = (schemaResult?: z.ZodType) =>
-  z.object({
-    result: schemaResult ?? z.unknown(),
-    error: z.unknown(),
-  });
+export const schemaStatusResultDump = z.object({
+  error: z.unknown(),
+  result: z.unknown(),
+});
