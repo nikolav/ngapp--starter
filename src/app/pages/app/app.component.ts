@@ -10,7 +10,7 @@ import {
   ManageSubscriptionsService,
   UseUtilsService,
 } from "../../services";
-import { catchError, mergeMap } from "rxjs";
+import { catchError, map, mergeMap, of } from "rxjs";
 
 @Component({
   selector: "page-app",
@@ -49,9 +49,10 @@ export class AppComponent implements OnDestroy {
       [field]: this.$coll
         .io()
         .pipe(
-          catchError(this.$$.empty$$),
-          mergeMap(() => this.$coll.reload()),
-          catchError(this.$$.empty$$)
+          mergeMap(() =>
+            this.$coll.reload().pipe(map((res) => this.$$.res.init(res, null)))
+          ),
+          catchError((error) => of(this.$$.res.init(null, error)))
         )
         .subscribe(),
     });
