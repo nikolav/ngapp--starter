@@ -25,7 +25,6 @@ import {
   LocalStorageService,
   CloudMessagingService,
 } from "./services";
-import { StoreFlags } from "./stores";
 import { routeTransitionBlurInOut } from "./assets/route-transitions";
 import { PortalBottomComponent } from "./components/app";
 
@@ -50,12 +49,9 @@ export class AppComponent implements OnInit {
   private $config = inject(AppConfigService);
   private $emitter = inject(EmitterService);
   private $storage = inject(LocalStorageService);
-  readonly $flags = inject(StoreFlags);
 
   private $cm = inject(CloudMessagingService);
 
-  // toggle sidenav flags
-  readonly isActiveSidenav = this.$config.key.IS_ACTIVE_APP_SIDENAV;
   // #theme
   private appThemeDark_ = computed(() =>
     String(this.$storage.item(this.$config.key.APP_THEME_DARK) || "")

@@ -1,21 +1,20 @@
 // convert base64 to Blob
-export const b64tob = (dBase64: string, mimetype = "", sliceSize = 512) => {
-  const byteCharacters = atob(dBase64);
-  const byteArrays = [];
-
-  for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
-    const slice = byteCharacters.slice(offset, offset + sliceSize);
-    const byteNumbers = new Array(slice.length);
-
-    for (let i = 0; i < slice.length; i++) {
-      byteNumbers[i] = slice.charCodeAt(i);
+export const b64tob = (dBase64: string, mimetype = "", sliceSize = 1024) => {
+  const parts = [];
+  for (
+    let offset = 0, bytesStr = atob(dBase64), len = bytesStr.length;
+    offset < len;
+    offset += sliceSize
+  ) {
+    const end = Math.min(offset + sliceSize, len);
+    const chunk = new Uint8Array(end - offset);
+    for (let i = offset, j = 0; i < end; i++, j++) {
+      chunk[j] = bytesStr.charCodeAt(i) & 0xff;
     }
-
-    const byteArray = new Uint8Array(byteNumbers);
-    byteArrays.push(byteArray);
+    parts.push(chunk);
   }
 
-  return new Blob(byteArrays, { type: mimetype });
+  return new Blob(parts, { type: mimetype });
 };
 // @@usage
 // // Convert base64 string to a Blob

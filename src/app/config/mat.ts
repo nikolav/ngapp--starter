@@ -1,14 +1,18 @@
-// import {
-//   MAT_CHECKBOX_DEFAULT_OPTIONS,
-//   MatCheckboxDefaultOptions,
-// } from "@angular/material/checkbox";
+import type { ApplicationConfig } from "@angular/core";
+import { COMMA, ENTER, TAB } from "@angular/cdk/keycodes";
 
-// import { MAT_DIALOG_DEFAULT_OPTIONS } from "@angular/material/dialog";
+import { MAT_CHIPS_DEFAULT_OPTIONS } from "@angular/material/chips";
+import { MAT_DIALOG_DEFAULT_OPTIONS } from "@angular/material/dialog";
+import { MAT_SELECT_CONFIG } from "@angular/material/select";
 
-export const MAT_OPIONS = [
-  // {
-  //   provide: MAT_CHECKBOX_DEFAULT_OPTIONS,
-  //   useValue: { clickAction: "noop" } as MatCheckboxDefaultOptions,
-  // },
-  // { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } },
+export const MAT_DEFAULTS: ApplicationConfig["providers"] = [
+  {
+    provide: MAT_CHIPS_DEFAULT_OPTIONS,
+    useValue: { separatorKeyCodes: [COMMA, ENTER, TAB] },
+  },
+  { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: true } },
+  {
+    provide: MAT_SELECT_CONFIG,
+    useValue: { disableRipple: true, canSelectNullableOptions: true },
+  },
 ];

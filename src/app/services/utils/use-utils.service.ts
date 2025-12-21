@@ -30,7 +30,8 @@ import {
   b64tob,
   error$$,
   empty$$,
-  null$$,
+  StatusResult,
+  arrayLs,
 } from "../../utils";
 
 const {
@@ -149,7 +150,6 @@ export class UseUtilsService {
 
   // local
   dumpJson = dumpJson;
-  coreHasOwn = coreHasOwn;
   hasOwn = coreHasOwn;
   parseShellInput = parseShellInput;
   idGen = idGen;
@@ -160,9 +160,12 @@ export class UseUtilsService {
   cat = cat;
   onDebug = onDebug;
   b64tob = b64tob;
+  res = StatusResult;
+  ls = arrayLs;
+
+  // obs factory
   error$$ = error$$;
   empty$$ = empty$$;
-  null$$ = null$$;
 
   // 3rd party
   parseBoolean = parseBoolean;

@@ -132,5 +132,10 @@ export class AppConfigService {
     aws: {
       AWS_UPLOAD_S3_PREFIX: "upload/",
     },
+    firebase: {
+      doc: {
+        CACHE: "CACHE:323d8844-a852-5c68-ac08-59c374194b2c",
+      },
+    },
   };
 }
