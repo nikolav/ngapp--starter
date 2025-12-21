@@ -11,7 +11,7 @@ export class StatusResult<TResult = unknown, TError = unknown> {
   dump(schemaDump: ZodType = schemaStatusResultDump) {
     return schemaDump.parse(this);
   }
-  static init(...args: unknown[]) {
-    return new StatusResult(args[0], args[1]);
+  static init(result: unknown, error: unknown) {
+    return new StatusResult(result, error);
   }
 }
