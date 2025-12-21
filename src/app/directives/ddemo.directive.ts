@@ -1,4 +1,4 @@
-import { Directive, inject } from "@angular/core";
+import { Directive } from "@angular/core";
 import { StoreDataCache } from "../stores";
 
 @Directive({
@@ -8,8 +8,8 @@ import { StoreDataCache } from "../stores";
   },
 })
 export class DdemoDirective {
-  dd = inject(StoreDataCache);
+  dd = new StoreDataCache();
   ok() {
-    console.log("@cache", this.dd.cache());
+    console.log("@cache", this.dd.data());
   }
 }
