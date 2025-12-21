@@ -160,7 +160,7 @@ export class UseUtilsService {
   cat = cat;
   onDebug = onDebug;
   b64tob = b64tob;
-  res = StatusResult;
+  res = StatusResult.init.bind(StatusResult);
   ls = arrayLs;
 
   // obs factory
