@@ -50,9 +50,9 @@ export class AppComponent implements OnDestroy {
         .io()
         .pipe(
           mergeMap(() =>
-            this.$coll.reload().pipe(map((res) => this.$$.res.init(res, null)))
+            this.$coll.reload().pipe(map((res) => this.$$.res(res, null)))
           ),
-          catchError((error) => of(this.$$.res.init(null, error)))
+          catchError((error) => of(this.$$.res(null, error)))
         )
         .subscribe(),
     });
