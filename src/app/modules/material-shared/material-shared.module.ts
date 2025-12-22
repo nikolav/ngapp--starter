@@ -37,12 +37,14 @@ import { MatRadioModule } from "@angular/material/radio";
 // import { MatStepperModule } from "@angular/material/stepper";
 // import { MatTabsModule } from "@angular/material/tabs";
 // import { MatTooltipModule } from "@angular/material/tooltip";
-//
-// import { MatDatepickerModule } from "@angular/material/datepicker";
+
+// #datepicker
+import { MatDatepickerModule } from "@angular/material/datepicker";
 // import { MatTimepickerModule } from "@angular/material/timepicker";
 // import { MatTreeModule } from "@angular/material/tree";
 
 const MODULES_SHARED = [
+  // mat. modules common
   MatButtonModule,
   MatCardModule,
   MatCheckboxModule,
@@ -62,10 +64,15 @@ const MODULES_SHARED = [
   MatSortModule,
   MatTableModule,
   MatToolbarModule,
+
+  // .etc high value mat. modules
+  // #datepicker
+  MatDatepickerModule,
 ];
 
 @NgModule({
   imports: [...MODULES_SHARED],
   exports: [...MODULES_SHARED],
+  // providers: [],
 })
 export class MaterialSharedModule {}

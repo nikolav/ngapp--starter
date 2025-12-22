@@ -177,4 +177,5 @@ export class UseUtilsService {
 
   // etc.
   copy = Object.assign.bind(Object);
+  log = console.log.bind(console);
 }

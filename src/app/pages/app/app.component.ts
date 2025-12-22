@@ -1,85 +1,35 @@
-import { Component, computed, effect, inject, OnDestroy } from "@angular/core";
-import { RouterModule } from "@angular/router";
-import { AsyncPipe, JsonPipe } from "@angular/common";
+import { Component, computed, inject, OnDestroy, OnInit } from "@angular/core";
+import { AsyncPipe } from "@angular/common";
 
-import { MaterialSharedModule } from "../../modules";
-import { LayoutDefault } from "../../layouts";
-import { StoreAuth, StoreGravatars } from "../../stores";
 import {
-  CollectionsService,
-  ManageSubscriptionsService,
-  UseUtilsService,
-} from "../../services";
-import { catchError, map, mergeMap, of } from "rxjs";
+  CoreModulesShared,
+  IconxModule,
+  MaterialSharedModule,
+} from "../../modules";
+import { LayoutDefault } from "../../layouts";
+import { StoreAuth } from "../../stores";
+import { UseUtilsService } from "../../services";
 
 @Component({
   selector: "page-app",
   imports: [
-    LayoutDefault,
+    CoreModulesShared,
     MaterialSharedModule,
-    RouterModule,
+    LayoutDefault,
+    IconxModule,
     AsyncPipe,
-    JsonPipe,
   ],
   templateUrl: "./app.component.html",
   styleUrls: ["./app.component.scss"],
 })
-export class AppComponent implements OnDestroy {
+export class AppComponent implements OnDestroy, OnInit {
+  $$ = inject(UseUtilsService);
   readonly $auth = inject(StoreAuth);
-  private $$ = inject(UseUtilsService);
-  private $sbs = new ManageSubscriptionsService();
-  readonly $coll = CollectionsService.init(
-    "coll:083438bb-e00d-5a6e-9ae2-4617f25580c0"
-  );
-  readonly $g = inject(StoreGravatars);
-
   idToken = computed(() => this.$auth.account()?.getIdToken());
 
-  constructor() {
-    const iocoll = "iocoll";
-    effect((cleanup) => {
-      if (!this.$coll.enabled()) return;
-      this.startCollIO(iocoll);
-      cleanup(() => this.$sbs.clear(iocoll));
-    });
-  }
-
-  startCollIO(field: any) {
-    this.$sbs.push({
-      [field]: this.$coll
-        .io()
-        .pipe(
-          mergeMap(() =>
-            this.$coll.reload().pipe(map((res) => this.$$.res(res, null)))
-          ),
-          catchError((error) => of(this.$$.res(null, error)))
-        )
-        .subscribe(),
-    });
-  }
-
-  collPush() {
-    this.$coll
-      .commit([
-        {
-          data: {
-            data: {
-              "x:1": this.$$.idGen(),
-              "x:2": this.$$.idGen(),
-            },
-          },
-        },
-      ])
-      .pipe(catchError(this.$$.empty$$))
-      .subscribe();
-  }
-
-  destroy() {
-    this.$sbs.destroy();
-  }
+  constructor() {}
 
   //
-  ngOnDestroy() {
-    this.destroy();
-  }
+  ngOnInit() {}
+  ngOnDestroy() {}
 }

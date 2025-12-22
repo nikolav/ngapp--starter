@@ -1,95 +1,72 @@
 import { Injectable } from "@angular/core";
 
 import dayjs from "dayjs";
-// import "dayjs/locale/sr";
 
-// plugins
+// Core, high-value plugins
+import plugin_advancedFormat from "dayjs/plugin/advancedFormat";
+import plugin_customParseFormat from "dayjs/plugin/customParseFormat";
+import plugin_isBetween from "dayjs/plugin/isBetween";
+import plugin_localizedFormat from "dayjs/plugin/localizedFormat";
+import plugin_relativeTime from "dayjs/plugin/relativeTime";
+import plugin_timezone from "dayjs/plugin/timezone";
+import plugin_updateLocale from "dayjs/plugin/updateLocale";
+import plugin_utc from "dayjs/plugin/utc";
 
-//  --deps
-import pluginUtc from "dayjs/plugin/utc";
-import pluginTimezone from "dayjs/plugin/timezone";
+import "dayjs/locale/sr";
 
-import pluginCustomParseFormat from "dayjs/plugin/customParseFormat";
-import pluginIsLeapYear from "dayjs/plugin/isLeapYear";
-import pluginObjectSupport from "dayjs/plugin/objectSupport";
-import pluginArraySupport from "dayjs/plugin/arraySupport";
-import pluginRelativeTime from "dayjs/plugin/relativeTime";
-import pluginWeekday from "dayjs/plugin/weekday";
-import pluginIsoWeek from "dayjs/plugin/isoWeek";
-import pluginDayOfYear from "dayjs/plugin/dayOfYear";
+// // Nice-to-have in many apps
+// import isoWeek from "dayjs/plugin/isoWeek";
+// import quarterOfYear from "dayjs/plugin/quarterOfYear";
 
-//  --deps
-import pluginWeekOfYear from "dayjs/plugin/weekOfYear";
-import pluginWeekYear from "dayjs/plugin/weekYear";
+// .etc
+// import plugin_objectSupport from "dayjs/plugin/objectSupport";
+// import plugin_weekday from "dayjs/plugin/weekday";
+// import plugin_dayOfYear from "dayjs/plugin/dayOfYear";
+// import plugin_weekOfYear from "dayjs/plugin/weekOfYear";
+// import plugin_weekYear from "dayjs/plugin/weekYear";
+// import plugin_minMax from "dayjs/plugin/minMax";
+// import plugin_duration from "dayjs/plugin/duration";
+// import plugin_toObject from "dayjs/plugin/toObject";
+// import plugin_isSameOrBefore from "dayjs/plugin/isSameOrBefore";
+// import plugin_isSameOrAfter from "dayjs/plugin/isSameOrAfter";
+// import plugin_isLeapYear from "dayjs/plugin/isLeapYear";
+// import plugin_isToday from "dayjs/plugin/isToday";
 
-import pluginQuarterOfYear from "dayjs/plugin/quarterOfYear";
-import pluginToArray from "dayjs/plugin/toArray";
-import pluginToObject from "dayjs/plugin/toObject";
+dayjs.extend(plugin_advancedFormat);
+dayjs.extend(plugin_customParseFormat);
+dayjs.extend(plugin_isBetween);
+dayjs.extend(plugin_localizedFormat);
+dayjs.extend(plugin_relativeTime);
+dayjs.extend(plugin_timezone);
+dayjs.extend(plugin_updateLocale);
+dayjs.extend(plugin_utc);
 
-import pluginMinMax from "dayjs/plugin/minMax";
-
-// --durations
-import pluginDuration from "dayjs/plugin/duration";
-
-import pluginAdvancedFormat from "dayjs/plugin/advancedFormat";
-import pluginLocalizedFormat from "dayjs/plugin/localizedFormat";
-
-// dayjs/plugin/updateLocale --custom-locales
-// dayjs/plugin/localeData
-// dayjs/plugin/calendar
-// dayjs/plugin/isSameOrBefore
-// dayjs/plugin/isSameOrAfter
-// dayjs/plugin/isBetween
-
-// use .sr locale globally
-// dayjs.locale("sr");
-
-// https://day.js.org/docs/en/parse/utc#:~:text=While%20in%20UTC%20mode%2C%20all%20display%20methods%20will%20display%20in%20UTC%20time%20instead%20of%20local%20time.
-//  To switch from UTC to local time, you can use dayjs#utc or dayjs#local.
-//  --deps
-dayjs.extend(pluginUtc);
-dayjs.extend(pluginTimezone);
-
-// https://day.js.org/docs/en/parse/string-format#:~:text=Pass%20the%20locale%20key%20as%20the%20third%20parameter%20to%20parse%20locale%2Daware%20date%20time%20string.
-dayjs.extend(pluginCustomParseFormat);
-
-dayjs.extend(pluginIsLeapYear);
-dayjs.extend(pluginObjectSupport);
-dayjs.extend(pluginArraySupport);
-
-// https://day.js.org/docs/en/plugin/relative-time
-dayjs.extend(pluginRelativeTime);
-
-dayjs.extend(pluginWeekday);
-dayjs.extend(pluginIsoWeek);
-dayjs.extend(pluginDayOfYear);
-
-//  --deps
-dayjs.extend(pluginWeekOfYear);
-dayjs.extend(pluginWeekYear);
-
-dayjs.extend(pluginQuarterOfYear);
-dayjs.extend(pluginToArray);
-dayjs.extend(pluginToObject);
-dayjs.extend(pluginMinMax);
-
-// --durations
-dayjs.extend(pluginDuration);
-
-dayjs.extend(pluginAdvancedFormat);
-dayjs.extend(pluginLocalizedFormat);
+// extend:etc
+// dayjs.extend(plugin_objectSupport);
+// dayjs.extend(plugin_weekday);
+// dayjs.extend(plugin_dayOfYear);
+// dayjs.extend(plugin_weekOfYear);
+// dayjs.extend(plugin_weekYear);
+// dayjs.extend(plugin_minMax);
+// dayjs.extend(plugin_duration);
+// dayjs.extend(plugin_toObject);
+// dayjs.extend(plugin_isSameOrBefore);
+// dayjs.extend(plugin_isSameOrAfter);
+// dayjs.extend(plugin_isLeapYear);
+// dayjs.extend(plugin_isToday);
 
 @Injectable({
   providedIn: "root",
 })
 export class DatetimeService {
-  dayjs = dayjs;
+  readonly dayjs = dayjs;
 
   readonly FORMAT = {
     d: "DD-MM-YYYY",
     D: "YYYY-MM-DD",
   };
 
+  // @@
   utcnow(template?: string) {
     return this.dayjs.utc().format(template);
   }

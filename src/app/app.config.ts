@@ -52,7 +52,21 @@ import {
 } from "./middleware/interceptors";
 
 import { TOKEN_foo } from "./keys";
-import { MAT_DEFAULTS, ENDPOINT_GRAPHQL, configSocketIO } from "./config";
+import {
+  MAT_DEFAULTS,
+  ENDPOINT_GRAPHQL,
+  configSocketIO,
+  MAT_DAYJS_DATE_FORMATS,
+} from "./config";
+
+import {
+  MAT_DATE_FORMATS,
+  // MAT_DATE_LOCALE,
+} from "@angular/material/core";
+import {
+  provideMatDayjsAdapter,
+  withDayjsAdapterOptions,
+} from "./modules/providers/mat-dayjs-adapter";
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -102,7 +116,13 @@ export const appConfig: ApplicationConfig = {
       useValue: "foobar",
     },
 
+    // ##mat-datepicker
+    // { provide: MAT_DATE_LOCALE, useValue: "sr-RS" },
+    { provide: MAT_DATE_FORMATS, useValue: MAT_DAYJS_DATE_FORMATS },
+    provideMatDayjsAdapter(withDayjsAdapterOptions({ useUtc: true })),
+
     // ##mat
     ...MAT_DEFAULTS,
   ],
 };
+//
