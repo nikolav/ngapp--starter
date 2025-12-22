@@ -1,4 +1,4 @@
-import { Component, computed, inject, OnDestroy } from "@angular/core";
+import { Component, computed, inject, OnDestroy, OnInit } from "@angular/core";
 import { AsyncPipe } from "@angular/common";
 
 import {
@@ -22,7 +22,7 @@ import { UseUtilsService } from "../../services";
   templateUrl: "./app.component.html",
   styleUrls: ["./app.component.scss"],
 })
-export class AppComponent implements OnDestroy {
+export class AppComponent implements OnDestroy, OnInit {
   $$ = inject(UseUtilsService);
   readonly $auth = inject(StoreAuth);
   idToken = computed(() => this.$auth.account()?.getIdToken());
@@ -30,5 +30,6 @@ export class AppComponent implements OnDestroy {
   constructor() {}
 
   //
+  ngOnInit() {}
   ngOnDestroy() {}
 }
