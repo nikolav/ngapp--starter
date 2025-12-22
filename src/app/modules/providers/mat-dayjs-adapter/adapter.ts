@@ -40,18 +40,19 @@ function range<T>(length: number, valueFunction: (index: number) => T): T[] {
   return valuesArray;
 }
 
+let _extended = false;
+
 /** Adapts Dayjs Dates for use with Angular Material. */
 export class DayjsDateAdapter extends DateAdapter<Dayjs> {
-  private localeData: any;
-  // private localeData: {
-  //   firstDayOfWeek: number;
-  //   longMonths: string[];
-  //   shortMonths: string[];
-  //   dates: string[];
-  //   longDaysOfWeek: string[];
-  //   shortDaysOfWeek: string[];
-  //   narrowDaysOfWeek: string[];
-  // };
+  private localeData!: {
+    firstDayOfWeek: number;
+    longMonths: string[];
+    shortMonths: string[];
+    dates: string[];
+    longDaysOfWeek: string[];
+    shortDaysOfWeek: string[];
+    narrowDaysOfWeek: string[];
+  };
 
   constructor(
     @Optional() @Inject(MAT_DATE_LOCALE) public dateLocale: string,
@@ -61,7 +62,7 @@ export class DayjsDateAdapter extends DateAdapter<Dayjs> {
   ) {
     super();
 
-    this.initializeParser(dateLocale);
+    this.initializeParser(dateLocale ?? dayjs.locale());
   }
 
   // TODO: Implement
@@ -134,27 +135,49 @@ export class DayjsDateAdapter extends DateAdapter<Dayjs> {
     return date.clone();
   }
 
-  createDate(year: number, month: number, date: number): Dayjs {
-    const returnDayjs = this.dayJs()
+  override createDate(year: number, month: number, date: number): Dayjs {
+    if (month < 0 || month > 11) {
+      throw Error(`DayjsDateAdapter: Invalid month index "${month}".`);
+    }
+    if (date < 1) {
+      throw Error(`DayjsDateAdapter: Invalid date "${date}".`);
+    }
+
+    const result = this.dayJs()
       .set("year", year)
       .set("month", month)
       .set("date", date);
-    return returnDayjs;
+
+    if (!result.isValid()) {
+      throw Error(
+        `DayjsDateAdapter: Invalid date "${date}" for month "${month}".`
+      );
+    }
+
+    return result;
   }
 
   today(): Dayjs {
     return this.dayJs();
   }
 
-  parse(value: any, parseFormat: string): Dayjs | null {
-    if (value && typeof value === "string") {
-      return this.dayJs(
-        value,
-        dayjs().localeData().longDateFormat(parseFormat),
-        this.locale
-      );
+  override parse(value: any, parseFormat: string): Dayjs | null {
+    if (value == null || value === "") return null;
+
+    if (typeof value === "string") {
+      const loc = this.locale;
+      const ld = this.dayJs().locale(loc).localeData();
+
+      // If parseFormat is localized token like 'L', 'LL', map it.
+      // If it's a real format string (e.g. 'DD-MM-YYYY'), use it directly.
+      const fmt = /^[Ll]+$/.test(parseFormat)
+        ? ld.longDateFormat(parseFormat)
+        : parseFormat;
+
+      return this.dayJs(value, fmt, loc);
     }
-    return value ? this.dayJs(value).locale(this.locale) : null;
+
+    return this.dayJs(value).locale(this.locale);
   }
 
   format(date: Dayjs, displayFormat: string): string {
@@ -180,35 +203,24 @@ export class DayjsDateAdapter extends DateAdapter<Dayjs> {
     return date.toISOString();
   }
 
-  /**
-   * Attempts to deserialize a value to a valid date object. This is different from parsing in that
-   * deserialize should only accept non-ambiguous, locale-independent formats (e.g. a ISO 8601
-   * string). The default implementation does not allow any deserialization, it simply checks that
-   * the given value is already a valid date object or null. The `<mat-datepicker>` will call this
-   * method on all of it's `@Input()` properties that accept dates. It is therefore possible to
-   * support passing values from your backend directly to these properties by overriding this method
-   * to also deserialize the format used by your backend.
-   * @param value The value to be deserialized into a date object.
-   * @returns The deserialized date object, either a valid date, null if the value can be
-   *     deserialized into a null date (e.g. the empty string), or an invalid date.
-   */
   override deserialize(value: any): Dayjs | null {
-    let date;
+    if (value == null || value === "") return null;
+
     if (value instanceof Date) {
-      date = this.dayJs(value);
-    } else if (this.isDateInstance(value)) {
-      // NOTE: assumes that cloning also sets the correct locale.
+      const d = this.dayJs(value);
+      return this.isValid(d) ? d : this.invalid();
+    }
+
+    if (this.isDateInstance(value)) {
       return this.clone(value);
     }
+
     if (typeof value === "string") {
-      if (!value) {
-        return null;
-      }
-      date = this.dayJs(value).toISOString();
+      // accept ISO and other unambiguous formats from backend
+      const d = this.dayJs(value);
+      return this.isValid(d) ? d : this.invalid();
     }
-    if (date && this.isValid(date)) {
-      return this.dayJs(date);
-    }
+
     return super.deserialize(value);
   }
 
@@ -216,23 +228,29 @@ export class DayjsDateAdapter extends DateAdapter<Dayjs> {
     return dayjs.isDayjs(obj);
   }
 
-  isValid(date: any): boolean {
-    return this.dayJs(date).isValid();
+  override isValid(date: Dayjs): boolean {
+    return dayjs.isDayjs(date) && date.isValid();
   }
 
-  invalid(): Dayjs {
-    return this.dayJs(null);
+  override invalid(): Dayjs {
+    return dayjs("");
+  }
+
+  override sameDate(a: Dayjs | null, b: Dayjs | null): boolean {
+    if (a && b) return a.isSame(b, "day");
+    return a === b;
   }
 
   private dayJs(input?: any, format?: string, locale?: string): Dayjs {
-    if (!this.shouldUseUtc) {
-      return dayjs(input, { format, locale }, locale);
-    }
-    return dayjs(
-      input,
-      { format, locale, utc: this.shouldUseUtc },
-      locale
-    ).utc();
+    const loc = locale ?? this.locale;
+
+    let d = format
+      ? // strict parsing is a big win for typed input
+        dayjs(input, format, loc, true)
+      : dayjs(input);
+
+    d = d.locale(loc);
+    return this.shouldUseUtc ? d.utc() : d;
   }
 
   private get shouldUseUtc(): boolean {
@@ -241,13 +259,17 @@ export class DayjsDateAdapter extends DateAdapter<Dayjs> {
   }
 
   private initializeParser(dateLocale: string) {
-    if (this.shouldUseUtc) {
-      dayjs.extend(utc);
-    }
+    if (!_extended) {
+      if (this.shouldUseUtc) {
+        dayjs.extend(utc);
+      }
 
-    dayjs.extend(LocalizedFormat);
-    dayjs.extend(customParseFormat);
-    dayjs.extend(localeData);
+      dayjs.extend(LocalizedFormat);
+      dayjs.extend(customParseFormat);
+      dayjs.extend(localeData);
+
+      _extended = true;
+    }
 
     this.setLocale(dateLocale);
   }

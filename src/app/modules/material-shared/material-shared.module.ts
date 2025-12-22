@@ -40,7 +40,10 @@ import { MatRadioModule } from "@angular/material/radio";
 
 // #datepicker
 import { MatDatepickerModule } from "@angular/material/datepicker";
-import { MAT_DATE_FORMATS } from "@angular/material/core";
+import {
+  MAT_DATE_FORMATS,
+  // MAT_DATE_LOCALE,
+} from "@angular/material/core";
 import { MAT_DAYJS_DATE_FORMATS } from "../../config";
 import {
   provideMatDayjsAdapter,
@@ -82,6 +85,7 @@ const MODULES_SHARED = [
   exports: [...MODULES_SHARED],
   providers: [
     // ##mat-datepicker
+    // { provide: MAT_DATE_LOCALE, useValue: "en" },
     { provide: MAT_DATE_FORMATS, useValue: MAT_DAYJS_DATE_FORMATS },
     provideMatDayjsAdapter(withDayjsAdapterOptions({ useUtc: true })),
   ],
