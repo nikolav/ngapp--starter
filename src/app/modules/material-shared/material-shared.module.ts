@@ -40,6 +40,12 @@ import { MatRadioModule } from "@angular/material/radio";
 
 // #datepicker
 import { MatDatepickerModule } from "@angular/material/datepicker";
+import { MAT_DATE_FORMATS } from "@angular/material/core";
+import { MAT_DAYJS_DATE_FORMATS } from "../../config";
+import {
+  provideMatDayjsAdapter,
+  withDayjsAdapterOptions,
+} from "../providers/mat-dayjs-adapter";
 
 // import { MatTimepickerModule } from "@angular/material/timepicker";
 // import { MatTreeModule } from "@angular/material/tree";
@@ -74,6 +80,10 @@ const MODULES_SHARED = [
 @NgModule({
   imports: [...MODULES_SHARED],
   exports: [...MODULES_SHARED],
-  // providers: [],
+  providers: [
+    // ##mat-datepicker
+    { provide: MAT_DATE_FORMATS, useValue: MAT_DAYJS_DATE_FORMATS },
+    provideMatDayjsAdapter(withDayjsAdapterOptions({ useUtc: true })),
+  ],
 })
 export class MaterialSharedModule {}
