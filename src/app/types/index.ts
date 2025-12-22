@@ -6,6 +6,7 @@ import type {
   TJsonLiteral,
 } from "../schemas/json.schema";
 
+export type ElementOf<T extends readonly unknown[]> = T[number];
 export type TFunctionVoid = (...args: any[]) => void;
 export type TOrNoValue<T = any> = T | undefined | null;
 export type THasId<T = any> = T & { id: any };
