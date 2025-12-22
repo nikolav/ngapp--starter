@@ -1,34 +1,27 @@
-<app-layout-default>
-  <section class="page--app">
-    <h2>
-      &#64;page--app
-    </h2>
-    <button mat-button
-      (click)="$auth.authenticate({email: 'admin@nikolav.rs', password: 'admin@nikolav.rs'}).subscribe()">auth:login</button>
-    <button mat-button (click)="$auth.logout().subscribe()">auth:logout</button>
-    <p>
-      <small>
-        <pre>{{ idToken() | async }}</pre>
-      </small>
-    </p>
-  </section>
-
-  <div>
-    <p>
-      <small>
-        <pre>{{ $g.store.data() | json}}</pre>
-      </small>
-    </p>
-    <img [src]="$g.src()">
-    <button mat-button (click)="$g.refresh().subscribe()">g:refresh</button>
-    <button mat-button (click)="$g.enable().subscribe()">g:enable</button>
-    <button mat-button (click)="$g.disable().subscribe()">g:disable</button>
-  </div>
-
-  <div>
+<app-layout-default class="page--app">
+  <h2>
+    &#64;page--app
+  </h2>
+  <button mat-button
+    (click)="$auth.authenticate({email: 'admin@nikolav.rs', password: 'admin@nikolav.rs'}).subscribe()">auth:login</button>
+  <button mat-button (click)="$auth.logout().subscribe()">auth:logout</button>
+  <p>
     <small>
-      <pre>{{ $coll.data() | json}}</pre>
+      <pre>{{ idToken() | async }}</pre>
     </small>
+  </p>
+  <div>
+    <mat-form-field>
+      <mat-label>Enter a date range</mat-label>
+      <mat-date-range-input [rangePicker]="picker">
+        <input matStartDate placeholder="Start date">
+        <input matEndDate placeholder="End date">
+      </mat-date-range-input>
+      <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-date-range-picker #picker></mat-date-range-picker>
+    </mat-form-field>
+
+
   </div>
-  <button mat-button (click)="collPush()">coll:push</button>
 </app-layout-default>
