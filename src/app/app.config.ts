@@ -119,7 +119,7 @@ export const appConfig: ApplicationConfig = {
     // ##mat-datepicker
     // { provide: MAT_DATE_LOCALE, useValue: "sr-RS" },
     { provide: MAT_DATE_FORMATS, useValue: MAT_DAYJS_DATE_FORMATS },
-    provideMatDayjsAdapter(withDayjsAdapterOptions({ useUtc: true })),
+    provideMatDayjsAdapter(withDayjsAdapterOptions({ useUtc: false })),
 
     // ##mat
     ...MAT_DEFAULTS,
