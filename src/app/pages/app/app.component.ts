@@ -28,9 +28,7 @@ export class AppComponent implements OnDestroy, OnInit {
   readonly $auth = inject(StoreAuth);
   idToken = computed(() => this.$auth.account()?.getIdToken());
 
-  constructor() {
-    this.$d.dayjs();
-  }
+  constructor() {}
 
   //
   ngOnInit() {}
