@@ -11,7 +11,9 @@
     </small>
   </p>
   <div>
-    <mat-form-field>
+    <mat-calendar #mcal="matCalendar" (selectedChange)="$$.log($event)" />
+    <!--
+      <mat-form-field>
       <mat-label>Enter a date range</mat-label>
       <mat-date-range-input [rangePicker]="picker">
         <input matStartDate placeholder="Start date">
@@ -20,8 +22,7 @@
       <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
       <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-date-range-picker #picker></mat-date-range-picker>
-    </mat-form-field>
-
-
+      </mat-form-field>
+    -->
   </div>
 </app-layout-default>

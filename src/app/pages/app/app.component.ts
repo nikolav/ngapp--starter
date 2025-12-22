@@ -8,6 +8,7 @@ import {
 } from "../../modules";
 import { LayoutDefault } from "../../layouts";
 import { StoreAuth } from "../../stores";
+import { UseUtilsService } from "../../services";
 
 @Component({
   selector: "page-app",
@@ -22,6 +23,7 @@ import { StoreAuth } from "../../stores";
   styleUrls: ["./app.component.scss"],
 })
 export class AppComponent implements OnDestroy {
+  $$ = inject(UseUtilsService);
   readonly $auth = inject(StoreAuth);
   idToken = computed(() => this.$auth.account()?.getIdToken());
 
