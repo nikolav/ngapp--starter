@@ -18,22 +18,23 @@ type ClickOutsideIgnorable = string | Element | ElementRef<Element>;
   selector: "[appClickOutside]",
 })
 export class ClickOutsideDirective implements OnInit, OnDestroy {
-  private readonly $$ = inject(UseUtilsService);
-  /** input callback function to call (clickOutside) */
-  appClickOutside = input<TOrNoValue<() => void>>(null);
-  /** Temporarily disable the outside detection */
-  appClickOutsideDisabled = input(false);
-  /** Elements or selectors to ignore */
-  appClickOutsideIgnore = input<ClickOutsideIgnorable[]>([]);
-
   private readonly elRef = inject(ElementRef<HTMLElement>);
-  private readonly renderer = inject(Renderer2);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly renderer = inject(Renderer2);
   private readonly doc = inject(DOCUMENT);
+
+  private readonly $$ = inject(UseUtilsService);
 
   private detach?: () => void;
 
-  ngOnInit(): void {
+  // input callback function to call (clickOutside)
+  appClickOutside = input<TOrNoValue<() => void>>();
+  // Temporarily disable the outside detection
+  appClickOutsideDisabled = input(false);
+  // Elements or selectors to ignore
+  appClickOutsideIgnore = input<ClickOutsideIgnorable[]>([]);
+
+  ngOnInit() {
     // Renderer2 keeps this SSR/platform-safe.
     this.detach = this.renderer.listen(
       this.doc,
@@ -70,7 +71,7 @@ export class ClickOutsideDirective implements OnInit, OnDestroy {
     this.destroyRef.onDestroy(() => this.detach?.());
   }
 
-  ngOnDestroy(): void {
+  ngOnDestroy() {
     this.detach?.();
   }
 
