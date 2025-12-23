@@ -12,8 +12,8 @@ export class CleanupService {
   protected readonly gc = new Set<TCleanupCallback>();
 
   // @@
-  tasks(...args: TCleanupCallback[]) {
-    args.forEach((onCleanup) => this.gc.add(onCleanup));
+  task(onCleanup: TCleanupCallback) {
+    this.gc.add(onCleanup);
   }
 
   // @@

@@ -27,11 +27,11 @@ export class IndexComponent implements OnInit, OnDestroy {
 
   runCleanup() {
     this.$cleanup.reset();
-    this.$cleanup.tasks((done) => {
+    this.$cleanup.task((done) => {
       console.log(0);
       done();
     });
-    this.$cleanup.tasks((done) => {
+    this.$cleanup.task((done) => {
       console.log(1);
       done();
     });
