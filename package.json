@@ -5,7 +5,7 @@
     "ng": "ng",
     "start": "cp ./src/app/config/vars.env.development.ts ./src/app/config/vars.env.ts && cat ./src/app/assets/index.development.html > ./src/index.html && ng serve ",
     "build": "cp ./src/app/config/vars.env.production.ts ./src/app/config/vars.env.ts && cat ./src/app/assets/index.production.html > ./src/index.html && ng build ",
-    "build:dev": "cat ./src/app/assets/index.development.html > ./src/index.html && ng build ",
+    "build:dev": "cp ./src/app/config/vars.env.development.ts ./src/app/config/vars.env.ts && cat ./src/app/assets/index.development.html > ./src/index.html && ng build ",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:ngapp": "node dist/ngapp/server/server.mjs",
