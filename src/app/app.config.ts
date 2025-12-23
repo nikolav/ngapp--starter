@@ -2,6 +2,7 @@ import {
   inject,
   provideZoneChangeDetection,
   importProvidersFrom,
+  // LOCALE_ID,
 } from "@angular/core";
 import type { ApplicationConfig } from "@angular/core";
 import { CommonModule } from "@angular/common";
@@ -62,6 +63,7 @@ import {
 import {
   MAT_DATE_FORMATS,
   // MAT_DATE_LOCALE,
+  // provideNativeDateAdapter,
 } from "@angular/material/core";
 import {
   provideMatDayjsAdapter,
@@ -70,6 +72,8 @@ import {
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    // { provide: LOCALE_ID, useValue: "sr-RS" },
+
     importProvidersFrom(CommonModule),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideClientHydration(withEventReplay()),
@@ -119,7 +123,8 @@ export const appConfig: ApplicationConfig = {
     // ##mat-datepicker
     // { provide: MAT_DATE_LOCALE, useValue: "sr-RS" },
     { provide: MAT_DATE_FORMATS, useValue: MAT_DAYJS_DATE_FORMATS },
-    provideMatDayjsAdapter(withDayjsAdapterOptions({ useUtc: true })),
+    // provideNativeDateAdapter(),
+    provideMatDayjsAdapter(withDayjsAdapterOptions({ useUtc: false })),
 
     // ##mat
     ...MAT_DEFAULTS,

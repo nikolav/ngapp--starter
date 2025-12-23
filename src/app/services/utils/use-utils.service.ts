@@ -14,6 +14,8 @@ import isJWT from "validator/es/lib/isJWT";
 import { sprintf, vsprintf } from "sprintf-js";
 // #https://github.com/eturino/ts-parse-boolean
 import parseBoolean from "@eturino/ts-parse-boolean";
+// #https://github.com/joaonuno/tree-model-js
+import TreeModel from "tree-model";
 
 // local
 import {
@@ -169,6 +171,7 @@ export class UseUtilsService {
 
   // 3rd party
   parseBoolean = parseBoolean;
+  tree = TreeModel;
 
   // globals
   Math = Math;

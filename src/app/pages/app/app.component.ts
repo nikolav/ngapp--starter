@@ -8,7 +8,7 @@ import {
 } from "../../modules";
 import { LayoutDefault } from "../../layouts";
 import { StoreAuth } from "../../stores";
-import { UseUtilsService } from "../../services";
+import { DatetimeService, UseUtilsService } from "../../services";
 
 @Component({
   selector: "page-app",
@@ -23,7 +23,8 @@ import { UseUtilsService } from "../../services";
   styleUrls: ["./app.component.scss"],
 })
 export class AppComponent implements OnDestroy, OnInit {
-  $$ = inject(UseUtilsService);
+  readonly $$ = inject(UseUtilsService);
+  readonly $d = inject(DatetimeService);
   readonly $auth = inject(StoreAuth);
   idToken = computed(() => this.$auth.account()?.getIdToken());
 
