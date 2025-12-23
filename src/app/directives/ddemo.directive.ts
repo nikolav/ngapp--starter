@@ -3,13 +3,14 @@ import { StoreDataCache } from "../stores";
 
 @Directive({
   selector: "[ddemo]",
+  exportAs: "ddemo",
   host: {
-    "(click)": "ok()",
+    "(click)": "onClick()",
   },
 })
 export class DdemoDirective {
-  dd = new StoreDataCache();
-  ok() {
-    console.log("@cache", this.dd.data());
+  readonly dd = new StoreDataCache();
+  onClick() {
+    console.log("@cache DdemoDirective", this.dd.data());
   }
 }
