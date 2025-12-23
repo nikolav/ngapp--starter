@@ -83,6 +83,7 @@ export interface IDocsPatchInput {
     [key: string]: unknown;
   };
 }
+export type TCleanupCallback = (doneCallback: TFunctionVoid) => void;
 
 //##
 export type { TRecordJson, TJson, TJsonLiteral, MaybeAsync as TMaybeAsync };

@@ -7,7 +7,7 @@ import {
   CoreModulesShared,
 } from "../../modules";
 import { LayoutDefault } from "../../layouts";
-import { DocService } from "../../services";
+import { CleanupService, DocService } from "../../services";
 
 @Component({
   selector: "page-index",
@@ -22,7 +22,24 @@ import { DocService } from "../../services";
   styleUrl: "./index.component.scss",
 })
 export class IndexComponent implements OnInit, OnDestroy {
+  private $cleanup = new CleanupService();
   readonly $d = DocService.init("d:QaHsmyoiFWcWZ4Dlt");
+
+  runCleanup() {
+    this.$cleanup.reset();
+    this.$cleanup.add((done) => {
+      console.log(0);
+      done();
+    });
+    this.$cleanup.add((done) => {
+      console.log(1);
+      done();
+    });
+    this.$cleanup.run().subscribe((res) => {
+      console.log({ res });
+    });
+  }
+
   ok() {
     this.$d
       .commit({
@@ -35,5 +52,7 @@ export class IndexComponent implements OnInit, OnDestroy {
     // this.$d.drop("x:2").subscribe((res) => console.log({ res }));
   }
   ngOnInit() {}
-  ngOnDestroy() {}
+  ngOnDestroy() {
+    this.runCleanup();
+  }
 }

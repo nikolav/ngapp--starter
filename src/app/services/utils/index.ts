@@ -7,3 +7,4 @@ export { EmitterService } from "./emitter.service";
 export { TopicsService } from "./topics.service";
 export { ManageSubscriptionsService } from "./manage-subscriptions.service";
 export { NavUtilsService } from "./nav-utils.service";
+export { CleanupService } from "./cleanup.service";
