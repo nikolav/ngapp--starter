@@ -39,7 +39,7 @@ export class FilesStorageS3Service {
   constructor() {}
 
   // batch push files to s3
-  upload(files: TUploadFiles, emitProgress = true) {
+  upload(files: TUploadFiles, reportProgress = true) {
     const prefix = this.$$.trimEnd(
       this.$config.services.aws.AWS_UPLOAD_S3_PREFIX,
       "/"
@@ -68,13 +68,13 @@ export class FilesStorageS3Service {
                     "Content-Type": dd.contentType,
                   }),
                   observe: "events",
-                  reportProgress: true,
+                  reportProgress,
                   responseType: "text",
                 })
                 .pipe(
                   opTap((event) => {
                     if (
-                      emitProgress &&
+                      reportProgress &&
                       HttpEventType.UploadProgress === event.type &&
                       event.total
                     ) {
