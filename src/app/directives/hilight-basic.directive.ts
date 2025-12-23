@@ -17,18 +17,14 @@ export class HilightBasicDirective implements OnInit {
 
   @HostBinding("style.backgroundColor") bgColor: any = "transparent";
 
-  // constructor(private renderer: Renderer2) {}
-
   ngOnInit(): void {
     this.host.nativeElement.style.backgroundColor = "green";
   }
 
-  @HostListener("mouseover") mouseOver(e: Event) {
-    //
+  @HostListener("mouseover", ["$event"]) mouseOver(e: Event) {
     this.bgColor = "blue";
   }
-  @HostListener("mouseleave") mouseLeave(e: Event) {
-    //
+  @HostListener("mouseleave", ["$event"]) mouseLeave(e: Event) {
     this.bgColor = "green";
   }
 }

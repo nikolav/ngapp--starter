@@ -1,12 +1,13 @@
 import { Directive } from "@angular/core";
+import { UseToggleFlagService } from "../services";
 
 @Directive({
   selector: "[appOnclickAddClassOpen]",
   host: {
-    "[class.open]": "isOpen",
-    "(click)": "isOpen = !isOpen",
+    "[class.open]": "toggleIsOpen.isActive()",
+    "(click)": "toggleIsOpen.toggle()",
   },
 })
 export class OnclickAddClassOpenDirective {
-  isOpen = false;
+  readonly toggleIsOpen = new UseToggleFlagService();
 }
