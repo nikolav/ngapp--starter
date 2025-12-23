@@ -10,7 +10,9 @@ import {
 
 import { ElementOf } from "../../../types";
 
-export const withDayjsAdapterOptions = (options: DayJsDateAdapterOptions) =>
+export const withDayjsAdapterOptions = (
+  options: DayJsDateAdapterOptions = { useUtc: false }
+) =>
   new InjectionToken<any>(
     "mat-dayjs-adapter-options:97707c19-4c69-5978-913e-bf41d2ed2e67",
     {

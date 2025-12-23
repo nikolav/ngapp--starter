@@ -1,6 +1,6 @@
 import { inject, Injectable } from "@angular/core";
 import { HttpClient, HttpEventType, HttpHeaders } from "@angular/common/http";
-import { Observable, from as oFrom, throwError } from "rxjs";
+import { Observable, from as oFrom, Subject, throwError } from "rxjs";
 import { Apollo } from "apollo-angular";
 import {
   mergeMap,
@@ -20,7 +20,7 @@ import {
   Q_awsUploadPresignedUrl,
 } from "../../graphql";
 import { AppConfigService, UseUtilsService } from "../utils";
-import { TFunctionVoid, TOrNoValue, TUploadFiles } from "../../types";
+import { TOrNoValue, TUploadFiles } from "../../types";
 
 @Injectable({
   providedIn: "root",
@@ -33,11 +33,13 @@ export class FilesStorageS3Service {
 
   private readonly CONCURENCY = 10;
 
+  readonly onProgress = new Subject<unknown>();
+
   // @@
   constructor() {}
 
   // batch push files to s3
-  upload(files: TUploadFiles, onProgress?: TOrNoValue<TFunctionVoid>) {
+  upload(files: TUploadFiles) {
     const prefix = this.$$.trimEnd(
       this.$config.services.aws.AWS_UPLOAD_S3_PREFIX,
       "/"
@@ -72,11 +74,10 @@ export class FilesStorageS3Service {
                 .pipe(
                   opTap((event) => {
                     if (
-                      onProgress &&
                       HttpEventType.UploadProgress === event.type &&
                       event.total
                     ) {
-                      onProgress({
+                      this.onProgress.next({
                         key: dd.key,
                         progress: Math.round(
                           (100 * event.loaded) / event.total
