@@ -32,7 +32,7 @@ export class IndexComponent implements OnInit, OnDestroy {
 
   constructor() {
     effect(() => {
-      if (this.$gmaps.client()) {
+      if (this.$gmaps.enabled()) {
         console.log({ $gmaps: this.$gmaps.client() });
       }
     });

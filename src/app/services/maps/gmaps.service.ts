@@ -1,4 +1,4 @@
-import { effect, Injectable, signal } from "@angular/core";
+import { computed, effect, Injectable, signal } from "@angular/core";
 import { Observable, timer } from "rxjs";
 import { takeWhile } from "rxjs/operators";
 
@@ -13,10 +13,12 @@ export class GmapsService {
 
   // @@
   readonly client = signal<TOrNoValue<typeof google.maps>>(null);
+  // @@
+  readonly enabled = computed(() => null != (this.client()?.version ?? null));
 
   constructor() {
     effect((cleanup) => {
-      if (!this.client()) {
+      if (!this.enabled()) {
         this.start();
       }
       cleanup(() => {
