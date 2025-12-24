@@ -8,6 +8,8 @@
     </small>
   </p>
   <div class="w-[596px] m-auto">
-    <google-map height="420px" width="100%" [center]="center" [zoom]="12"></google-map>
+    <google-map #map height="420px" width="100%" [center]="center" [zoom]="12">
+      <map-marker [position]="center" label="M1"></map-marker>
+    </google-map>
   </div>
 </app-layout-default>

@@ -1,6 +1,6 @@
 import { Injectable, inject } from "@angular/core";
-import { Router } from "@angular/router";
 import {
+  Router,
   // CanActivateFn,
   CanActivate,
   CanActivateChild,
@@ -9,14 +9,12 @@ import {
   ActivatedRouteSnapshot,
   RouterStateSnapshot,
 } from "@angular/router";
+
 import { StoreAuth } from "../../stores";
 import { AppConfigService } from "../../services";
-// export const authGuardGuard: CanActivateFn = (route, state) => {
-//   return true;
-// };
 import { TMaybeAsync } from "../../types";
 
-@Injectable({ providedIn: "root" })
+@Injectable()
 export class AuthGuard implements CanActivate, CanActivateChild {
   private $auth = inject(StoreAuth);
   private $router = inject(Router);
