@@ -37,7 +37,6 @@ export class CleanupService {
             }
             return accum;
           }, this.$$.res(null, <any[]>[])),
-
           map((res) => res.dump()),
           finalize(() => {
             this.reset();
