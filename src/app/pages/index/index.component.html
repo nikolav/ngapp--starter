@@ -1,12 +1,13 @@
-<app-layout-default>
-  <section class="page--index">
-    <!-- --page-index -->
-    <button mat-button (click)="ok()">doc:update</button>
-    <button mat-button (click)="runCleanup()">runCleanup</button>
-    <p>
-      <small>
-        <pre>{{ $d.data() | json }}</pre>
-      </small>
-    </p>
-  </section>
+<app-layout-default class="page--index">
+  <!-- --page-index -->
+  <button mat-button (click)="ok()">doc:update</button>
+  <button mat-button (click)="runCleanup()">runCleanup</button>
+  <p>
+    <small>
+      <pre>{{ $d.data() | json }}</pre>
+    </small>
+  </p>
+  <div class="w-[596px] m-auto">
+    <google-map height="420px" width="100%" [center]="center" [zoom]="12"></google-map>
+  </div>
 </app-layout-default>

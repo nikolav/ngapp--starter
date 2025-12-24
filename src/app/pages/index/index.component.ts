@@ -1,5 +1,6 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Component, OnInit, OnDestroy, inject, effect } from "@angular/core";
 import { JsonPipe } from "@angular/common";
+import { GoogleMapsModule } from "@angular/google-maps";
 
 import {
   IconxModule,
@@ -7,7 +8,7 @@ import {
   CoreModulesShared,
 } from "../../modules";
 import { LayoutDefault } from "../../layouts";
-import { CleanupService, DocService } from "../../services";
+import { CleanupService, DocService, GmapsService } from "../../services";
 
 @Component({
   selector: "page-index",
@@ -17,6 +18,7 @@ import { CleanupService, DocService } from "../../services";
     LayoutDefault,
     IconxModule,
     JsonPipe,
+    GoogleMapsModule,
   ],
   templateUrl: "./index.component.html",
   styleUrl: "./index.component.scss",
@@ -24,6 +26,17 @@ import { CleanupService, DocService } from "../../services";
 export class IndexComponent implements OnInit, OnDestroy {
   private $cleanup = new CleanupService();
   readonly $d = DocService.init("d:QaHsmyoiFWcWZ4Dlt");
+
+  readonly $gmaps = inject(GmapsService);
+  center: google.maps.LatLngLiteral = { lat: 44.7866, lng: 20.4489 };
+
+  constructor() {
+    effect(() => {
+      if (this.$gmaps.service()) {
+        console.log({ $gmaps: this.$gmaps.service() });
+      }
+    });
+  }
 
   runCleanup() {
     this.$cleanup.reset();
