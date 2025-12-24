@@ -15,3 +15,4 @@ export { error$$ } from "./error-observable";
 export { empty$$ } from "./void-observable";
 export { StatusResult } from "./status-result";
 export { arrayLs } from "./array-ls";
+export { toObs$$ } from "./to-obs";

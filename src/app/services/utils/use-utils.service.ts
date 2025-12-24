@@ -34,6 +34,7 @@ import {
   empty$$,
   StatusResult,
   arrayLs,
+  toObs$$,
 } from "../../utils";
 
 const {
@@ -168,6 +169,7 @@ export class UseUtilsService {
   // obs factory
   error$$ = error$$;
   empty$$ = empty$$;
+  toObs$$ = toObs$$;
 
   // 3rd party
   parseBoolean = parseBoolean;

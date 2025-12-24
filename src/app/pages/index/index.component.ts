@@ -1,5 +1,6 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Component, OnInit, OnDestroy, inject } from "@angular/core";
 import { JsonPipe } from "@angular/common";
+import { of } from "rxjs";
 
 import {
   IconxModule,
@@ -7,7 +8,7 @@ import {
   CoreModulesShared,
 } from "../../modules";
 import { LayoutDefault } from "../../layouts";
-import { CleanupService, DocService } from "../../services";
+import { CleanupService, DocService, UseUtilsService } from "../../services";
 
 @Component({
   selector: "page-index",
@@ -22,19 +23,33 @@ import { CleanupService, DocService } from "../../services";
   styleUrl: "./index.component.scss",
 })
 export class IndexComponent implements OnInit, OnDestroy {
+  private $$ = inject(UseUtilsService);
   private $cleanup = new CleanupService();
   readonly $d = DocService.init("d:QaHsmyoiFWcWZ4Dlt");
 
   runCleanup() {
     this.$cleanup.reset();
-    this.$cleanup.task((done) => {
+    this.$cleanup.task(() => {
       console.log(0);
-      done();
     });
-    this.$cleanup.task((done) => {
-      console.log(1);
-      done();
+    this.$cleanup.task(() => {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          try {
+            throw "err:1";
+            resolve(console.log(1));
+          } catch (error) {
+            reject(error);
+          }
+        }, 555);
+      });
+      // return console.log(1);
     });
+    this.$cleanup.task(() => {
+      return this.$$.error$$("err:2");
+      // return of(console.log(2));
+    });
+
     this.$cleanup.run().subscribe((res) => {
       console.log({ res });
     });
