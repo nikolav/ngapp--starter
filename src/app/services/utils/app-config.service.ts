@@ -137,5 +137,10 @@ export class AppConfigService {
         CACHE: "CACHE:323d8844-a852-5c68-ac08-59c374194b2c",
       },
     },
+    google: {
+      maps: {
+        SCRIPT_ID: "ID:409e28ef-9da8-5357-a860-dc88dd39b145",
+      },
+    },
   };
 }
