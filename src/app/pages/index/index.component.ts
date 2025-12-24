@@ -32,8 +32,8 @@ export class IndexComponent implements OnInit, OnDestroy {
 
   constructor() {
     effect(() => {
-      if (this.$gmaps.service()) {
-        console.log({ $gmaps: this.$gmaps.service() });
+      if (this.$gmaps.client()) {
+        console.log({ $gmaps: this.$gmaps.client() });
       }
     });
   }

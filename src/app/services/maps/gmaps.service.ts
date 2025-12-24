@@ -12,11 +12,11 @@ export class GmapsService {
   private $sbs = new ManageSubscriptionsService();
 
   // @@
-  readonly service = signal<TOrNoValue<typeof google.maps>>(null);
+  readonly client = signal<TOrNoValue<typeof google.maps>>(null);
 
   constructor() {
     effect((cleanup) => {
-      if (!this.service()) {
+      if (!this.client()) {
         this.start();
       }
       cleanup(() => {
@@ -35,7 +35,7 @@ export class GmapsService {
         )
         .subscribe(() => {
           if (window.google?.maps) {
-            this.service.set(window.google.maps);
+            this.client.set(window.google.maps);
           }
         }),
     });
