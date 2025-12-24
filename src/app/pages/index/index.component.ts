@@ -1,6 +1,5 @@
-import { Component, OnInit, OnDestroy, inject } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { JsonPipe } from "@angular/common";
-import { of } from "rxjs";
 
 import {
   IconxModule,
@@ -8,7 +7,7 @@ import {
   CoreModulesShared,
 } from "../../modules";
 import { LayoutDefault } from "../../layouts";
-import { CleanupService, DocService, UseUtilsService } from "../../services";
+import { CleanupService, DocService } from "../../services";
 
 @Component({
   selector: "page-index",
@@ -23,7 +22,6 @@ import { CleanupService, DocService, UseUtilsService } from "../../services";
   styleUrl: "./index.component.scss",
 })
 export class IndexComponent implements OnInit, OnDestroy {
-  private $$ = inject(UseUtilsService);
   private $cleanup = new CleanupService();
   readonly $d = DocService.init("d:QaHsmyoiFWcWZ4Dlt");
 
