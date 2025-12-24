@@ -1,5 +1,5 @@
 import { computed, effect, Injectable, signal } from "@angular/core";
-import { Observable, timer } from "rxjs";
+import { timer } from "rxjs";
 import { takeWhile } from "rxjs/operators";
 
 import { TOrNoValue } from "../../types";
@@ -30,11 +30,7 @@ export class GmapsService {
   protected start() {
     this.$sbs.push({
       gmapsReady: timer(0, 50)
-        .pipe(
-          takeWhile(() => !window.google?.maps, true)
-          // filter(() => !!window.google?.maps),
-          // take(1)
-        )
+        .pipe(takeWhile(() => !window.google?.maps, true))
         .subscribe(() => {
           if (window.google?.maps) {
             this.client.set(window.google.maps);
