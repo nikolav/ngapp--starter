@@ -25,7 +25,7 @@ export class CleanupService {
       ? from(Array.from(this.gc)).pipe(
           mergeMap(
             (onCleanup) =>
-              this.$$.toObs$$(onCleanup()).pipe(
+              this.$$.of$$(onCleanup()).pipe(
                 map(() => null),
                 catchError((error) => of({ error }))
               ),

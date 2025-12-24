@@ -169,7 +169,7 @@ export class UseUtilsService {
   // obs factory
   error$$ = error$$;
   empty$$ = empty$$;
-  toObs$$ = toObs$$;
+  of$$ = toObs$$;
 
   // 3rd party
   parseBoolean = parseBoolean;

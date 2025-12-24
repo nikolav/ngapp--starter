@@ -32,22 +32,9 @@ export class IndexComponent implements OnInit, OnDestroy {
     this.$cleanup.task(() => {
       console.log(0);
     });
-    this.$cleanup.task(() => {
-      return new Promise((resolve, reject) => {
-        setTimeout(() => {
-          try {
-            throw "err:1";
-            resolve(console.log(1));
-          } catch (error) {
-            reject(error);
-          }
-        }, 555);
-      });
-      // return console.log(1);
-    });
-    this.$cleanup.task(() => {
-      return this.$$.error$$("err:2");
-      // return of(console.log(2));
+    this.$cleanup.task(async () => {
+      // throw "err:1";
+      return console.log(1);
     });
 
     this.$cleanup.run().subscribe((res) => {
