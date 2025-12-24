@@ -1,6 +1,7 @@
 import { Routes } from "@angular/router";
 
 import { PageApp, PageIndex, PageDemo } from "./pages";
+// import { foobarsResolverResolver } from "./middleware/resolvers";
 // import { AuthGuard, FooDeactivateGuard } from "./middleware/guards";
 
 export const routes: Routes = [
@@ -15,6 +16,7 @@ export const routes: Routes = [
     path: "demo",
     component: PageDemo,
     data: { animation: "4f1ba5cc-2b55-5004-ab40-ac8ab2eb3588" },
+    // resolve: { foobar: foobarsResolverResolver },
   },
   {
     path: "app",

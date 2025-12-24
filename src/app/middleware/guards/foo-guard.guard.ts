@@ -17,9 +17,9 @@ import { Injectable } from "@angular/core";
 export class FooGuard implements CanDeactivate<ICanComponentDeactivate> {
   canDeactivate(
     component: ICanComponentDeactivate,
-    currentRoute: ActivatedRouteSnapshot,
-    currentState: RouterStateSnapshot,
-    nextState: RouterStateSnapshot
+    route: ActivatedRouteSnapshot,
+    currentRouteState: RouterStateSnapshot,
+    nextRouteState: RouterStateSnapshot
   ): MaybeAsync<GuardResult> {
     console.log("@debug:FooGuard");
     return component.canDeactivate();

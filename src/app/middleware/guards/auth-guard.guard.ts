@@ -14,7 +14,7 @@ import { StoreAuth } from "../../stores";
 import { AppConfigService } from "../../services";
 import { TMaybeAsync } from "../../types";
 
-@Injectable()
+@Injectable({ providedIn: "root" })
 export class AuthGuard implements CanActivate, CanActivateChild {
   private $auth = inject(StoreAuth);
   private $router = inject(Router);
@@ -38,6 +38,6 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     state: RouterStateSnapshot
   ): TMaybeAsync<GuardResult> {
     console.log("@debug:AuthGuard:canActivateChild");
-    return true;
+    return this.canActivate(childRoute, state);
   }
 }

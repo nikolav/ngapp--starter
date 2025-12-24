@@ -44,6 +44,7 @@ import { UseToggleFlagService } from "../../services";
 })
 export class DemoComponent implements OnDestroy, OnInit {
   boxIsActive = new UseToggleFlagService();
+
   ngOnInit() {}
   ngOnDestroy() {}
 }
