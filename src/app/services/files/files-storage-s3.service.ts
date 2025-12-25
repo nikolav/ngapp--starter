@@ -1,6 +1,6 @@
 import { inject, Injectable } from "@angular/core";
 import { HttpClient, HttpEventType, HttpHeaders } from "@angular/common/http";
-import { Observable, from as oFrom, Subject, throwError } from "rxjs";
+import { Observable, of, from as oFrom, Subject } from "rxjs";
 import { Apollo } from "apollo-angular";
 import {
   mergeMap,
@@ -31,12 +31,9 @@ export class FilesStorageS3Service {
   private $apollo = inject(Apollo);
   private $http = inject(HttpClient);
 
-  private readonly CONCURENCY = 10;
+  private readonly CONCURRENCY = 10;
 
   readonly onProgress = new Subject<unknown>();
-
-  // @@
-  constructor() {}
 
   // batch push files to s3
   upload(files: TUploadFiles, reportProgress = true) {
@@ -46,7 +43,10 @@ export class FilesStorageS3Service {
     );
     return oFrom(this.$$.entries(files)).pipe(
       mergeMap(([key_, { file, path }]) => {
-        const key = path ? [prefix, this.$$.trim(path, "/")].join("/") : key_;
+        const key = this.$$.strEnsureHasPrefix(
+          this.$$.trim(path ?? key_, "/"),
+          `${prefix}/`
+        );
         return this.$apollo
           .query({
             query: Q_awsUploadPresignedUrl,
@@ -61,42 +61,50 @@ export class FilesStorageS3Service {
             opMap((res) =>
               this.$$.get(res, "data.awsUploadPresignedUrl.status")
             ),
-            mergeMap((dd: any) =>
-              this.$http
-                .put(dd.uploadUrl, file, {
-                  headers: new HttpHeaders({
-                    "Content-Type": dd.contentType,
-                  }),
-                  observe: "events",
-                  reportProgress,
-                  responseType: "text",
-                })
-                .pipe(
-                  opTap((event) => {
-                    if (
-                      reportProgress &&
-                      HttpEventType.UploadProgress === event.type &&
-                      event.total
-                    ) {
-                      this.onProgress.next({
-                        key: dd.key,
-                        progress: Math.round(
-                          (100 * event.loaded) / event.total
-                        ),
-                      });
-                    }
-                  }),
-                  opFilter((event) => HttpEventType.Response === event.type),
-                  opMap(() => ({ [dd.key]: true }))
-                )
+            mergeMap(
+              (dd: any) =>
+                this.$http
+                  .put(dd.uploadUrl, file, {
+                    headers: new HttpHeaders({
+                      "Content-Type": dd.contentType,
+                    }),
+                    observe: "events",
+                    reportProgress,
+                    responseType: "text",
+                  })
+                  .pipe(
+                    opTap((event) => {
+                      if (
+                        reportProgress &&
+                        HttpEventType.UploadProgress === event.type &&
+                        event.total
+                      ) {
+                        this.onProgress.next({
+                          key: dd.key,
+                          progress: Math.round(
+                            (100 * event.loaded) / event.total
+                          ),
+                        });
+                      }
+                    }),
+                    opFilter((event) => HttpEventType.Response === event.type),
+                    opMap(() => this.$$.res({ [dd.key]: true }, null)),
+                    catchError((error) => of(this.$$.res(null, error)))
+                  ),
+              this.CONCURRENCY
             ),
-            catchError((error) => throwError(() => ({ key, error })))
+            catchError((error) => of(this.$$.res(null, error)))
           );
-      }, this.CONCURENCY),
-      opReduce(
-        (acc, curr) => this.$$.copy(acc, curr),
-        <Record<string, boolean>>{}
-      )
+      }, this.CONCURRENCY),
+      opReduce((accum, res) => {
+        if (null != res.error) {
+          (<any[]>accum.error).push(res.error);
+        } else {
+          this.$$.copy(<any>accum.result, res.result);
+        }
+        return accum;
+      }, this.$$.res(<any>{}, <any[]>[])),
+      opMap((d) => d.dump())
     );
   }
 
@@ -113,8 +121,13 @@ export class FilesStorageS3Service {
       })
       .pipe(
         opMap((res) =>
-          this.$$.get(res, "data.awsUploadDownloadUrl.status.downloadUrl")
-        )
+          this.$$.res(
+            this.$$.get(res, "data.awsUploadDownloadUrl.status.downloadUrl"),
+            null
+          )
+        ),
+        catchError((error) => of(this.$$.res(null, error))),
+        opMap((d) => d.dump())
       );
   }
 
@@ -129,7 +142,14 @@ export class FilesStorageS3Service {
         fetchPolicy: "network-only",
       })
       .pipe(
-        opMap((res) => this.$$.get(res, "data.awsUploadListObjects.status"))
+        opMap((res) =>
+          this.$$.res(
+            this.$$.get(res, "data.awsUploadListObjects.status"),
+            null
+          )
+        ),
+        catchError((error) => of(this.$$.res(null, error))),
+        opMap((res) => res.dump())
       );
   }
 
@@ -148,14 +168,23 @@ export class FilesStorageS3Service {
               opMap((res) =>
                 this.$$.get(res, "data.awsUploadDeleteObject.status")
               ),
-              opMap((dd: any) => ({ [dd.key]: `${dd.code}:${dd.status}` }))
+              opMap((dd: any) =>
+                this.$$.res({ [dd.key]: `${dd.code}:${dd.status}` }, null)
+              ),
+              catchError((error) => of(this.$$.res(null, error)))
             ),
-        this.CONCURENCY
+        this.CONCURRENCY
       ),
-      opReduce(
-        (acc, curr) => this.$$.copy(acc, curr),
-        <Record<string, string>>{}
-      )
+      opReduce((accum, res) => {
+        if (null != res?.error) {
+          // accumulate errors
+          (<any[]>accum.error).push(res.error);
+        } else {
+          this.$$.copy(<any>accum.result, res.result);
+        }
+        return accum;
+      }, this.$$.res(<any>{}, <any[]>[])),
+      opMap((d) => d.dump())
     );
   }
 
@@ -171,8 +200,13 @@ export class FilesStorageS3Service {
       })
       .pipe(
         opMap((res) =>
-          this.$$.get(res, "data.awsUploadDeleteObjectsAllUnderPrefix")
-        )
+          this.$$.res(
+            this.$$.get(res, "data.awsUploadDeleteObjectsAllUnderPrefix"),
+            null
+          )
+        ),
+        catchError((error) => of(this.$$.res(null, error))),
+        opMap((d) => d.dump())
       );
   }
 
@@ -186,6 +220,12 @@ export class FilesStorageS3Service {
         },
         // fetchPolicy: "network-only",
       })
-      .pipe(opMap((res) => this.$$.get(res, "data.awsUploadObjectMetadata")));
+      .pipe(
+        opMap((res) =>
+          this.$$.res(this.$$.get(res, "data.awsUploadObjectMetadata"), null)
+        ),
+        catchError((error) => of(this.$$.res(null, error))),
+        opMap((d) => d.dump())
+      );
   }
 }

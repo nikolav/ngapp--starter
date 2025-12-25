@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Component, OnInit, OnDestroy, inject } from "@angular/core";
 
 import {
   IconxModule,
@@ -6,6 +6,14 @@ import {
   CoreModulesShared,
 } from "../../modules";
 import { LayoutDefault } from "../../layouts";
+import {
+  FilesStorageS3Service,
+  PickFilesService,
+  UseUtilsService,
+} from "../../services";
+import { mergeMap, of } from "rxjs";
+import { TUploadFiles } from "../../types";
+import { P } from "@angular/cdk/keycodes";
 
 @Component({
   selector: "page-index",
@@ -19,9 +27,49 @@ import { LayoutDefault } from "../../layouts";
   styleUrl: "./index.component.scss",
 })
 export class IndexComponent implements OnInit, OnDestroy {
-  constructor() {}
+  private $$ = inject(UseUtilsService);
+  readonly $files = inject(FilesStorageS3Service);
+  readonly $filePicker = new PickFilesService();
 
-  ok() {}
+  constructor() {
+    this.$files.onProgress.subscribe((event) => {
+      console.log({ event });
+    });
+  }
+
+  ok() {
+    // this.$files.rma("upload/").subscribe((res) => {
+    //   console.log({ res });
+    // });
+    // this.$files
+    //   .rm(
+    //     "upload/605226509_1540722457162612_4180283261000152808_n.jpg",
+    //     "upload/G83_U_hboAACO_h.jpg",
+    //     "upload/G8sYOzyWgAA9BzL.jpg"
+    //   )
+    //   .subscribe((res) => {
+    //     console.log({ res });
+    //   });
+    this.$filePicker
+      .open({ multiple: true })
+      .pipe(
+        mergeMap((files) => {
+          return this.$files.upload(
+            this.$$.reduce(
+              files,
+              (accum, file) => {
+                accum[file.name] = { file };
+                return accum;
+              },
+              <TUploadFiles>{}
+            )
+          );
+        })
+      )
+      .subscribe((res) => {
+        console.log({ res });
+      });
+  }
   ngOnInit() {}
   ngOnDestroy() {}
 }
