@@ -1,4 +1,7 @@
 import { InjectionToken } from "@angular/core";
+import { Subject } from "rxjs";
+
+import { DataCacheService } from "../stores/cache-data.service";
 
 // @di tokens
 export const TOKEN_foo = new InjectionToken<string>(
@@ -21,3 +24,17 @@ export const TOKEN_localStorage = new InjectionToken<Storage>(
 //     },
 //   }
 // );
+export const TOKEN_cache_demo = new InjectionToken<DataCacheService>(
+  "cache:demo:55729762-a63f-5812-a58a-ab4b88b80dc9",
+  {
+    providedIn: "root",
+    factory: () => new DataCacheService().use({}),
+  }
+);
+export const TOKEN_emitter_demo = new InjectionToken<Subject<unknown>>(
+  "emitter:e815fdd6-6b5f-5c27-af2a-0ac900a7bf76",
+  {
+    providedIn: "root",
+    factory: () => new Subject(),
+  }
+);
