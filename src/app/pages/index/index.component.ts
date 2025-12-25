@@ -8,6 +8,7 @@ import {
 } from "../../modules";
 import { LayoutDefault } from "../../layouts";
 import {
+  DatetimeService,
   FilesStorageS3Service,
   PickFilesService,
   UseUtilsService,
@@ -27,6 +28,8 @@ import { TUploadFiles } from "../../types";
 })
 export class IndexComponent implements OnInit, OnDestroy {
   private $$ = inject(UseUtilsService);
+  private $d = inject(DatetimeService);
+
   readonly $files = inject(FilesStorageS3Service);
   readonly $filePicker = new PickFilesService();
 
@@ -57,7 +60,10 @@ export class IndexComponent implements OnInit, OnDestroy {
             this.$$.reduce(
               files,
               (accum, file) => {
-                accum[file.name] = { file };
+                accum[file.name] = {
+                  file,
+                  path: `${this.$d.utcnow(this.$d.FORMAT.D)}/${file.name}`,
+                };
                 return accum;
               },
               <TUploadFiles>{}
