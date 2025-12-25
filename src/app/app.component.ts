@@ -6,18 +6,17 @@ import {
   effect,
   inject,
 } from "@angular/core";
-import { CommonModule } from "@angular/common";
 import {
   NavigationCancel,
   NavigationEnd,
   NavigationError,
   NavigationStart,
   Router,
-  RouterModule,
   RouterOutlet,
 } from "@angular/router";
+import { DOCUMENT } from "@angular/common";
 
-import { MaterialSharedModule } from "./modules";
+import { CoreModulesShared, MaterialSharedModule } from "./modules";
 import {
   EmitterService,
   AppConfigService,
@@ -29,7 +28,7 @@ import { routeTransitionBlurInOut } from "./assets/route-transitions";
 
 @Component({
   selector: "app-root",
-  imports: [CommonModule, RouterModule, MaterialSharedModule],
+  imports: [CoreModulesShared, MaterialSharedModule],
   templateUrl: "./app.component.html",
   styleUrls: ["./app.component.scss"],
   providers: [],
@@ -45,6 +44,8 @@ export class AppComponent implements OnInit {
   private $storage = inject(LocalStorageService);
 
   private $cm = inject(CloudMessagingService);
+
+  private document = inject(DOCUMENT);
 
   // #theme
   private appThemeDark_ = computed(() =>
@@ -69,9 +70,12 @@ export class AppComponent implements OnInit {
     effect(() => {
       const clsDark = this.$config.CLASS_APP_THEME_DARK;
       if (!this.appThemeDark_()) {
-        this.$renderer.removeClass(document.querySelector("html"), clsDark);
+        this.$renderer.removeClass(
+          this.document.querySelector("html"),
+          clsDark
+        );
       } else {
-        this.$renderer.addClass(document.querySelector("html"), clsDark);
+        this.$renderer.addClass(this.document.querySelector("html"), clsDark);
       }
     });
 
@@ -94,6 +98,6 @@ export class AppComponent implements OnInit {
     );
   }
   routeTransitionPrepareOutlet(outlet: RouterOutlet) {
-    return this.$$.get(outlet, "activatedRouteData.animation", "--DEFAULT--");
+    return this.$$.get(outlet, "activatedRouteData.key", "--DEFAULT--");
   }
 }

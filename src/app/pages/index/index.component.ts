@@ -60,9 +60,8 @@ export class IndexComponent implements OnInit, OnDestroy {
             this.$$.reduce(
               files,
               (accum, file) => {
-                accum[file.name] = {
+                accum[`${this.$d.utcnow(this.$d.FORMAT.D)}/${file.name}`] = {
                   file,
-                  path: `${this.$d.utcnow(this.$d.FORMAT.D)}/${file.name}`,
                 };
                 return accum;
               },
