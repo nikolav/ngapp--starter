@@ -76,7 +76,7 @@ export class FilesStorageS3Service {
                     opTap((event) => {
                       if (
                         reportProgress &&
-                        HttpEventType.UploadProgress === event.type &&
+                        HttpEventType.UploadProgress == event.type &&
                         event.total
                       ) {
                         this.onProgress.next({
@@ -87,9 +87,8 @@ export class FilesStorageS3Service {
                         });
                       }
                     }),
-                    opFilter((event) => HttpEventType.Response === event.type),
-                    opMap(() => this.$$.res({ [dd.key]: true }, null)),
-                    catchError((error) => of(this.$$.res(null, error)))
+                    opFilter((event) => HttpEventType.Response == event.type),
+                    opMap(() => this.$$.res({ [dd.key]: true }, null))
                   ),
               this.CONCURRENCY
             ),
