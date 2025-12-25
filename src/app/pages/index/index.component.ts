@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy, inject } from "@angular/core";
+import { mergeMap } from "rxjs/operators";
 
 import {
   IconxModule,
@@ -11,9 +12,7 @@ import {
   PickFilesService,
   UseUtilsService,
 } from "../../services";
-import { mergeMap, of } from "rxjs";
 import { TUploadFiles } from "../../types";
-import { P } from "@angular/cdk/keycodes";
 
 @Component({
   selector: "page-index",
