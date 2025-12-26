@@ -14,7 +14,6 @@ import {
   KEY_ACCESS_TOKEN,
   APP_ID,
 } from "../../config";
-import { TOKEN_foo, TOKEN_localStorage } from "../../keys";
 
 const withTimestamps = (ls: any[]) => [...ls, "created_at", "updated_at"];
 
@@ -111,10 +110,7 @@ export class AppConfigService {
     ],
   };
   // di tokens
-  di = {
-    TOKEN_foo,
-    TOKEN_localStorage,
-  };
+  di = {};
   audio = {
     howl: {
       defaults: <Partial<HowlOptions>>{
