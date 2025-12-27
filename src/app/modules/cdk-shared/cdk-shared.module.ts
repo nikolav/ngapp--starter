@@ -1,14 +1,29 @@
 import { NgModule } from "@angular/core";
 
-// import { LayoutModule } from '@angular/cdk/layout';
 import { PortalModule } from "@angular/cdk/portal";
 import { OverlayModule } from "@angular/cdk/overlay";
-// import { DragDropModule } from '@angular/cdk/drag-drop';
-// import { ClipboardModule } from '@angular/cdk/clipboard';
-// import { A11yModule } from '@angular/cdk/a11y';
-// import { SelectionModel } from '@angular/cdk/collections';
+import { TextFieldModule } from "@angular/cdk/text-field";
 
-const MODULES = [PortalModule, OverlayModule];
+const MODULES = [
+  // #Core
+  // A11yModule,
+  // BidiModule,
+  // LayoutModule,
+  // PlatformModule,
+
+  // #Dynamic UI
+  PortalModule,
+  OverlayModule,
+
+  // #Interaction
+  // DragDropModule,
+  // ScrollingModule,
+
+  // #Utilities
+  // ObserversModule,
+  TextFieldModule,
+  // ClipboardModule,
+];
 
 @NgModule({
   imports: [...MODULES],

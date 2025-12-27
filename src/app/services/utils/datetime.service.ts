@@ -25,40 +25,49 @@ import "dayjs/locale/sr";
 // import plugin_weekOfYear from "dayjs/plugin/weekOfYear";
 // import plugin_weekYear from "dayjs/plugin/weekYear";
 // import plugin_minMax from "dayjs/plugin/minMax";
-// import plugin_duration from "dayjs/plugin/duration";
+import plugin_duration from "dayjs/plugin/duration";
 // import plugin_toObject from "dayjs/plugin/toObject";
 // import plugin_isSameOrBefore from "dayjs/plugin/isSameOrBefore";
 // import plugin_isSameOrAfter from "dayjs/plugin/isSameOrAfter";
 // import plugin_isLeapYear from "dayjs/plugin/isLeapYear";
 // import plugin_isToday from "dayjs/plugin/isToday";
 
-dayjs.extend(plugin_advancedFormat);
-dayjs.extend(plugin_customParseFormat);
-dayjs.extend(plugin_isBetween);
-dayjs.extend(plugin_localizedFormat);
-dayjs.extend(plugin_relativeTime);
-dayjs.extend(plugin_timezone);
-dayjs.extend(plugin_updateLocale);
-dayjs.extend(plugin_utc);
+let _extended = false;
 
-// extend:etc
-// dayjs.extend(plugin_objectSupport);
-// dayjs.extend(plugin_weekday);
-// dayjs.extend(plugin_dayOfYear);
-// dayjs.extend(plugin_weekOfYear);
-// dayjs.extend(plugin_weekYear);
-// dayjs.extend(plugin_minMax);
-// dayjs.extend(plugin_duration);
-// dayjs.extend(plugin_toObject);
-// dayjs.extend(plugin_isSameOrBefore);
-// dayjs.extend(plugin_isSameOrAfter);
-// dayjs.extend(plugin_isLeapYear);
-// dayjs.extend(plugin_isToday);
+if (!_extended) {
+  dayjs.extend(plugin_advancedFormat);
+  dayjs.extend(plugin_customParseFormat);
+  dayjs.extend(plugin_isBetween);
+  dayjs.extend(plugin_localizedFormat);
+  dayjs.extend(plugin_relativeTime);
+  dayjs.extend(plugin_timezone);
+  dayjs.extend(plugin_updateLocale);
+  dayjs.extend(plugin_utc);
+
+  // extend:etc
+  // dayjs.extend(plugin_objectSupport);
+  // dayjs.extend(plugin_weekday);
+  // dayjs.extend(plugin_dayOfYear);
+  // dayjs.extend(plugin_weekOfYear);
+  // dayjs.extend(plugin_weekYear);
+  // dayjs.extend(plugin_minMax);
+  dayjs.extend(plugin_duration);
+  // dayjs.extend(plugin_toObject);
+  // dayjs.extend(plugin_isSameOrBefore);
+  // dayjs.extend(plugin_isSameOrAfter);
+  // dayjs.extend(plugin_isLeapYear);
+  // dayjs.extend(plugin_isToday);
+
+  _extended = true;
+}
 
 @Injectable({
   providedIn: "root",
 })
 export class DatetimeService {
+  // #ISO-8601 duration strings
+  //   'P[n]Y[n]M[n]W[n]DT[n]H[n]M[n]S'
+
   readonly dayjs = dayjs;
 
   readonly FORMAT = {

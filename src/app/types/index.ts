@@ -91,6 +91,7 @@ export type TOverlayConfig = Omit<
   "positionStrategy" | "scrollStrategy"
 >;
 export type THiddenOrVisible = "hidden" | "visible";
+
 export interface ITriggerFadeSlideConfig {
   name?: any;
   offsetX?: any;
@@ -109,4 +110,5 @@ export type TScrollStrategyName = "reposition" | "close" | "block" | "noop";
 //##
 export type { TRecordJson, TJson, TJsonLiteral, MaybeAsync as TMaybeAsync };
 export type { ChartData, ChartOptions, ChartType } from "chart.js";
+
 export * from "./models";
