@@ -96,7 +96,7 @@ export class PopupConnectedComponent {
     try {
       this.overlayRef.set(
         this.$overlay.create({
-          // position
+          // position --connected
           positionStrategy: this.$overlay
             .position()
             .flexibleConnectedTo(trigger)
@@ -132,12 +132,13 @@ export class PopupConnectedComponent {
   // @@
   toggle(trigger: any, overlayConfig?: TOverlayConfig) {
     if (this.isOpened()) {
-      // init close animation
+      // init close animation;
+      //   autocloses @doneAnimation.done
       this.hidden();
       return;
     }
     // insert popup
-    // init open animation
+    //   init open animation
     this.open(trigger, overlayConfig);
   }
 
