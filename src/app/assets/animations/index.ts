@@ -1,4 +1,4 @@
 export { slideInH, slideOutH } from "./slide.animation";
 export { fade } from "./fade.animation";
-export { triggerFadeSlide } from "./fade-slide.trigger";
-export { triggerFadeScale } from "./fade-scale.trigger";
+export { triggerVisibleHiddenFadeSlide } from "./fade-slide.vs-trigger";
+export { triggerVisibleHiddenFadeScale } from "./fade-scale.vs-trigger";

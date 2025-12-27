@@ -37,7 +37,7 @@ export class PopupConnectedComponent {
 
   protected overlayRef = signal<TOrNoValue<OverlayRef>>(null);
 
-  protected readonly DEFAULT_POSTIONS: ConnectedPosition[] = [
+  protected readonly DEFAULT_POSITIONS: ConnectedPosition[] = [
     {
       originX: "start",
       originY: "bottom",
@@ -69,19 +69,19 @@ export class PopupConnectedComponent {
   // @@ # defines how the overlay is aligned relative to the trigger
   positions = input<ConnectedPosition[]>([]);
   // @@ # locks overlay to the first successful position
-  positionsLock = input(undefined, { transform: booleanAttribute });
+  positionsLock = input(false, { transform: booleanAttribute });
   // @@ # "offsetX offsetY"
   offset = input<string>("0 0");
   // @@ # overlay will never touch screen edges closer than this margin
   viewportMargin = input(0);
   // @@ # allows overlay to shrink to fit viewport
-  flexible = input(undefined, { transform: booleanAttribute });
+  flexible = input(true, { transform: booleanAttribute });
   // @@ # pushes overlay into view instead of clipping
-  push = input(undefined, { transform: booleanAttribute });
+  push = input(true, { transform: booleanAttribute });
   // @@ # allows overlay to resize after initial render
-  grow = input(undefined, { transform: booleanAttribute });
+  grow = input(false, { transform: booleanAttribute });
   // @@ # sets CSS transform-origin dynamically
-  transformOrigin = input<string>(this.DEFAULT_PANEL_CLASS);
+  transformOrigin = input<string>(`.${this.DEFAULT_PANEL_CLASS}`);
   // @@ # scrollStrategy
   scrolling = input<TScrollStrategyName>("reposition");
 
@@ -95,7 +95,8 @@ export class PopupConnectedComponent {
     try {
       return transformOverlayOffsets.parse(this.offset());
     } catch (error) {
-      // pass
+      // debug
+      console.warn(error);
     }
     return [0, 0];
   });
@@ -131,7 +132,7 @@ export class PopupConnectedComponent {
           positionStrategy: this.$overlay
             .position()
             .flexibleConnectedTo(trigger)
-            .withPositions([...this.positions(), ...this.DEFAULT_POSTIONS])
+            .withPositions([...this.positions(), ...this.DEFAULT_POSITIONS])
             .withDefaultOffsetX(this.offset_()[0])
             .withDefaultOffsetY(this.offset_()[1])
             .withViewportMargin(this.viewportMargin())
@@ -149,14 +150,20 @@ export class PopupConnectedComponent {
       this.overlayRef()!.attach(this.portal()!);
       this.visible();
     } catch (error) {
-      // pass
+      // debug
+      console.warn(error);
     }
   }
 
   // @@
-  close() {
-    this.overlayRef()?.dispose();
-    this.overlayRef.set(null);
+  close(force = false) {
+    if (!this.isOpened()) return;
+    if (force) {
+      this.overlayRef()!.dispose();
+      this.overlayRef.set(null);
+      return;
+    }
+    this.hidden();
   }
 
   // @@
@@ -164,7 +171,7 @@ export class PopupConnectedComponent {
     if (this.isOpened()) {
       // init close animation;
       //   autocloses @doneAnimation.done
-      this.hidden();
+      this.close();
       return;
     }
     // insert popup
@@ -178,7 +185,7 @@ export class PopupConnectedComponent {
     hiddenState: THiddenOrVisible = "hidden"
   ) {
     if (hiddenState == $event.toState) {
-      this.close();
+      this.close(true);
     }
   }
 }

@@ -16,7 +16,7 @@ const DEFAULT_CONFIG: ITriggerFadeSlideConfig = {
   ease: "ease-out",
 };
 
-export const triggerFadeSlide = (config?: ITriggerFadeSlideConfig) => {
+export const triggerVisibleHiddenFadeSlide = (config?: ITriggerFadeSlideConfig) => {
   const _ = Object.assign({}, DEFAULT_CONFIG, config);
   return trigger(_.name, [
     state("visible", style({ opacity: 1, translate: "0 0" })),
