@@ -95,6 +95,12 @@ export interface ITriggerFadeSlideConfig {
   duration?: any;
   ease?: any;
 }
+export interface ITriggerFadeScaleConfig {
+  name?: any;
+  scale?: any;
+  duration?: any;
+  ease?: any;
+}
 
 //##
 export type { TRecordJson, TJson, TJsonLiteral, MaybeAsync as TMaybeAsync };
