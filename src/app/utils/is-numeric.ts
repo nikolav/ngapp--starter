@@ -1,2 +1,1 @@
-export const isNumeric = (a: any) => !!(a - parseFloat(a) + 1);
-
+export const isNumeric = (a: any) => Boolean(a - parseFloat(a) + 1);
