@@ -30,14 +30,14 @@ import { UseUtilsService } from "../../../../services";
   styleUrl: "./popup.component.scss",
 })
 export class PopupConnectedComponent {
-  private $$ = inject(UseUtilsService);
-  private $overlay = inject(Overlay);
+  protected $$ = inject(UseUtilsService);
+  protected $overlay = inject(Overlay);
 
   protected portal = viewChild(CdkPortal);
 
   protected overlayRef = signal<TOrNoValue<OverlayRef>>(null);
 
-  private readonly DEFAULT_POSTIONS: ConnectedPosition[] = [
+  protected readonly DEFAULT_POSTIONS: ConnectedPosition[] = [
     {
       originX: "start",
       originY: "bottom",
@@ -45,10 +45,16 @@ export class PopupConnectedComponent {
       overlayY: "top",
     },
   ];
-  private readonly DEFAULT_PANEL_CLASS =
+  protected readonly DEFAULT_PANEL_CLASS =
     "overlay-panel-5f90625f-2667-59d8-9c18-1b831aa465c1";
-  private readonly DEFAULT_CONFIG: TOverlayConfig = {
+  protected readonly DEFAULT_CONFIG: TOverlayConfig = {
     panelClass: this.DEFAULT_PANEL_CLASS,
+  };
+  protected readonly SCROLL_STRATEGIES = {
+    reposition: this.$overlay.scrollStrategies.reposition(),
+    block: this.$overlay.scrollStrategies.block(),
+    close: this.$overlay.scrollStrategies.close(),
+    noop: this.$overlay.scrollStrategies.noop(),
   };
 
   // @@ # animations.state
@@ -95,13 +101,7 @@ export class PopupConnectedComponent {
   });
 
   protected scrollStrategy_ = computed(
-    () =>
-      ({
-        reposition: this.$overlay.scrollStrategies.reposition(),
-        block: this.$overlay.scrollStrategies.block(),
-        close: this.$overlay.scrollStrategies.close(),
-        noop: this.$overlay.scrollStrategies.noop(),
-      }[this.scrolling()])
+    () => this.SCROLL_STRATEGIES[this.scrolling()]
   );
 
   constructor() {
