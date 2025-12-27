@@ -32,8 +32,9 @@ export class PopupConnectedComponent {
   private $$ = inject(UseUtilsService);
   private $overlay = inject(Overlay);
 
-  protected overlayRef = signal<TOrNoValue<OverlayRef>>(null);
   protected portal = viewChild(CdkPortal);
+
+  protected overlayRef = signal<TOrNoValue<OverlayRef>>(null);
 
   private readonly DEFAULT_POSTIONS: ConnectedPosition[] = [
     {
