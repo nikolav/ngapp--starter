@@ -144,9 +144,9 @@ export class PopupConnectedComponent {
   // @@
   onCloseAnimationDone(
     $event: AnimationEvent,
-    toState: THiddenOrVisible = "hidden"
+    hiddenState: THiddenOrVisible = "hidden"
   ) {
-    if (toState == $event.toState) {
+    if (hiddenState == $event.toState) {
       this.close();
     }
   }
