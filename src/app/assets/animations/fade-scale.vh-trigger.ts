@@ -5,13 +5,14 @@ import {
   transition,
   trigger,
 } from "@angular/animations";
+import dayjs from "dayjs";
 
 import { ITriggerFadeScaleConfig } from "../../types";
 
 const DEFAULT_CONFIG: ITriggerFadeScaleConfig = {
   name: "fadeScale",
   scale: 0.95,
-  duration: ".22s",
+  duration: "PT0.24S",
   ease: "ease-out",
 };
 
@@ -22,6 +23,13 @@ export const triggerVisibleHiddenFadeScale = (
   return trigger(_.name, [
     state("visible", style({ opacity: 1, scale: 1 })),
     state("hidden", style({ opacity: 0, scale: _.scale })),
-    transition("visible <=> hidden", animate(`${_.duration} ${_.ease}`)),
+    transition(
+      "hidden <=> visible",
+      animate(`${dayjs.duration(_.duration).asMilliseconds()} ${_.ease}`)
+    ),
+    transition(
+      "visible <=> hidden",
+      animate(`${dayjs.duration(_.duration).asMilliseconds() / 2}ms ${_.ease}`)
+    ),
   ]);
 };
