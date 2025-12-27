@@ -10,20 +10,11 @@
       popup
     </button>
   </div>
-  <app-popup
-    #popup
-    [positions]="[
-      {
-        originX: 'center',
-        originY: 'center',
-        overlayX: 'center',
-        overlayY: 'center',
-      }
-    ]"
-  >
+  <app-popup #popup push>
     <mat-card
       [@fadeSlideUp]="popup.state()"
       (@fadeSlideUp.done)="popup.onCloseAnimationDone($event)"
+      class="app-elevated-lg"
     >
       <mat-card-content>
         <p>
