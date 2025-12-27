@@ -99,6 +99,7 @@ export class PopupConnectedComponent {
     try {
       this.overlayRef.set(
         this.$overlay.create({
+          // position
           positionStrategy: this.$overlay
             .position()
             .flexibleConnectedTo(trigger)
@@ -111,6 +112,7 @@ export class PopupConnectedComponent {
             .withLockedPosition(this.positionsLock())
             .withGrowAfterOpen(this.grow())
             .withTransformOriginOn(this.transformOrigin()),
+          // config
           ...this.$$.copy({}, this.DEFAULT_CONFIG, overlayConfig),
         })
       );
