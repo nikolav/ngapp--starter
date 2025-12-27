@@ -1,6 +1,41 @@
 <app-layout-default class="page--index">
-  <h2>
-    &#64;page--index
-  </h2>
-  <button mat-button (click)="ok()">ok</button>
+  <h2>&#64;page--index</h2>
+  <div class="flex justify-center">
+    <button
+      mat-button
+      hostElement
+      #trigger="hostElement"
+      (click)="
+        popup.isOpened()
+          ? popup.hidden()
+          : popup.open(trigger.element(), { width: 320 })
+      "
+    >
+      popup
+    </button>
+  </div>
+  <app-popup
+    #popup
+    [positions]="[
+      {
+        originX: 'center',
+        originY: 'center',
+        overlayX: 'center',
+        overlayY: 'center',
+      }
+    ]"
+  >
+    <mat-card
+      [@fadeSlideUp]="popup.state()"
+      (@fadeSlideUp.done)="popup.onCloseAnimationDone($event)"
+    >
+      <p>
+        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ut veritatis
+        quia quo.
+      </p>
+      <mat-card-actions align="end">
+        <button mat-button (click)="popup.hidden()">close</button>
+      </mat-card-actions>
+    </mat-card>
+  </app-popup>
 </app-layout-default>

@@ -1,5 +1,4 @@
-import { Component, OnInit, OnDestroy, inject } from "@angular/core";
-import { mergeMap } from "rxjs/operators";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 
 import {
   IconxModule,
@@ -7,13 +6,9 @@ import {
   CoreModulesShared,
 } from "../../modules";
 import { LayoutDefault } from "../../layouts";
-import {
-  DatetimeService,
-  FilesStorageS3Service,
-  PickFilesService,
-  UseUtilsService,
-} from "../../services";
-import { TUploadFiles } from "../../types";
+import { PopupConnectedComponent } from "../../components/app";
+import { HostElementDirective } from "../../directives";
+import { triggerFadeSlideUp } from "../../assets/animations";
 
 @Component({
   selector: "page-index",
@@ -22,57 +17,16 @@ import { TUploadFiles } from "../../types";
     MaterialSharedModule,
     LayoutDefault,
     IconxModule,
+    PopupConnectedComponent,
+    HostElementDirective,
   ],
   templateUrl: "./index.component.html",
   styleUrl: "./index.component.scss",
+  animations: [triggerFadeSlideUp()],
 })
 export class IndexComponent implements OnInit, OnDestroy {
-  private $$ = inject(UseUtilsService);
-  private $d = inject(DatetimeService);
-
-  readonly $files = inject(FilesStorageS3Service);
-  readonly $filePicker = new PickFilesService();
-
-  constructor() {
-    this.$files.onProgress.subscribe((event) => {
-      console.log({ event });
-    });
-  }
-
   ok() {
-    // this.$files.rma("upload/").subscribe((res) => {
-    //   console.log({ res });
-    // });
-    // this.$files
-    //   .rm(
-    //     "upload/605226509_1540722457162612_4180283261000152808_n.jpg",
-    //     "upload/G83_U_hboAACO_h.jpg",
-    //     "upload/G8sYOzyWgAA9BzL.jpg"
-    //   )
-    //   .subscribe((res) => {
-    //     console.log({ res });
-    //   });
-    this.$filePicker
-      .open({ multiple: true })
-      .pipe(
-        mergeMap((files) => {
-          return this.$files.upload(
-            this.$$.reduce(
-              files,
-              (accum, file) => {
-                accum[`${this.$d.utcnow(this.$d.FORMAT.D)}/${file.name}`] = {
-                  file,
-                };
-                return accum;
-              },
-              <TUploadFiles>{}
-            )
-          );
-        })
-      )
-      .subscribe((res) => {
-        console.log({ res });
-      });
+    console.log("ok");
   }
   ngOnInit() {}
   ngOnDestroy() {}

@@ -1,9 +1,18 @@
 <app-layout-default class="page--app">
-  <h2>
-    &#64;page--app
-  </h2>
-  <button mat-button
-    (click)="$auth.authenticate({email: 'admin@nikolav.rs', password: 'admin@nikolav.rs'}).subscribe()">auth:login</button>
+  <h2>&#64;page--app</h2>
+  <button
+    mat-button
+    (click)="
+      $auth
+        .authenticate({
+          email: 'admin@nikolav.rs',
+          password: 'admin@nikolav.rs'
+        })
+        .subscribe()
+    "
+  >
+    auth:login
+  </button>
   <button mat-button (click)="$auth.logout().subscribe()">auth:logout</button>
   <p>
     <small>

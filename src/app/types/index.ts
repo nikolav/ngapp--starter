@@ -1,5 +1,7 @@
 import { GuardResult, MaybeAsync } from "@angular/router";
 import { type Subscription } from "rxjs";
+import { OverlayConfig } from "@angular/cdk/overlay";
+
 import type {
   JsonDataRecord as TRecordJson,
   TJson,
@@ -84,6 +86,8 @@ export interface IDocsPatchInput {
   };
 }
 export type TCleanupCallback = (doneCallback: TFunctionVoid) => void;
+export type TOverlayConfig = Omit<OverlayConfig, "positionStrategy">;
+export type THiddenOrVisible = "hidden" | "visible";
 
 //##
 export type { TRecordJson, TJson, TJsonLiteral, MaybeAsync as TMaybeAsync };
