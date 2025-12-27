@@ -22,7 +22,7 @@ import { triggerFadeSlide } from "../../assets/animations";
   ],
   templateUrl: "./index.component.html",
   styleUrl: "./index.component.scss",
-  animations: [triggerFadeSlide()],
+  animations: [triggerFadeSlide({ name: "fadeSlideUp" })],
 })
 export class IndexComponent implements OnInit, OnDestroy {
   ok() {

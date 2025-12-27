@@ -81,6 +81,9 @@ export class PopupConnectedComponent {
   // @@
   clickOutside = output<void>();
 
+  // @@
+  readonly isOpened = computed(() => null != this.overlayRef());
+
   protected offset_ = computed(() => {
     try {
       return transformOverlayOffsets.parse(this.offset());
@@ -89,9 +92,6 @@ export class PopupConnectedComponent {
     }
     return [0, 0];
   });
-
-  // @@
-  readonly isOpened = computed(() => null != this.overlayRef());
 
   // @@
   open(trigger: any, overlayConfig?: TOverlayConfig) {
