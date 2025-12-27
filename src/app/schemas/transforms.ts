@@ -4,7 +4,6 @@ import { z } from "zod";
 export const transformOverlayOffsets = z
   .string()
   .trim()
-  .nonempty()
   .transform((value: string) => {
     // read offsets; number[]
     const offsets = value ? value.split(/\s+/g).map(Number) : [0, 0];
