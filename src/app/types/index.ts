@@ -86,7 +86,10 @@ export interface IDocsPatchInput {
   };
 }
 export type TCleanupCallback = (doneCallback: TFunctionVoid) => void;
-export type TOverlayConfig = Omit<OverlayConfig, "positionStrategy">;
+export type TOverlayConfig = Omit<
+  OverlayConfig,
+  "positionStrategy" | "scrollStrategy"
+>;
 export type THiddenOrVisible = "hidden" | "visible";
 export interface ITriggerFadeSlideConfig {
   name?: any;
@@ -101,6 +104,7 @@ export interface ITriggerFadeScaleConfig {
   duration?: any;
   ease?: any;
 }
+export type TScrollStrategyName = "reposition" | "close" | "block" | "noop";
 
 //##
 export type { TRecordJson, TJson, TJsonLiteral, MaybeAsync as TMaybeAsync };

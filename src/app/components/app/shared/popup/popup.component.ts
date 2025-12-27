@@ -2,6 +2,7 @@ import {
   booleanAttribute,
   Component,
   computed,
+  effect,
   inject,
   input,
   model,
@@ -17,14 +18,14 @@ import {
   THiddenOrVisible,
   TOrNoValue,
   TOverlayConfig,
+  TScrollStrategyName,
 } from "../../../../types";
 import { transformOverlayOffsets } from "../../../../schemas";
 import { UseUtilsService } from "../../../../services";
-import { ClickOutsideDirective } from "../../../../directives";
 
 @Component({
   selector: "app-popup",
-  imports: [ClickOutsideDirective, CdkPortal],
+  imports: [CdkPortal],
   templateUrl: "./popup.component.html",
   styleUrl: "./popup.component.scss",
 })
@@ -75,6 +76,8 @@ export class PopupConnectedComponent {
   grow = input(undefined, { transform: booleanAttribute });
   // @@ # sets CSS transform-origin dynamically
   transformOrigin = input<string>(this.DEFAULT_PANEL_CLASS);
+  // @@ # scrollStrategy
+  scrolling = input<TScrollStrategyName>("reposition");
 
   // @@
   clickOutside = output<void>();
@@ -90,6 +93,33 @@ export class PopupConnectedComponent {
     }
     return [0, 0];
   });
+
+  protected scrollStrategy_ = computed(
+    () =>
+      ({
+        reposition: this.$overlay.scrollStrategies.reposition(),
+        block: this.$overlay.scrollStrategies.block(),
+        close: this.$overlay.scrollStrategies.close(),
+        noop: this.$overlay.scrollStrategies.noop(),
+      }[this.scrolling()])
+  );
+
+  constructor() {
+    // @detach state hidden
+    effect((cleanup) => {
+      const sbs = this.overlayRef()
+        ?.detachments()
+        .subscribe(() => this.hidden());
+      cleanup(() => sbs?.unsubscribe());
+    });
+    // @clickOutside emit
+    effect((cleanup) => {
+      const sbs = this.overlayRef()
+        ?.outsidePointerEvents()
+        .subscribe(() => this.clickOutside.emit());
+      cleanup(() => sbs?.unsubscribe());
+    });
+  }
 
   // @@
   open(trigger: any, overlayConfig?: TOverlayConfig) {
@@ -110,12 +140,13 @@ export class PopupConnectedComponent {
             .withLockedPosition(this.positionsLock())
             .withGrowAfterOpen(this.grow())
             .withTransformOriginOn(this.transformOrigin()),
+          // scrolling --default-reposition
+          scrollStrategy: this.scrollStrategy_(),
           // config
           ...this.$$.copy({}, this.DEFAULT_CONFIG, overlayConfig),
         })
       );
       this.overlayRef()!.attach(this.portal()!);
-      //
       this.visible();
     } catch (error) {
       // pass
@@ -126,8 +157,6 @@ export class PopupConnectedComponent {
   close() {
     this.overlayRef()?.dispose();
     this.overlayRef.set(null);
-    //
-    this.hidden();
   }
 
   // @@
