@@ -1,8 +1,3 @@
 <ng-template cdkPortal>
-  <div
-    class="contents"
-    [appClickOutside]="clickOutside.emit.bind(clickOutside)"
-  >
-    <ng-content />
-  </div>
+  <ng-content />
 </ng-template>

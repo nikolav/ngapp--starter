@@ -2,6 +2,7 @@ import {
   booleanAttribute,
   Component,
   computed,
+  effect,
   inject,
   input,
   model,
@@ -17,26 +18,26 @@ import {
   THiddenOrVisible,
   TOrNoValue,
   TOverlayConfig,
+  TScrollStrategyName,
 } from "../../../../types";
 import { transformOverlayOffsets } from "../../../../schemas";
 import { UseUtilsService } from "../../../../services";
-import { ClickOutsideDirective } from "../../../../directives";
 
 @Component({
   selector: "app-popup",
-  imports: [ClickOutsideDirective, CdkPortal],
+  imports: [CdkPortal],
   templateUrl: "./popup.component.html",
   styleUrl: "./popup.component.scss",
 })
 export class PopupConnectedComponent {
-  private $$ = inject(UseUtilsService);
-  private $overlay = inject(Overlay);
+  protected $$ = inject(UseUtilsService);
+  protected $overlay = inject(Overlay);
 
   protected portal = viewChild(CdkPortal);
 
   protected overlayRef = signal<TOrNoValue<OverlayRef>>(null);
 
-  private readonly DEFAULT_POSTIONS: ConnectedPosition[] = [
+  protected readonly DEFAULT_POSITIONS: ConnectedPosition[] = [
     {
       originX: "start",
       originY: "bottom",
@@ -44,10 +45,16 @@ export class PopupConnectedComponent {
       overlayY: "top",
     },
   ];
-  private readonly DEFAULT_PANEL_CLASS =
+  protected readonly DEFAULT_PANEL_CLASS =
     "overlay-panel-5f90625f-2667-59d8-9c18-1b831aa465c1";
-  private readonly DEFAULT_CONFIG: TOverlayConfig = {
+  protected readonly DEFAULT_CONFIG: TOverlayConfig = {
     panelClass: this.DEFAULT_PANEL_CLASS,
+  };
+  protected readonly SCROLL_STRATEGIES = {
+    reposition: this.$overlay.scrollStrategies.reposition(),
+    block: this.$overlay.scrollStrategies.block(),
+    close: this.$overlay.scrollStrategies.close(),
+    noop: this.$overlay.scrollStrategies.noop(),
   };
 
   // @@ # animations.state
@@ -62,19 +69,21 @@ export class PopupConnectedComponent {
   // @@ # defines how the overlay is aligned relative to the trigger
   positions = input<ConnectedPosition[]>([]);
   // @@ # locks overlay to the first successful position
-  positionsLock = input(undefined, { transform: booleanAttribute });
+  positionsLock = input(false, { transform: booleanAttribute });
   // @@ # "offsetX offsetY"
   offset = input<string>("0 0");
   // @@ # overlay will never touch screen edges closer than this margin
   viewportMargin = input(0);
   // @@ # allows overlay to shrink to fit viewport
-  flexible = input(undefined, { transform: booleanAttribute });
+  flexible = input(true, { transform: booleanAttribute });
   // @@ # pushes overlay into view instead of clipping
-  push = input(undefined, { transform: booleanAttribute });
+  push = input(true, { transform: booleanAttribute });
   // @@ # allows overlay to resize after initial render
-  grow = input(undefined, { transform: booleanAttribute });
+  grow = input(false, { transform: booleanAttribute });
   // @@ # sets CSS transform-origin dynamically
-  transformOrigin = input<string>(this.DEFAULT_PANEL_CLASS);
+  transformOrigin = input<string>(`.${this.DEFAULT_PANEL_CLASS}`);
+  // @@ # scrollStrategy
+  scrolling = input<TScrollStrategyName>("reposition");
 
   // @@
   clickOutside = output<void>();
@@ -86,10 +95,32 @@ export class PopupConnectedComponent {
     try {
       return transformOverlayOffsets.parse(this.offset());
     } catch (error) {
-      // pass
+      // debug
+      console.warn(error);
     }
     return [0, 0];
   });
+
+  protected scrollStrategy_ = computed(
+    () => this.SCROLL_STRATEGIES[this.scrolling()]
+  );
+
+  constructor() {
+    // @detach state hidden
+    effect((cleanup) => {
+      const sbs = this.overlayRef()
+        ?.detachments()
+        .subscribe(() => this.hidden());
+      cleanup(() => sbs?.unsubscribe());
+    });
+    // @clickOutside emit
+    effect((cleanup) => {
+      const sbs = this.overlayRef()
+        ?.outsidePointerEvents()
+        .subscribe(() => this.clickOutside.emit());
+      cleanup(() => sbs?.unsubscribe());
+    });
+  }
 
   // @@
   open(trigger: any, overlayConfig?: TOverlayConfig) {
@@ -101,7 +132,7 @@ export class PopupConnectedComponent {
           positionStrategy: this.$overlay
             .position()
             .flexibleConnectedTo(trigger)
-            .withPositions([...this.positions(), ...this.DEFAULT_POSTIONS])
+            .withPositions([...this.positions(), ...this.DEFAULT_POSITIONS])
             .withDefaultOffsetX(this.offset_()[0])
             .withDefaultOffsetY(this.offset_()[1])
             .withViewportMargin(this.viewportMargin())
@@ -110,23 +141,28 @@ export class PopupConnectedComponent {
             .withLockedPosition(this.positionsLock())
             .withGrowAfterOpen(this.grow())
             .withTransformOriginOn(this.transformOrigin()),
+          // scrolling --default-reposition
+          scrollStrategy: this.scrollStrategy_(),
           // config
           ...this.$$.copy({}, this.DEFAULT_CONFIG, overlayConfig),
         })
       );
       this.overlayRef()!.attach(this.portal()!);
-      //
       this.visible();
     } catch (error) {
-      // pass
+      // debug
+      console.warn(error);
     }
   }
 
   // @@
-  close() {
-    this.overlayRef()?.dispose();
-    this.overlayRef.set(null);
-    //
+  close(force = false) {
+    if (!this.isOpened()) return;
+    if (force) {
+      this.overlayRef()!.dispose();
+      this.overlayRef.set(null);
+      return;
+    }
     this.hidden();
   }
 
@@ -135,7 +171,7 @@ export class PopupConnectedComponent {
     if (this.isOpened()) {
       // init close animation;
       //   autocloses @doneAnimation.done
-      this.hidden();
+      this.close();
       return;
     }
     // insert popup
@@ -149,7 +185,7 @@ export class PopupConnectedComponent {
     hiddenState: THiddenOrVisible = "hidden"
   ) {
     if (hiddenState == $event.toState) {
-      this.close();
+      this.close(true);
     }
   }
 }

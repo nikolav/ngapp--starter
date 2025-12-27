@@ -2,13 +2,13 @@
   box-shadow: var(--mat-sys-level0) !important;
 }
 .app-elevated {
-  box-shadow: var(--mat-sys-level1);
+  box-shadow: var(--mat-sys-level1) !important;
 }
 .app-elevated-lg {
-  box-shadow: var(--mat-sys-level2);
+  box-shadow: var(--mat-sys-level2) !important;
 }
 .app-elevated-xl {
-  box-shadow: var(--mat-sys-level3);
+  box-shadow: var(--mat-sys-level3) !important;
 }
 .app-bg-primary {
   background-color: var(--mat-sys-primary);

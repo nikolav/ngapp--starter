@@ -15,7 +15,9 @@ const DEFAULT_CONFIG: ITriggerFadeScaleConfig = {
   ease: "ease-out",
 };
 
-export const triggerFadeScale = (config?: ITriggerFadeScaleConfig) => {
+export const triggerVisibleHiddenFadeScale = (
+  config?: ITriggerFadeScaleConfig
+) => {
   const _ = Object.assign({}, DEFAULT_CONFIG, config);
   return trigger(_.name, [
     state("visible", style({ opacity: 1, scale: 1 })),
