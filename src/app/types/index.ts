@@ -88,6 +88,13 @@ export interface IDocsPatchInput {
 export type TCleanupCallback = (doneCallback: TFunctionVoid) => void;
 export type TOverlayConfig = Omit<OverlayConfig, "positionStrategy">;
 export type THiddenOrVisible = "hidden" | "visible";
+export interface ITriggerFadeSlideConfig {
+  name?: any;
+  offsetX?: any;
+  offsetY?: any;
+  duration?: any;
+  ease?: any;
+}
 
 //##
 export type { TRecordJson, TJson, TJsonLiteral, MaybeAsync as TMaybeAsync };

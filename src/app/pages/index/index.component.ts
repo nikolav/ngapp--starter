@@ -8,7 +8,7 @@ import {
 import { LayoutDefault } from "../../layouts";
 import { PopupConnectedComponent } from "../../components/app";
 import { HostElementDirective } from "../../directives";
-import { triggerFadeSlideUp } from "../../assets/animations";
+import { triggerFadeSlide } from "../../assets/animations";
 
 @Component({
   selector: "page-index",
@@ -22,7 +22,7 @@ import { triggerFadeSlideUp } from "../../assets/animations";
   ],
   templateUrl: "./index.component.html",
   styleUrl: "./index.component.scss",
-  animations: [triggerFadeSlideUp()],
+  animations: [triggerFadeSlide()],
 })
 export class IndexComponent implements OnInit, OnDestroy {
   ok() {
