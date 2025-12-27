@@ -2,13 +2,4 @@
   <div [@routeTransitionBlurInOut]="routeTransitionPrepareOutlet(outlet)">
     <router-outlet #outlet="outlet"></router-outlet>
   </div>
-  <app-portal-bottom>
-    <mat-toolbar>
-      <mat-toolbar-row class="flex justify-around">
-        <a routerLink="/">home</a>
-        <a routerLink="/app">app</a>
-        <a routerLink="/demo">demo</a>
-      </mat-toolbar-row>
-    </mat-toolbar>
-  </app-portal-bottom>
 </main>
