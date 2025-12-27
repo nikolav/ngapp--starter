@@ -3,10 +3,11 @@ import { NgModule } from "@angular/core";
 import { PortalModule } from "@angular/cdk/portal";
 import { OverlayModule } from "@angular/cdk/overlay";
 import { TextFieldModule } from "@angular/cdk/text-field";
+import { A11yModule } from "@angular/cdk/a11y";
 
 const MODULES = [
   // #Core
-  // A11yModule,
+  A11yModule,
   // BidiModule,
   // LayoutModule,
   // PlatformModule,
