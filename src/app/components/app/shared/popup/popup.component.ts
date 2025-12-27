@@ -37,7 +37,7 @@ export class PopupConnectedComponent {
 
   protected overlayRef = signal<TOrNoValue<OverlayRef>>(null);
 
-  protected readonly DEFAULT_POSITIONS: ConnectedPosition[] = [
+  protected DEFAULT_POSITIONS: ConnectedPosition[] = [
     {
       originX: "start",
       originY: "bottom",
@@ -45,12 +45,12 @@ export class PopupConnectedComponent {
       overlayY: "top",
     },
   ];
-  protected readonly DEFAULT_PANEL_CLASS =
+  protected DEFAULT_PANEL_CLASS =
     "overlay-panel-5f90625f-2667-59d8-9c18-1b831aa465c1";
-  protected readonly DEFAULT_CONFIG: TOverlayConfig = {
+  protected DEFAULT_CONFIG: TOverlayConfig = {
     panelClass: this.DEFAULT_PANEL_CLASS,
   };
-  protected readonly SCROLL_STRATEGIES = {
+  protected SCROLL_STRATEGIES = {
     reposition: this.$overlay.scrollStrategies.reposition(),
     block: this.$overlay.scrollStrategies.block(),
     close: this.$overlay.scrollStrategies.close(),
