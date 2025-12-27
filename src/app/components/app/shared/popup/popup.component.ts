@@ -53,7 +53,7 @@ export class PopupConnectedComponent {
   };
 
   // @@ # animations.state
-  state = model<THiddenOrVisible>("hidden");
+  readonly state = model<THiddenOrVisible>("hidden");
   hidden() {
     this.state.set("hidden");
   }
