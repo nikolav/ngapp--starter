@@ -6,21 +6,28 @@ import {
   trigger,
 } from "@angular/animations";
 
-interface ITriggerFadeSlideUpConfig {
-  offset?: any;
+interface ITriggerFadeSlideConfig {
+  offsetX?: any;
+  offsetY?: any;
   duration?: any;
+  ease?: any;
 }
 
-const DEFAULT_CONFIG: ITriggerFadeSlideUpConfig = {
-  offset: "2px",
+const DEFAULT_CONFIG: ITriggerFadeSlideConfig = {
+  offsetX: 0,
+  offsetY: "2px",
   duration: ".22s",
+  ease: "ease-out",
 };
 
-export const triggerFadeSlideUp = (config?: ITriggerFadeSlideUpConfig) => {
+export const triggerFadeSlideUp = (config?: ITriggerFadeSlideConfig) => {
   const _ = Object.assign({}, DEFAULT_CONFIG, config);
   return trigger("fadeSlideUp", [
     state("visible", style({ opacity: 1, translate: "0 0" })),
-    state("hidden", style({ opacity: 0, translate: `0 ${_.offset}` })),
-    transition("visible <=> hidden", animate(`${_.duration} ease-out`)),
+    state(
+      "hidden",
+      style({ opacity: 0, translate: `${_.offsetX} ${_.offsetY}` })
+    ),
+    transition("visible <=> hidden", animate(`${_.duration} ${_.ease}`)),
   ]);
 };
