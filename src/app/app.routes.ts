@@ -6,7 +6,7 @@ export const routes: Routes = [
   {
     path: "",
     component: PageIndex,
-    title: "🏠nikolav.rs | dobrodošli",
+    title: "🏠 nikolav.rs | dobrodošli",
     pathMatch: "full",
     data: { key: "0c05141c-0c3b-5d37-8fc0-800d479810e2" },
   },
