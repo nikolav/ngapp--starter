@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { isNumeric } from "../utils/is-numeric";
 
 // #https://zod.dev/api?id=transforms
 export const transformOverlayOffsets = z
