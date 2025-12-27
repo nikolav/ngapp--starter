@@ -1,5 +1,7 @@
 import { GuardResult, MaybeAsync } from "@angular/router";
 import { type Subscription } from "rxjs";
+import { OverlayConfig } from "@angular/cdk/overlay";
+
 import type {
   JsonDataRecord as TRecordJson,
   TJson,
@@ -82,6 +84,22 @@ export interface IDocsPatchInput {
     id?: any;
     [key: string]: unknown;
   };
+}
+export type TCleanupCallback = (doneCallback: TFunctionVoid) => void;
+export type TOverlayConfig = Omit<OverlayConfig, "positionStrategy">;
+export type THiddenOrVisible = "hidden" | "visible";
+export interface ITriggerFadeSlideConfig {
+  name?: any;
+  offsetX?: any;
+  offsetY?: any;
+  duration?: any;
+  ease?: any;
+}
+export interface ITriggerFadeScaleConfig {
+  name?: any;
+  scale?: any;
+  duration?: any;
+  ease?: any;
 }
 
 //##

@@ -1,15 +1,11 @@
-<app-layout-default>
-  <section class="page--demo">
-    <h2>
-      &#64;page--demo
-    </h2>
-    <div>
-      <button mat-button (click)="boxIsActive.toggle()" i18n>OK</button>
-    </div>
-    <div class="flex justify-center">
-      @if(boxIsActive.isActive()) {
-      <div @showHide class="w-32 h-32 app-bg-primary rounded-full"></div>
-      }
-    </div>
-  </section>
+<app-layout-default class="page--demo">
+  <h2>&#64;page--demo</h2>
+  <div>
+    <button mat-button (click)="boxIsActive.toggle()" i18n>OK</button>
+  </div>
+  <div class="flex justify-center">
+    @if(boxIsActive.isActive()) {
+    <div @showHide class="w-32 h-32 app-bg-primary rounded-full"></div>
+    }
+  </div>
 </app-layout-default>

@@ -27,26 +27,32 @@ export class AnimatecssDirective implements OnDestroy {
   private readonly defaultDuration = 1000;
   private cleanupFn: TOrNoValue<() => void> = null;
 
+  // @@
+  animateCssAnimationStart = output<TOrNoValue<Event>>();
+  // @@
+  animateCssAnimationEnd = output<TOrNoValue<Event>>();
+
+  // @@
   // Input for animation class (without 'animate__' prefix)
   animateCss = input("", {
     // matches the directive selector
     alias: "animateCss",
   });
 
-  animateCssAnimationStart = output<TOrNoValue<Event>>();
-  animateCssAnimationEnd = output<TOrNoValue<Event>>();
-
+  // @@
   // Input to disable animations
   disabled = input(false, {
     alias: "animateCssDisabled",
     transform: booleanAttribute,
   });
 
+  // @@
   duration = input(this.defaultDuration, {
     alias: "animateCssDuration",
     transform: (d: any) => (this.$$.isNumeric(d) ? `${Number(d) / 1000}s` : d),
   });
 
+  // @@
   // Model to trigger animations
   key = model("", {
     alias: "animateCssKey",
@@ -64,7 +70,7 @@ export class AnimatecssDirective implements OnDestroy {
     this.removeEventListeners();
   }
 
-  async triggerAnimateCss() {
+  triggerAnimateCss() {
     this.removeEventListeners();
 
     const node = this.elRef.nativeElement;
@@ -116,10 +122,8 @@ export class AnimatecssDirective implements OnDestroy {
   }
 
   private removeEventListeners() {
-    if (this.cleanupFn) {
-      this.cleanupFn();
-      this.cleanupFn = null;
-    }
+    this.cleanupFn?.();
+    this.cleanupFn = null;
   }
 }
 

@@ -52,7 +52,6 @@ import {
   authRequestInterceptor,
 } from "./middleware/interceptors";
 
-import { TOKEN_foo } from "./keys";
 import {
   MAT_DEFAULTS,
   ENDPOINT_GRAPHQL,
@@ -115,10 +114,6 @@ export const appConfig: ApplicationConfig = {
     provideCharts(withDefaultRegisterables()),
 
     // #provide:custom
-    {
-      provide: TOKEN_foo,
-      useValue: "foobar",
-    },
 
     // ##mat-datepicker
     // { provide: MAT_DATE_LOCALE, useValue: "sr-RS" },

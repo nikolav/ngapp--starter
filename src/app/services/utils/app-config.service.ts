@@ -14,7 +14,6 @@ import {
   KEY_ACCESS_TOKEN,
   APP_ID,
 } from "../../config";
-import { TOKEN_foo, TOKEN_localStorage } from "../../keys";
 
 const withTimestamps = (ls: any[]) => [...ls, "created_at", "updated_at"];
 
@@ -111,10 +110,7 @@ export class AppConfigService {
     ],
   };
   // di tokens
-  di = {
-    TOKEN_foo,
-    TOKEN_localStorage,
-  };
+  di = {};
   audio = {
     howl: {
       defaults: <Partial<HowlOptions>>{
@@ -135,6 +131,11 @@ export class AppConfigService {
     firebase: {
       doc: {
         CACHE: "CACHE:323d8844-a852-5c68-ac08-59c374194b2c",
+      },
+    },
+    google: {
+      maps: {
+        SCRIPT_ID: "ID:409e28ef-9da8-5357-a860-dc88dd39b145",
       },
     },
   };

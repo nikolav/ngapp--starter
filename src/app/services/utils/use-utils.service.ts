@@ -34,6 +34,8 @@ import {
   empty$$,
   StatusResult,
   arrayLs,
+  toObs$$,
+  strEnsureHasPrefix,
 } from "../../utils";
 
 const {
@@ -164,10 +166,12 @@ export class UseUtilsService {
   b64tob = b64tob;
   res = StatusResult.init.bind(StatusResult);
   ls = arrayLs;
+  strEnsureHasPrefix = strEnsureHasPrefix;
 
   // obs factory
   error$$ = error$$;
   empty$$ = empty$$;
+  of$$ = toObs$$;
 
   // 3rd party
   parseBoolean = parseBoolean;

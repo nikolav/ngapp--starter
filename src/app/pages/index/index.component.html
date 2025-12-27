@@ -1,13 +1,98 @@
-<app-layout-default>
-  <section class="page--index">
-    <div class="text-center mt-12">
-      <h1>👋 Zdravo!</h1>
-      <p class="contact">
-        Kontakt: <span class="font-semibold">Nikola Vuković</span>
-        <a class="app-color-primary" href="mailto:admin@nikolav.rs">
-          <span class="mx-1">&lt;admin&#64;nikolav.rs&gt;</span>
-        </a>
+<app-layout-default class="page--index">
+  <section
+    class="rounded-2xl border border-white/10 bg-white/5 p-6 shadow-xl shadow-black/20 backdrop-blur"
+  >
+    <header class="mb-6">
+      <h1 class="text-3xl font-semibold tracking-tight">👋 Nikola Vuković</h1>
+      <p class="mt-2 text-slate-300">
+        📇 Kontakt informacije (statička HTML stranica)
       </p>
+    </header>
+
+    <div class="space-y-3">
+      <div class="flex items-start gap-3 rounded-xl bg-black/20 p-4">
+        <span class="text-xl">📛</span>
+        <div>
+          <div class="text-xs uppercase tracking-wider text-slate-400">
+            Ime i prezime
+          </div>
+          <div class="text-lg font-medium">Nikola Vuković</div>
+        </div>
+      </div>
+
+      <div class="flex items-start gap-3 rounded-xl bg-black/20 p-4">
+        <span class="text-xl">📧</span>
+        <div>
+          <div class="text-xs uppercase tracking-wider text-slate-400">
+            Email
+          </div>
+          <a
+            class="text-lg font-medium text-sky-300 hover:text-sky-200 underline underline-offset-4"
+            href="mailto:admin@nikolav.rs"
+          >
+            admin@nikolav.rs
+          </a>
+        </div>
+      </div>
+
+      <div class="flex items-start gap-3 rounded-xl bg-black/20 p-4">
+        <span class="text-xl">📞</span>
+        <div>
+          <div class="text-xs uppercase tracking-wider text-slate-400">
+            Telefon
+          </div>
+          <a
+            class="text-lg font-medium text-emerald-300 hover:text-emerald-200 underline underline-offset-4"
+            href="tel:+381695725523"
+          >
+            069 572 55 23
+          </a>
+          <div class="mt-1 text-sm text-slate-400">
+            🇷🇸 Srbija (dodirnite za poziv)
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-start gap-3 rounded-xl bg-black/20 p-4">
+        <span class="text-xl">𝕏</span>
+        <div>
+          <div class="text-xs uppercase tracking-wider text-slate-400">
+            X (Twitter)
+          </div>
+          <a
+            class="text-lg font-medium text-fuchsia-300 hover:text-fuchsia-200 underline underline-offset-4 break-all"
+            href="https://x.com/twiNikola"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://x.com/twiNikola
+          </a>
+        </div>
+      </div>
+
+      <div class="flex items-start gap-3 rounded-xl bg-black/20 p-4">
+        <span class="text-xl">📘</span>
+        <div>
+          <div class="text-xs uppercase tracking-wider text-slate-400">
+            Facebook
+          </div>
+          <a
+            class="text-lg font-medium text-blue-300 hover:text-blue-200 underline underline-offset-4 break-all"
+            href="https://www.facebook.com/nikolav.me/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://www.facebook.com/nikolav.me/
+          </a>
+        </div>
+      </div>
     </div>
+
+    <footer
+      class="mt-8 flex flex-wrap items-center justify-between gap-3 border-t border-white/10 pt-5"
+    >
+      <div class="text-sm text-slate-400">✨ Izrađeno uz TailwindCSS</div>
+      <div class="text-sm text-slate-400">✅ Statično • Brzo • Jednostavno</div>
+    </footer>
   </section>
 </app-layout-default>

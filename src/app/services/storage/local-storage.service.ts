@@ -9,6 +9,7 @@ import {
   ManageSubscriptionsService,
   UseUtilsService,
 } from "../utils";
+import { TOKEN_localStorage } from "../../keys";
 
 @Injectable({ providedIn: "root" })
 export class LocalStorageService implements OnDestroy {
@@ -17,7 +18,7 @@ export class LocalStorageService implements OnDestroy {
   private $emitter = inject(EmitterService);
   private $subs = new ManageSubscriptionsService();
   //
-  private localStorage = inject(this.$config.di.TOKEN_localStorage);
+  private localStorage = inject(TOKEN_localStorage);
   private ON_STORAGE = this.$config.events.STORAGE_CHANGE;
   private STORAGE = this.$config.key.STORAGE;
   //

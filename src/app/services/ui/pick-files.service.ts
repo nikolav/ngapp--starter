@@ -1,4 +1,6 @@
 import { computed, inject, Injectable } from "@angular/core";
+import { DOCUMENT } from "@angular/common";
+
 import { UseProccessMonitorService, UseUtilsService } from "../utils";
 import { Observable } from "rxjs";
 import { PickFileOptions } from "../../types";
@@ -7,6 +9,7 @@ import { PickFileOptions } from "../../types";
 export class PickFilesService {
   private $$ = inject(UseUtilsService);
   private $ps = new UseProccessMonitorService();
+  private document = inject(DOCUMENT);
   //
   readonly processing = computed(() => Boolean(this.$ps.processing()));
   //
@@ -35,7 +38,7 @@ export class PickFilesService {
   // Fallback: hidden <input type="file">
   private _openFallback(opts: PickFileOptions = {}) {
     return new Promise<File[]>((resolve, reject) => {
-      const input = document.createElement("input");
+      const input = this.document.createElement("input");
       input.type = "file";
       if (opts.accept) input.accept = opts.accept;
       if (opts.multiple) input.multiple = true;
@@ -45,13 +48,13 @@ export class PickFilesService {
       // Important: append to DOM so iOS/Safari will open the picker reliably
       input.style.position = "fixed";
       input.style.left = "-9999px";
-      document.body.appendChild(input);
+      this.document.body.appendChild(input);
 
       const clean = () => {
         input.removeEventListener("change", onChange);
         input.removeEventListener("cancel", onCancel as any);
         // defer
-        setTimeout(() => document.body.removeChild(input));
+        setTimeout(() => this.document.body.removeChild(input));
       };
 
       const onChange = () => {

@@ -1,1 +1,1 @@
-export {};
+export { foobarsResolverResolver } from "./foobars-resolver.resolver";

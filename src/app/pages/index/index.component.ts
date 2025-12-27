@@ -1,5 +1,4 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
-import { JsonPipe } from "@angular/common";
 
 import {
   IconxModule,
@@ -7,7 +6,9 @@ import {
   CoreModulesShared,
 } from "../../modules";
 import { LayoutDefault } from "../../layouts";
-import { DocService } from "../../services";
+import { PopupConnectedComponent } from "../../components/app";
+import { HostElementDirective } from "../../directives";
+import { triggerFadeSlide } from "../../assets/animations";
 
 @Component({
   selector: "page-index",
@@ -16,23 +17,16 @@ import { DocService } from "../../services";
     MaterialSharedModule,
     LayoutDefault,
     IconxModule,
-    JsonPipe,
+    PopupConnectedComponent,
+    HostElementDirective,
   ],
   templateUrl: "./index.component.html",
   styleUrl: "./index.component.scss",
+  animations: [triggerFadeSlide({ name: "fadeSlideUp" })],
 })
 export class IndexComponent implements OnInit, OnDestroy {
-  readonly $d = DocService.init("d:QaHsmyoiFWcWZ4Dlt");
   ok() {
-    this.$d
-      .commit({
-        "x:1": Math.random(),
-        "x:2": Math.random(),
-      })
-      .subscribe((res) => {
-        console.log({ res });
-      });
-    // this.$d.drop("x:2").subscribe((res) => console.log({ res }));
+    console.log("ok");
   }
   ngOnInit() {}
   ngOnDestroy() {}
