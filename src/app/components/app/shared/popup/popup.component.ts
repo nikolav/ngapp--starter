@@ -7,13 +7,11 @@ import {
   model,
   output,
   signal,
-  TemplateRef,
   viewChild,
-  ViewContainerRef,
 } from "@angular/core";
-import { TemplatePortal } from "@angular/cdk/portal";
+import type { AnimationEvent } from "@angular/animations";
+import { CdkPortal } from "@angular/cdk/portal";
 import { ConnectedPosition, Overlay, OverlayRef } from "@angular/cdk/overlay";
-import { AnimationEvent } from "@angular/animations";
 
 import {
   THiddenOrVisible,
@@ -26,17 +24,16 @@ import { ClickOutsideDirective } from "../../../../directives";
 
 @Component({
   selector: "app-popup",
-  imports: [ClickOutsideDirective],
+  imports: [ClickOutsideDirective, CdkPortal],
   templateUrl: "./popup.component.html",
   styleUrl: "./popup.component.scss",
 })
 export class PopupConnectedComponent {
   private $$ = inject(UseUtilsService);
-  private vcr = inject(ViewContainerRef);
   private $overlay = inject(Overlay);
 
   protected overlayRef = signal<TOrNoValue<OverlayRef>>(null);
-  protected tmpl = viewChild("tmplOverlay", { read: TemplateRef });
+  protected portal = viewChild(CdkPortal);
 
   private readonly DEFAULT_POSTIONS: ConnectedPosition[] = [
     {
@@ -116,7 +113,7 @@ export class PopupConnectedComponent {
           ...this.$$.copy({}, this.DEFAULT_CONFIG, overlayConfig),
         })
       );
-      this.overlayRef()!.attach(new TemplatePortal(this.tmpl()!, this.vcr));
+      this.overlayRef()!.attach(this.portal()!);
       //
       this.visible();
     } catch (error) {
