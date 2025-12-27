@@ -5,11 +5,7 @@
       mat-button
       hostElement
       #trigger="hostElement"
-      (click)="
-        popup.isOpened()
-          ? popup.hidden()
-          : popup.open(trigger.element(), { width: 320 })
-      "
+      (click)="popup.toggle(trigger.element(), { width: 320 })"
     >
       popup
     </button>

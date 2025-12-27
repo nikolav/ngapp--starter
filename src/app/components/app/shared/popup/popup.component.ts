@@ -133,6 +133,18 @@ export class PopupConnectedComponent {
   }
 
   // @@
+  toggle(trigger: any, overlayConfig?: TOverlayConfig) {
+    if (this.isOpened()) {
+      // init close animation
+      this.hidden();
+      return;
+    }
+    // insert popup
+    // init open animation
+    this.open(trigger, overlayConfig);
+  }
+
+  // @@
   onCloseAnimationDone(
     $event: AnimationEvent,
     toState: THiddenOrVisible = "hidden"
