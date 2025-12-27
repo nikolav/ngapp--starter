@@ -4,9 +4,7 @@ import { isNumeric } from "../utils/is-numeric";
 // #https://zod.dev/api?id=transforms
 export const transformOverlayOffsets = z
   .string()
-  .transform((value: string) =>
-    value ? value.split(/\s+/g).map(Number) : [0, 0]
-  )
-  .transform((value) =>
-    (1 < value.length ? value : [...value, 0, 0]).slice(0, 2)
-  );
+  .trim()
+  .transform((value: string) => (value ? value.split(/\s+/g) : [0, 0]))
+  .refine((value) => value.every(isNumeric))
+  .transform((value) => [...value.map(Number), 0, 0].slice(0, 2));
