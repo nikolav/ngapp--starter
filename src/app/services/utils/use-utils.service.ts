@@ -208,7 +208,7 @@ export class UseUtilsService {
   ls = arrayLs;
   strEnsureHasPrefix = strEnsureHasPrefix;
 
-  // obs factory
+  // observables factory
   error$$ = error$$;
   empty$$ = empty$$;
   of$$ = toObs$$;
@@ -222,6 +222,7 @@ export class UseUtilsService {
   Date = Date;
   JSON = JSON;
   structuredClone = structuredClone;
+  cloned = structuredClone;
 
   // etc.
   copy = Object.assign.bind(Object);
