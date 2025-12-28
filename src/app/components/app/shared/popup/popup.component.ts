@@ -1,5 +1,6 @@
 import {
   booleanAttribute,
+  ChangeDetectionStrategy,
   Component,
   computed,
   effect,
@@ -29,6 +30,7 @@ import { CdkModulesShared } from "../../../../modules";
   imports: [CdkModulesShared, CdkPortal],
   templateUrl: "./popup.component.html",
   styleUrl: "./popup.component.scss",
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PopupConnectedComponent {
   protected $$ = inject(UseUtilsService);

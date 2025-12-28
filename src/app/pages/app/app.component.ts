@@ -1,4 +1,11 @@
-import { Component, computed, inject, OnDestroy, OnInit } from "@angular/core";
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+  OnDestroy,
+  OnInit,
+} from "@angular/core";
 import { AsyncPipe } from "@angular/common";
 
 import {
@@ -20,6 +27,7 @@ import { StoreAuth } from "../../stores";
   ],
   templateUrl: "./app.component.html",
   styleUrls: ["./app.component.scss"],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent implements OnDestroy, OnInit {
   readonly $auth = inject(StoreAuth);

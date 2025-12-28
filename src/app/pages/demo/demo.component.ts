@@ -1,4 +1,9 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnDestroy,
+  OnInit,
+} from "@angular/core";
 import { transition, trigger, useAnimation } from "@angular/animations";
 
 import { LayoutDefault } from "../../layouts";
@@ -11,6 +16,7 @@ import { UseToggleFlagService } from "../../services";
   imports: [LayoutDefault, MaterialSharedModule],
   templateUrl: "./demo.component.html",
   styleUrl: "./demo.component.scss",
+  changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [
     trigger("showHide", [
       transition(
