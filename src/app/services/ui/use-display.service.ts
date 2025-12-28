@@ -4,6 +4,7 @@ import { Subject, fromEvent } from "rxjs";
 import { takeUntil, throttleTime } from "rxjs/operators";
 
 import { TOrNoValue } from "../../types";
+import { UseUtilsService } from "../utils";
 
 const DISPLAY_NAMES = new Map([
   [Breakpoints.XSmall, "xs"],
@@ -26,8 +27,8 @@ export class UseDisplayService {
   protected UNKNOWN = "";
   protected THROTTLE_TIME_wResize = 122;
 
-  protected _breakpointObserver = inject(BreakpointObserver);
-  protected _breakpointObserverOrientation = inject(BreakpointObserver);
+  protected $$ = inject(UseUtilsService);
+  protected $b = inject(BreakpointObserver);
 
   protected _destroyed = new Subject<void>();
 
@@ -60,7 +61,7 @@ export class UseDisplayService {
 
   constructor() {
     // sync size
-    this._breakpointObserver
+    this.$b
       .observe([
         Breakpoints.XSmall,
         Breakpoints.Small,
@@ -70,23 +71,19 @@ export class UseDisplayService {
       ])
       .pipe(takeUntil(this._destroyed))
       .subscribe((result) => {
-        for (const query of Object.keys(result.breakpoints)) {
-          if (result.breakpoints[query]) {
-            this.current.set(DISPLAY_NAMES.get(query) ?? this.UNKNOWN);
-          }
+        const query = this.$$.findKey(result.breakpoints, (value) => value);
+        if (query) {
+          this.current.set(DISPLAY_NAMES.get(query) ?? this.UNKNOWN);
         }
       });
     // sync orientation
-    this._breakpointObserverOrientation
+    this.$b
       .observe([Q_ORIENTATION_PORTRAIT, Q_ORIENTATION_LANDSCAPE])
       .pipe(takeUntil(this._destroyed))
       .subscribe((result) => {
-        for (const query of Object.keys(result.breakpoints)) {
-          if (result.breakpoints[query]) {
-            this.orientation.set(
-              DISPLAY_ORIENTATIONS.get(query) ?? this.UNKNOWN
-            );
-          }
+        const query = this.$$.findKey(result.breakpoints, (value) => value);
+        if (query) {
+          this.orientation.set(DISPLAY_ORIENTATIONS.get(query) ?? this.UNKNOWN);
         }
       });
   }
@@ -95,7 +92,7 @@ export class UseDisplayService {
   // evaluate one or more media queries against the current viewport size.
   //  .isMatched("(max-width: 599px)");
   matches(displayQuery: string | readonly string[]) {
-    return this._breakpointObserver.isMatched(displayQuery);
+    return this.$b.isMatched(displayQuery);
   }
 
   // @@
