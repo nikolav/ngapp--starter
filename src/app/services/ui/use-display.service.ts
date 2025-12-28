@@ -1,7 +1,7 @@
 import { Injectable, computed, inject, signal } from "@angular/core";
 import { BreakpointObserver, Breakpoints } from "@angular/cdk/layout";
-import { Subject, Subscription, fromEvent } from "rxjs";
-import { takeUntil } from "rxjs/operators";
+import { Subject, fromEvent } from "rxjs";
+import { takeUntil, throttleTime } from "rxjs/operators";
 
 import { TOrNoValue } from "../../types";
 
@@ -23,25 +23,40 @@ const DISPLAY_ORIENTATIONS = new Map([
   providedIn: "root",
 })
 export class UseDisplayService {
-  readonly UNKNOWN = "";
-  private _destroyed = new Subject<void>();
-  private readonly _breakpointObserver = inject(BreakpointObserver);
-  private readonly _breakpointObserverOrientation = inject(BreakpointObserver);
+  protected UNKNOWN = "";
+  protected THROTTLE_TIME_wResize = 122;
 
+  protected _breakpointObserver = inject(BreakpointObserver);
+  protected _breakpointObserverOrientation = inject(BreakpointObserver);
+
+  protected _destroyed = new Subject<void>();
+
+  // @@
   readonly current = signal<string>(this.UNKNOWN);
   readonly orientation = signal<string>(this.UNKNOWN);
   readonly width = signal<TOrNoValue<number>>(window.innerWidth);
 
-  xs = computed(() => "xs" === this.current());
-  sm = computed(() => "sm" === this.current());
-  md = computed(() => "md" === this.current());
-  lg = computed(() => "lg" === this.current());
-  xl = computed(() => "xl" === this.current());
+  readonly xs = computed(() => "xs" === this.current());
+  readonly sm = computed(() => "sm" === this.current());
+  readonly md = computed(() => "md" === this.current());
+  readonly lg = computed(() => "lg" === this.current());
+  readonly xl = computed(() => "xl" === this.current());
 
-  landscape = computed(() => "landscape" === this.orientation());
-  portrait = computed(() => "portrait" === this.orientation());
+  readonly landscape = computed(() => "landscape" === this.orientation());
+  readonly portrait = computed(() => "portrait" === this.orientation());
+  // /@@
 
-  private width_s: TOrNoValue<Subscription>;
+  // sync window width
+  protected width_s = fromEvent(window, "resize")
+    .pipe(
+      takeUntil(this._destroyed),
+      throttleTime(this.THROTTLE_TIME_wResize, undefined, {
+        trailing: true,
+      })
+    )
+    .subscribe(() => {
+      this.width.set(window.innerWidth);
+    });
 
   constructor() {
     // sync size
@@ -74,16 +89,16 @@ export class UseDisplayService {
           }
         }
       });
-    // sync window width
-    this.width_s = fromEvent(window, "resize").subscribe(() => {
-      this.width.set(window.innerWidth);
-    });
   }
+
+  // @@
   // evaluate one or more media queries against the current viewport size.
   //  .isMatched("(max-width: 599px)");
   matches(displayQuery: string | readonly string[]) {
     return this._breakpointObserver.isMatched(displayQuery);
   }
+
+  // @@
   destroy() {
     this.width_s?.unsubscribe();
     this._destroyed.next();
