@@ -31,7 +31,8 @@ export const BreakpointsCustom = {
   Small: "(max-width: 768px)",
   Medium: "(max-width: 1024px)",
   Large: "(max-width: 1440px)",
-  XLarge: "(max-width: 1920px)",
+  XLarge: "(min-width: 1441px)",
+  // XLarge: "(max-width: 1920px)",
 
   /* ---------------------------------------------------- */
   /* semantic device ranges                               */

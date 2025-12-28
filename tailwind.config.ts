@@ -28,7 +28,8 @@ export default <Partial<Config>>{
         sm: "768px",
         md: "1024px",
         lg: "1440px",
-        xl: "1920px",
+        xl: { min: "1441px" },
+        // xl: "1920px",
 
         /* semantic device ranges */
         handset: { max: "767.99px" },
