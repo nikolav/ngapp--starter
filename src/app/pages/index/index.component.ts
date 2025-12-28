@@ -3,7 +3,6 @@ import {
   OnInit,
   OnDestroy,
   ChangeDetectionStrategy,
-  inject,
 } from "@angular/core";
 
 import {
@@ -12,10 +11,10 @@ import {
   CoreModulesShared,
 } from "../../modules";
 import { LayoutDefault } from "../../layouts";
-import { PopupConnectedComponent } from "../../components/app";
 import { HostElementDirective } from "../../directives";
 import { triggerVisibleHiddenFadeSlide } from "../../assets/animations";
-import { UseDisplayService } from "../../services";
+import { PopupConnectedComponent } from "../../components/app";
+import { DemoComponent } from "../../components/dev";
 
 @Component({
   selector: "page-index",
@@ -26,6 +25,7 @@ import { UseDisplayService } from "../../services";
     IconxModule,
     PopupConnectedComponent,
     HostElementDirective,
+    DemoComponent,
   ],
   templateUrl: "./index.component.html",
   styleUrl: "./index.component.scss",
@@ -33,7 +33,6 @@ import { UseDisplayService } from "../../services";
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class IndexComponent implements OnInit, OnDestroy {
-  $display = inject(UseDisplayService);
   ok() {
     console.log("ok");
   }
