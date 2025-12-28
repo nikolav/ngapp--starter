@@ -1,4 +1,9 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  ChangeDetectionStrategy,
+} from "@angular/core";
 
 import {
   IconxModule,
@@ -6,7 +11,6 @@ import {
   CoreModulesShared,
 } from "../../modules";
 import { LayoutDefault } from "../../layouts";
-
 @Component({
   selector: "page-index",
   imports: [
@@ -17,6 +21,7 @@ import { LayoutDefault } from "../../layouts";
   ],
   templateUrl: "./index.component.html",
   styleUrl: "./index.component.scss",
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class IndexComponent implements OnInit, OnDestroy {
   ok() {

@@ -1,17 +1,11 @@
 import { Injectable, computed, inject, signal } from "@angular/core";
-import { BreakpointObserver, Breakpoints } from "@angular/cdk/layout";
-import { Subject, Subscription, fromEvent } from "rxjs";
-import { takeUntil } from "rxjs/operators";
+import { BreakpointObserver } from "@angular/cdk/layout";
+import { Subject, fromEvent } from "rxjs";
+import { takeUntil, throttleTime } from "rxjs/operators";
 
-import { TOrNoValue } from "../../types";
+import { UseUtilsService } from "../utils";
+import { TOKEN_breakpoints } from "../../keys";
 
-const DISPLAY_NAMES = new Map([
-  [Breakpoints.XSmall, "xs"],
-  [Breakpoints.Small, "sm"],
-  [Breakpoints.Medium, "md"],
-  [Breakpoints.Large, "lg"],
-  [Breakpoints.XLarge, "xl"],
-]);
 const Q_ORIENTATION_PORTRAIT = "(orientation: portrait)";
 const Q_ORIENTATION_LANDSCAPE = "(orientation: landscape)";
 const DISPLAY_ORIENTATIONS = new Map([
@@ -23,67 +17,87 @@ const DISPLAY_ORIENTATIONS = new Map([
   providedIn: "root",
 })
 export class UseDisplayService {
-  readonly UNKNOWN = "";
-  private _destroyed = new Subject<void>();
-  private readonly _breakpointObserver = inject(BreakpointObserver);
-  private readonly _breakpointObserverOrientation = inject(BreakpointObserver);
+  protected UNKNOWN = "";
+  protected THROTTLE_TIME_wResize = 122;
 
+  protected $$ = inject(UseUtilsService);
+  protected $b = inject(BreakpointObserver);
+  protected BreakpointsCustom = inject(TOKEN_breakpoints);
+
+  protected DISPLAY_NAMES = new Map([
+    [this.BreakpointsCustom.XSmall, "xs"],
+    [this.BreakpointsCustom.Small, "sm"],
+    [this.BreakpointsCustom.Medium, "md"],
+    [this.BreakpointsCustom.Large, "lg"],
+    [this.BreakpointsCustom.XLarge, "xl"],
+  ]);
+
+  protected _destroyed = new Subject<void>();
+
+  // @@
   readonly current = signal<string>(this.UNKNOWN);
   readonly orientation = signal<string>(this.UNKNOWN);
-  readonly width = signal<TOrNoValue<number>>(window.innerWidth);
+  readonly width = signal<number>(window.innerWidth);
 
-  xs = computed(() => "xs" === this.current());
-  sm = computed(() => "sm" === this.current());
-  md = computed(() => "md" === this.current());
-  lg = computed(() => "lg" === this.current());
-  xl = computed(() => "xl" === this.current());
+  readonly xs = computed(() => "xs" === this.current());
+  readonly sm = computed(() => "sm" === this.current());
+  readonly md = computed(() => "md" === this.current());
+  readonly lg = computed(() => "lg" === this.current());
+  readonly xl = computed(() => "xl" === this.current());
 
-  landscape = computed(() => "landscape" === this.orientation());
-  portrait = computed(() => "portrait" === this.orientation());
+  readonly landscape = computed(() => "landscape" === this.orientation());
+  readonly portrait = computed(() => "portrait" === this.orientation());
+  // /@@
 
-  private width_s: TOrNoValue<Subscription>;
+  // sync window width
+  protected width_s = fromEvent(window, "resize")
+    .pipe(
+      takeUntil(this._destroyed),
+      throttleTime(this.THROTTLE_TIME_wResize, undefined, {
+        trailing: true,
+      })
+    )
+    .subscribe(() => {
+      this.width.set(window.innerWidth);
+    });
 
   constructor() {
     // sync size
-    this._breakpointObserver
+    this.$b
       .observe([
-        Breakpoints.XSmall,
-        Breakpoints.Small,
-        Breakpoints.Medium,
-        Breakpoints.Large,
-        Breakpoints.XLarge,
+        this.BreakpointsCustom.XSmall,
+        this.BreakpointsCustom.Small,
+        this.BreakpointsCustom.Medium,
+        this.BreakpointsCustom.Large,
+        this.BreakpointsCustom.XLarge,
       ])
       .pipe(takeUntil(this._destroyed))
       .subscribe((result) => {
-        for (const query of Object.keys(result.breakpoints)) {
-          if (result.breakpoints[query]) {
-            this.current.set(DISPLAY_NAMES.get(query) ?? this.UNKNOWN);
-          }
+        const query = this.$$.findKey(result.breakpoints, (value) => value);
+        if (query) {
+          this.current.set(this.DISPLAY_NAMES.get(<any>query) ?? this.UNKNOWN);
         }
       });
     // sync orientation
-    this._breakpointObserverOrientation
+    this.$b
       .observe([Q_ORIENTATION_PORTRAIT, Q_ORIENTATION_LANDSCAPE])
       .pipe(takeUntil(this._destroyed))
       .subscribe((result) => {
-        for (const query of Object.keys(result.breakpoints)) {
-          if (result.breakpoints[query]) {
-            this.orientation.set(
-              DISPLAY_ORIENTATIONS.get(query) ?? this.UNKNOWN
-            );
-          }
+        const query = this.$$.findKey(result.breakpoints, (value) => value);
+        if (query) {
+          this.orientation.set(DISPLAY_ORIENTATIONS.get(query) ?? this.UNKNOWN);
         }
       });
-    // sync window width
-    this.width_s = fromEvent(window, "resize").subscribe(() => {
-      this.width.set(window.innerWidth);
-    });
   }
+
+  // @@
   // evaluate one or more media queries against the current viewport size.
   //  .isMatched("(max-width: 599px)");
   matches(displayQuery: string | readonly string[]) {
-    return this._breakpointObserver.isMatched(displayQuery);
+    return this.$b.isMatched(displayQuery);
   }
+
+  // @@
   destroy() {
     this.width_s?.unsubscribe();
     this._destroyed.next();

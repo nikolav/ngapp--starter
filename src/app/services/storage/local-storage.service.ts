@@ -58,7 +58,7 @@ export class LocalStorageService implements OnDestroy {
                     this.$$.set(dd, path, value);
                     return dd;
                   },
-                  this.$$.clone(data_)
+                  this.$$.structuredClone(data_)
                 )
               : this.$$.reduce(
                   event.payload,
@@ -66,7 +66,7 @@ export class LocalStorageService implements OnDestroy {
                     this.$$.unset(dd, path);
                     return dd;
                   },
-                  this.$$.clone(data_)
+                  this.$$.structuredClone(data_)
                 )
           );
         }),

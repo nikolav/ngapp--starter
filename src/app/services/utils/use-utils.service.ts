@@ -40,8 +40,13 @@ import {
 
 const {
   assign,
-  debounce,
+  castArray,
+  chunk,
   clone,
+  cloneDeep,
+  debounce,
+  defaults,
+  defaultsDeep,
   each,
   entries,
   escapeRegExp,
@@ -50,20 +55,32 @@ const {
   find,
   findKey,
   first,
+  flow,
+  fromPairs,
   get,
+  groupBy,
   has: owns,
   hasIn: has,
+  identity,
   includes,
+  isArray,
   isEmpty,
   isEqual,
+  isFunction,
+  isNil,
+  isNumber,
+  isPlainObject,
   isString,
   kebabCase,
+  keyBy,
   last,
   map,
   merge,
   noop,
   omit,
   once,
+  orderBy,
+  partial,
   pick,
   range,
   reduce,
@@ -76,9 +93,12 @@ const {
   take,
   takeRight,
   throttle,
+  toPairs,
   trim,
   trimEnd,
   trimStart,
+  uniq,
+  uniqBy,
   uniqueId,
   unset,
   without,
@@ -95,9 +115,14 @@ export class UseUtilsService {
 
   // lodash
   assign = assign;
+  castArray = castArray;
+  chunk = chunk;
   clone = clone;
+  cloneDeep = cloneDeep;
   debounce = debounce;
   deepmerge = deepmerge;
+  defaults = defaults;
+  defaultsDeep = defaultsDeep;
   each = each;
   entries = entries;
   escapeRegExp = escapeRegExp;
@@ -106,13 +131,23 @@ export class UseUtilsService {
   find = find;
   findKey = findKey;
   first = first;
+  flow = flow;
+  fromPairs = fromPairs;
   get = get;
+  groupBy = groupBy;
   has = has;
+  identity = identity;
   includes = includes;
+  isArray = isArray;
   isEmpty = isEmpty;
   isEqual = isEqual;
+  isFunction = isFunction;
+  isNil = isNil;
+  isNumber = isNumber;
+  isPlainObject = isPlainObject;
   isString = isString;
   kebabCase = kebabCase;
+  keyBy = keyBy;
   last = last;
   len = len;
   map = map;
@@ -121,7 +156,9 @@ export class UseUtilsService {
   noop = noop;
   omit = omit;
   once = once;
+  orderBy = orderBy;
   owns = owns;
+  partial = partial;
   pick = pick;
   range = range;
   reduce = reduce;
@@ -133,9 +170,12 @@ export class UseUtilsService {
   take = take;
   takeRight = takeRight;
   throttle = throttle;
+  toPairs = toPairs;
   trim = trim;
   trimEnd = trimEnd;
   trimStart = trimStart;
+  uniq = uniq;
+  uniqBy = uniqBy;
   uniqueId = uniqueId;
   unset = unset;
   untilDestroyed = untilDestroyed;
@@ -168,7 +208,7 @@ export class UseUtilsService {
   ls = arrayLs;
   strEnsureHasPrefix = strEnsureHasPrefix;
 
-  // obs factory
+  // observables factory
   error$$ = error$$;
   empty$$ = empty$$;
   of$$ = toObs$$;
@@ -181,6 +221,8 @@ export class UseUtilsService {
   Math = Math;
   Date = Date;
   JSON = JSON;
+  structuredClone = structuredClone;
+  cloned = structuredClone;
 
   // etc.
   copy = Object.assign.bind(Object);

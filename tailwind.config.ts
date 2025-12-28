@@ -11,6 +11,54 @@ export default <Partial<Config>>{
   ],
   theme: {
     extend: {
+      /**
+       * --------------------------------------------------------
+       * Custom breakpoints (screens)
+       *   matches custom cdk breakpoints; BreakpointsCustom{}
+       * --------------------------------------------------------
+       *
+       * Design goals:
+       * - Align with Angular CDK custom breakpoints
+       * - Keep semantics (handset / tablet / web)
+       * - Support orientation-aware variants
+       */
+      screens: {
+        /* size tiers */
+        xs: "480px", // replaces implicit <sm
+        sm: "768px",
+        md: "1024px",
+        lg: "1440px",
+        xl: { min: "1441px" },
+        // xl: "1920px",
+
+        /* semantic device ranges */
+        handset: { max: "767.99px" },
+        tablet: { min: "768px", max: "1023.99px" },
+        web: { min: "1024px" },
+
+        /* orientation-aware */
+        "handset-p": {
+          raw: "(max-width: 767.99px) and (orientation: portrait)",
+        },
+        "handset-l": {
+          raw: "(max-width: 767.99px) and (orientation: landscape)",
+        },
+
+        "tablet-p": {
+          raw: "(min-width: 768px) and (max-width: 1023.99px) and (orientation: portrait)",
+        },
+        "tablet-l": {
+          raw: "(min-width: 768px) and (max-width: 1023.99px) and (orientation: landscape)",
+        },
+
+        "web-p": {
+          raw: "(min-width: 1024px) and (orientation: portrait)",
+        },
+        "web-l": {
+          raw: "(min-width: 1024px) and (orientation: landscape)",
+        },
+      },
+
       colors: {
         primary: {
           DEFAULT: "#002480",

@@ -1,0 +1,7 @@
+<p>--component DemoComponent</p>
+<div>
+  <ng-container
+    *ngTemplateOutlet="slotHeader() || null; context: { $implicit: slotData }"
+  />
+</div>
+<p>END --component DemoComponent</p>

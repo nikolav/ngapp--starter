@@ -2,6 +2,7 @@ import { InjectionToken } from "@angular/core";
 import { Subject } from "rxjs";
 
 import { DataCacheService } from "../stores/cache-data.service";
+import { BreakpointsCustom } from "../assets/breakpoints";
 
 export const TOKEN_localStorage = new InjectionToken<Storage>(
   "Storage:6090ec87-2fa3-514c-870f-2facbfb50ace",
@@ -39,5 +40,13 @@ export const TOKEN_emitterNavigation = new InjectionToken<Subject<unknown>>(
   {
     providedIn: "root",
     factory: () => new Subject(),
+  }
+);
+
+export const TOKEN_breakpoints = new InjectionToken<typeof BreakpointsCustom>(
+  "BreakpointsCustom:437a48fe-da99-52e5-ae57-a35cf36a00a3",
+  {
+    providedIn: "root",
+    factory: () => BreakpointsCustom,
   }
 );

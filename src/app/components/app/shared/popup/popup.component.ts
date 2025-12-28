@@ -1,5 +1,6 @@
 import {
   booleanAttribute,
+  ChangeDetectionStrategy,
   Component,
   computed,
   effect,
@@ -22,12 +23,14 @@ import {
 } from "../../../../types";
 import { transformOverlayOffsets } from "../../../../schemas";
 import { UseUtilsService } from "../../../../services";
+import { CdkModulesShared } from "../../../../modules";
 
 @Component({
   selector: "app-popup",
-  imports: [CdkPortal],
+  imports: [CdkModulesShared, CdkPortal],
   templateUrl: "./popup.component.html",
   styleUrl: "./popup.component.scss",
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PopupConnectedComponent {
   protected $$ = inject(UseUtilsService);
