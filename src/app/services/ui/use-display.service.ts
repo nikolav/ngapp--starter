@@ -3,17 +3,9 @@ import { BreakpointObserver } from "@angular/cdk/layout";
 import { Subject, fromEvent } from "rxjs";
 import { takeUntil, throttleTime } from "rxjs/operators";
 
-import { TOrNoValue } from "../../types";
 import { UseUtilsService } from "../utils";
-import { BreakpointsCustom } from "../../assets/breakpoints";
+import { TOKEN_breakpoints } from "../../keys";
 
-const DISPLAY_NAMES = new Map([
-  [BreakpointsCustom.XSmall, "xs"],
-  [BreakpointsCustom.Small, "sm"],
-  [BreakpointsCustom.Medium, "md"],
-  [BreakpointsCustom.Large, "lg"],
-  [BreakpointsCustom.XLarge, "xl"],
-]);
 const Q_ORIENTATION_PORTRAIT = "(orientation: portrait)";
 const Q_ORIENTATION_LANDSCAPE = "(orientation: landscape)";
 const DISPLAY_ORIENTATIONS = new Map([
@@ -30,13 +22,22 @@ export class UseDisplayService {
 
   protected $$ = inject(UseUtilsService);
   protected $b = inject(BreakpointObserver);
+  protected BreakpointsCustom = inject(TOKEN_breakpoints);
+
+  protected DISPLAY_NAMES = new Map([
+    [this.BreakpointsCustom.XSmall, "xs"],
+    [this.BreakpointsCustom.Small, "sm"],
+    [this.BreakpointsCustom.Medium, "md"],
+    [this.BreakpointsCustom.Large, "lg"],
+    [this.BreakpointsCustom.XLarge, "xl"],
+  ]);
 
   protected _destroyed = new Subject<void>();
 
   // @@
   readonly current = signal<string>(this.UNKNOWN);
   readonly orientation = signal<string>(this.UNKNOWN);
-  readonly width = signal<TOrNoValue<number>>(window.innerWidth);
+  readonly width = signal<number>(window.innerWidth);
 
   readonly xs = computed(() => "xs" === this.current());
   readonly sm = computed(() => "sm" === this.current());
@@ -64,17 +65,17 @@ export class UseDisplayService {
     // sync size
     this.$b
       .observe([
-        BreakpointsCustom.XSmall,
-        BreakpointsCustom.Small,
-        BreakpointsCustom.Medium,
-        BreakpointsCustom.Large,
-        BreakpointsCustom.XLarge,
+        this.BreakpointsCustom.XSmall,
+        this.BreakpointsCustom.Small,
+        this.BreakpointsCustom.Medium,
+        this.BreakpointsCustom.Large,
+        this.BreakpointsCustom.XLarge,
       ])
       .pipe(takeUntil(this._destroyed))
       .subscribe((result) => {
         const query = this.$$.findKey(result.breakpoints, (value) => value);
         if (query) {
-          this.current.set(DISPLAY_NAMES.get(<any>query) ?? this.UNKNOWN);
+          this.current.set(this.DISPLAY_NAMES.get(<any>query) ?? this.UNKNOWN);
         }
       });
     // sync orientation
