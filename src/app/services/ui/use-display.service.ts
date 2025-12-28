@@ -1,17 +1,18 @@
 import { Injectable, computed, inject, signal } from "@angular/core";
-import { BreakpointObserver, Breakpoints } from "@angular/cdk/layout";
+import { BreakpointObserver } from "@angular/cdk/layout";
 import { Subject, fromEvent } from "rxjs";
 import { takeUntil, throttleTime } from "rxjs/operators";
 
 import { TOrNoValue } from "../../types";
 import { UseUtilsService } from "../utils";
+import { BreakpointsCustom } from "../../assets/breakpoints";
 
 const DISPLAY_NAMES = new Map([
-  [Breakpoints.XSmall, "xs"],
-  [Breakpoints.Small, "sm"],
-  [Breakpoints.Medium, "md"],
-  [Breakpoints.Large, "lg"],
-  [Breakpoints.XLarge, "xl"],
+  [BreakpointsCustom.XSmall, "xs"],
+  [BreakpointsCustom.Small, "sm"],
+  [BreakpointsCustom.Medium, "md"],
+  [BreakpointsCustom.Large, "lg"],
+  [BreakpointsCustom.XLarge, "xl"],
 ]);
 const Q_ORIENTATION_PORTRAIT = "(orientation: portrait)";
 const Q_ORIENTATION_LANDSCAPE = "(orientation: landscape)";
@@ -63,17 +64,17 @@ export class UseDisplayService {
     // sync size
     this.$b
       .observe([
-        Breakpoints.XSmall,
-        Breakpoints.Small,
-        Breakpoints.Medium,
-        Breakpoints.Large,
-        Breakpoints.XLarge,
+        BreakpointsCustom.XSmall,
+        BreakpointsCustom.Small,
+        BreakpointsCustom.Medium,
+        BreakpointsCustom.Large,
+        BreakpointsCustom.XLarge,
       ])
       .pipe(takeUntil(this._destroyed))
       .subscribe((result) => {
         const query = this.$$.findKey(result.breakpoints, (value) => value);
         if (query) {
-          this.current.set(DISPLAY_NAMES.get(query) ?? this.UNKNOWN);
+          this.current.set(DISPLAY_NAMES.get(<any>query) ?? this.UNKNOWN);
         }
       });
     // sync orientation

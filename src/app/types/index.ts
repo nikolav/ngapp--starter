@@ -110,5 +110,10 @@ export type TScrollStrategyName = "reposition" | "close" | "block" | "noop";
 //##
 export type { TRecordJson, TJson, TJsonLiteral, MaybeAsync as TMaybeAsync };
 export type { ChartData, ChartOptions, ChartType } from "chart.js";
+export type {
+  TBreakpointsCustom,
+  TBreakpointCustom,
+  TBreakpointKeyCustom,
+} from "../assets/breakpoints";
 
 export * from "./models";

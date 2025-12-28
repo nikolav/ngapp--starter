@@ -27,11 +27,11 @@ export const BreakpointsCustom = {
   /* size tiers (Tailwind-like)                            */
   /* ---------------------------------------------------- */
 
-  XSmall: "(min-width: 480px)",
-  Small: "(min-width: 768px)",
-  Medium: "(min-width: 1024px)",
-  Large: "(min-width: 1440px)",
-  XLarge: "(min-width: 1920px)",
+  XSmall: "(max-width: 480px)",
+  Small: "(max-width: 768px)",
+  Medium: "(max-width: 1024px)",
+  Large: "(max-width: 1440px)",
+  XLarge: "(max-width: 1920px)",
 
   /* ---------------------------------------------------- */
   /* semantic device ranges                               */
@@ -59,3 +59,7 @@ export const BreakpointsCustom = {
 
   WebLandscape: "(min-width: 1024px) and (orientation: landscape)",
 } as const;
+
+export type TBreakpointsCustom = typeof BreakpointsCustom;
+export type TBreakpointKeyCustom = keyof TBreakpointsCustom;
+export type TBreakpointCustom = TBreakpointsCustom[TBreakpointKeyCustom];
