@@ -34,9 +34,7 @@ import { UseUtilsService } from "../../services";
 export class IndexComponent implements OnInit, OnDestroy {
   protected $$ = inject(UseUtilsService);
 
-  ok(dd: LocalCacheDirective) {
-    dd.cache.push({ foo: this.$$.uuid() });
-  }
+  ok() {}
   ngOnInit() {}
   ngOnDestroy() {}
 }

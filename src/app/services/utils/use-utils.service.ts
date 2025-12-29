@@ -105,9 +105,6 @@ const {
   without,
 } = lodash;
 
-// #utils
-const cloned = structuredClone.bind(null);
-
 @Injectable({
   providedIn: "root",
 })
@@ -226,7 +223,7 @@ export class UseUtilsService {
   Math = Math;
   Date = Date;
   JSON = JSON;
-  cloned = cloned;
+  cloned = structuredClone.bind(null);
 
   // etc.
   copy = Object.assign.bind(Object);
