@@ -57,7 +57,7 @@ export class UseDisplayService {
   readonly landscape = computed(() => "landscape" === this.orientation());
   readonly portrait = computed(() => "portrait" === this.orientation());
 
-  readonly viewport$ = this.viewportRuler
+  readonly viewportSize$ = this.viewportRuler
     .change(this.THROTTLE_TIME_wResize)
     .pipe(
       takeUntilDestroyed(this._destroyed),
