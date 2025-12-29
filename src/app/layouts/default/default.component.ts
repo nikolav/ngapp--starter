@@ -1,6 +1,7 @@
-import { Component, contentChild, TemplateRef } from "@angular/core";
+import { Component, contentChild, inject, TemplateRef } from "@angular/core";
 
 import { CoreModulesShared } from "../../modules";
+import { TOKEN_pageLayoutDefaultData } from "../../keys";
 
 @Component({
   selector: "app-layout-default",
@@ -13,5 +14,5 @@ import { CoreModulesShared } from "../../modules";
 })
 export class DefaultComponent {
   readonly slot_page = contentChild("slot_page", { read: TemplateRef });
-  readonly pageData = <any>{};
+  readonly pageData = inject(TOKEN_pageLayoutDefaultData);
 }
