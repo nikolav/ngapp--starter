@@ -1,15 +1,14 @@
 <app-layout-default class="page--index">
   <h2>&#64;page--index</h2>
-  <div>
-    <app-demo>
-      <ng-template #slot_header let-data>
-        <div>
-          <p>data:</p>
-          <small>
-            <pre>{{ data | json }}</pre>
-          </small>
-        </div>
-      </ng-template>
-    </app-demo>
+  <div appSelectable>
+    <div appSelectableItem #i1="appSelectableItem" (click)="i1.select()">
+      item:1
+    </div>
+    <div appSelectableItem #i2="appSelectableItem" (click)="i2.select()">
+      item:2
+    </div>
+    <div appSelectableItem #i3="appSelectableItem" (click)="i3.select()">
+      item:3
+    </div>
   </div>
 </app-layout-default>

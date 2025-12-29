@@ -11,7 +11,10 @@ import {
   CoreModulesShared,
 } from "../../modules";
 import { LayoutDefault } from "../../layouts";
-import { DemoComponent } from "../../components/dev";
+import {
+  SelectableHasItemsDirective,
+  SelectableItemDirective,
+} from "../../directives";
 
 @Component({
   selector: "page-index",
@@ -20,7 +23,8 @@ import { DemoComponent } from "../../components/dev";
     MaterialSharedModule,
     LayoutDefault,
     IconxModule,
-    DemoComponent,
+    SelectableHasItemsDirective,
+    SelectableItemDirective,
   ],
   templateUrl: "./index.component.html",
   styleUrl: "./index.component.scss",

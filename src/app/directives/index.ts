@@ -7,3 +7,6 @@ export { AnimatecssDirective } from "./animate-css.directive";
 export { PlaceholderHandleDirective } from "./placeholder-handle.directive";
 export { ProvideCacheDirective } from "./provide-cache.directive";
 export { HostElementDirective } from "./host-get-element.directive";
+
+//
+export * from "./selectable";

@@ -47,6 +47,7 @@ const {
   debounce,
   defaults,
   defaultsDeep,
+  difference,
   each,
   entries,
   escapeRegExp,
@@ -123,6 +124,7 @@ export class UseUtilsService {
   deepmerge = deepmerge;
   defaults = defaults;
   defaultsDeep = defaultsDeep;
+  difference = difference;
   each = each;
   entries = entries;
   escapeRegExp = escapeRegExp;
