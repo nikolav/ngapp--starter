@@ -8,6 +8,7 @@ import {
 import { Subject } from "rxjs";
 
 import { UseToggleFlagService } from "../../services";
+import { TOrNoValue } from "../../types";
 
 @Directive({
   selector: "[appSelectableItem]",
@@ -17,17 +18,22 @@ export class SelectableItemDirective {
   protected $toggleIsSelected = new UseToggleFlagService();
 
   // @@
+  readonly name = input<TOrNoValue<string>>(null, {
+    alias: "appSelectableItemName",
+  });
+
+  // @@
   readonly disabled = input(false, {
     alias: "appSelectableItemDisabled",
     transform: booleanAttribute,
   });
 
+  readonly change = new Subject<boolean>();
+
   // @@
   readonly isSelected = computed(() =>
     this.disabled() ? false : this.$toggleIsSelected.isActive()
   );
-
-  readonly change = new Subject<boolean>();
 
   constructor() {
     effect(() => {
