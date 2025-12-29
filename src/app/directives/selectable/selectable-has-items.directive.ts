@@ -11,18 +11,14 @@ import { mergeMap } from "rxjs/operators";
 import { SelectionModel } from "@angular/cdk/collections";
 
 import { UseUtilsService } from "../../services";
-import { StoreDataCache } from "../../stores";
 import { SelectableItemDirective } from "./selectable-item.directive";
 
 @Directive({
   selector: "[appSelectable]",
   exportAs: "appSelectable",
-  providers: [StoreDataCache],
 })
 export class SelectableHasItemsDirective {
   protected $$ = inject(UseUtilsService);
-
-  readonly cache = inject(StoreDataCache);
 
   // @@
   readonly multiple = input(false, {

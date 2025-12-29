@@ -7,7 +7,6 @@ import {
 } from "@angular/core";
 
 import { SelectableHasItemsDirective } from "./selectable-has-items.directive";
-import { StoreDataCache } from "../../stores";
 
 @Directive({
   selector: "[appSelectableItem]",
@@ -15,9 +14,6 @@ import { StoreDataCache } from "../../stores";
 })
 export class SelectableItemDirective {
   readonly container = inject(SelectableHasItemsDirective, { optional: false });
-
-  readonly cache = inject(StoreDataCache);
-  readonly data = new StoreDataCache();
 
   // @@
   readonly disabled = input(false, {
