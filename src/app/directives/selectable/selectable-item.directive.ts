@@ -16,6 +16,7 @@ import { StoreDataCache } from "../../stores";
 export class SelectableItemDirective {
   readonly container = inject(SelectableHasItemsDirective, { optional: false });
 
+  readonly cache = inject(StoreDataCache);
   readonly data = new StoreDataCache();
 
   // @@

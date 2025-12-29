@@ -22,7 +22,7 @@ import { SelectableItemDirective } from "./selectable-item.directive";
 export class SelectableHasItemsDirective {
   protected $$ = inject(UseUtilsService);
 
-  readonly data = inject(StoreDataCache);
+  readonly cache = inject(StoreDataCache);
 
   // @@
   readonly multiple = input(false, {
