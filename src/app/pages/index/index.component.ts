@@ -15,6 +15,7 @@ import {
 import { LayoutDefault } from "../../layouts";
 import { LocalCacheDirective, SelectableItemDirective } from "../../directives";
 import { UseUtilsService } from "../../services";
+import { DemoComponent } from "../../components/dev";
 
 @Component({
   selector: "page-index",
@@ -26,6 +27,7 @@ import { UseUtilsService } from "../../services";
     SelectableItemDirective,
     LocalCacheDirective,
     JsonPipe,
+    DemoComponent,
   ],
   templateUrl: "./index.component.html",
   styleUrl: "./index.component.scss",

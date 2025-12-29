@@ -1,5 +1,12 @@
 <app-layout-default class="page--index">
   <h2>&#64;page--index</h2>
+  <app-demo>
+    <ng-template #slot_header let-data>
+      <small>
+        <pre>{{ data.counter() }}</pre>
+      </small>
+    </ng-template>
+  </app-demo>
   <button
     mat-button
     (click)="dd.cache.push({ foo: $$.uuid(), bar: $$.uuid() })"
