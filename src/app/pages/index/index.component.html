@@ -18,7 +18,7 @@
   <div
     appSelectableItem
     #i1="appSelectableItem"
-    [class]="i1.isSelected() ? 'bg-yellow-500' : ''"
+    [class.bg-yellow-500]="i1.isSelected()"
     (click)="i1.toggle()"
   >
     item:1 [{{ i1.isSelected() }}]
@@ -26,7 +26,7 @@
   <div
     appSelectableItem
     #i2="appSelectableItem"
-    [class]="i2.isSelected() ? 'bg-yellow-500' : ''"
+    [class.bg-yellow-500]="i2.isSelected()"
     (click)="i2.toggle()"
   >
     item:2 [{{ i2.isSelected() }}]
@@ -34,7 +34,7 @@
   <div
     appSelectableItem
     #i3="appSelectableItem"
-    [class]="i3.isSelected() ? 'bg-yellow-500' : ''"
+    [class.bg-yellow-500]="i3.isSelected()"
     (click)="i3.toggle()"
   >
     item:3 [{{ i3.isSelected() }}]
