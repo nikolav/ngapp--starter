@@ -22,7 +22,7 @@ export class DataCacheService {
           this.$$.set(accum, path, value);
           return accum;
         },
-        this.$$.cloned(d)
+        this.$$.clone(d)
       )
     );
   }
@@ -49,7 +49,7 @@ export class DataCacheService {
           this.$$.unset(accum, path);
           return accum;
         },
-        this.$$.cloned(d)
+        this.$$.clone(d)
       )
     );
   }

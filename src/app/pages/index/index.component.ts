@@ -5,6 +5,7 @@ import {
   inject,
   ChangeDetectionStrategy,
 } from "@angular/core";
+import { JsonPipe } from "@angular/common";
 
 import {
   IconxModule,
@@ -12,7 +13,7 @@ import {
   CoreModulesShared,
 } from "../../modules";
 import { LayoutDefault } from "../../layouts";
-import { SelectableItemDirective } from "../../directives";
+import { LocalCacheDirective, SelectableItemDirective } from "../../directives";
 import { UseUtilsService } from "../../services";
 
 @Component({
@@ -23,6 +24,8 @@ import { UseUtilsService } from "../../services";
     LayoutDefault,
     IconxModule,
     SelectableItemDirective,
+    LocalCacheDirective,
+    JsonPipe,
   ],
   templateUrl: "./index.component.html",
   styleUrl: "./index.component.scss",
@@ -31,7 +34,9 @@ import { UseUtilsService } from "../../services";
 export class IndexComponent implements OnInit, OnDestroy {
   protected $$ = inject(UseUtilsService);
 
-  ok() {}
+  ok(dd: LocalCacheDirective) {
+    dd.cache.push({ foo: this.$$.uuid() });
+  }
   ngOnInit() {}
   ngOnDestroy() {}
 }

@@ -18,7 +18,7 @@ export class StoreMain {
           this.$$.set(acc, path, value);
           return acc;
         },
-        this.$$.structuredClone(store_)
+        this.$$.cloned(store_)
       )
     );
   }
@@ -51,7 +51,7 @@ export class StoreMain {
           this.$$.unset(acc, path);
           return acc;
         },
-        this.$$.structuredClone(store_)
+        this.$$.cloned(store_)
       )
     );
   }
