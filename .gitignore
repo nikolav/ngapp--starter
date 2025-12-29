@@ -204,7 +204,6 @@ nosetests.xml
 npm-debug.log
 npm-debug.log*
 out
-package-lock.json
 parts/
 pids
 pip-delete-this-directory.txt
@@ -237,3 +236,4 @@ wheels/
 yarn-debug.log*
 yarn-error.log
 yarn-error.log*
+# package-lock.json
