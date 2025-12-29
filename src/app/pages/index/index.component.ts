@@ -2,6 +2,7 @@ import {
   Component,
   OnInit,
   OnDestroy,
+  inject,
   ChangeDetectionStrategy,
 } from "@angular/core";
 
@@ -15,6 +16,7 @@ import {
   SelectableHasItemsDirective,
   SelectableItemDirective,
 } from "../../directives";
+import { UseUtilsService } from "../../services";
 
 @Component({
   selector: "page-index",
@@ -31,8 +33,10 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class IndexComponent implements OnInit, OnDestroy {
-  ok() {
-    console.log("ok");
+  protected $$ = inject(UseUtilsService);
+
+  ok(sel: SelectableHasItemsDirective, item: SelectableItemDirective) {
+    console.log(sel.selection.isSelected(item));
   }
   ngOnInit() {}
   ngOnDestroy() {}

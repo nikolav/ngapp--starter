@@ -7,13 +7,16 @@ import {
 } from "@angular/core";
 
 import { SelectableHasItemsDirective } from "./selectable-has-items.directive";
+import { UseUtilsService } from "../../services";
 
 @Directive({
   selector: "[appSelectableItem]",
   exportAs: "appSelectableItem",
 })
 export class SelectableItemDirective {
-  readonly container = inject(SelectableHasItemsDirective, { optional: false });
+  protected $$ = inject(UseUtilsService);
+
+  readonly container = inject(SelectableHasItemsDirective);
 
   // @@
   readonly disabled = input(false, {
@@ -23,10 +26,10 @@ export class SelectableItemDirective {
 
   // @@
   readonly isSelected = computed(() =>
-    this.container.selection.isSelected(this)
+    this.$$.includes(this.container.currentSelection(), this)
   );
 
-  select(SELECTED = true) {
-    this.container.selectItem(this, SELECTED);
+  toggle(SELECTED?: boolean) {
+    this.container.toggleItem(this, SELECTED);
   }
 }

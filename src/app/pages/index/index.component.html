@@ -1,14 +1,30 @@
 <app-layout-default class="page--index">
   <h2>&#64;page--index</h2>
-  <div appSelectable>
-    <div appSelectableItem #i1="appSelectableItem" (click)="i1.select()">
-      item:1
+  <button mat-button (click)="ok(sel, i1)">ok</button>
+  <div appSelectable #sel="appSelectable">
+    <div
+      appSelectableItem
+      #i1="appSelectableItem"
+      [class]="i1.isSelected() ? 'bg-yellow-500' : ''"
+      (click)="i1.toggle()"
+    >
+      item:1 [{{ i1.isSelected() }}]
     </div>
-    <div appSelectableItem #i2="appSelectableItem" (click)="i2.select()">
-      item:2
+    <div
+      appSelectableItem
+      #i2="appSelectableItem"
+      [class]="i2.isSelected() ? 'bg-yellow-500' : ''"
+      (click)="i2.toggle()"
+    >
+      item:2 [{{ i2.isSelected() }}]
     </div>
-    <div appSelectableItem #i3="appSelectableItem" (click)="i3.select()">
-      item:3
+    <div
+      appSelectableItem
+      #i3="appSelectableItem"
+      [class]="i3.isSelected() ? 'bg-yellow-500' : ''"
+      (click)="i3.toggle()"
+    >
+      item:3 [{{ i3.isSelected() }}]
     </div>
   </div>
 </app-layout-default>
