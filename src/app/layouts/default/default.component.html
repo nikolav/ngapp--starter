@@ -1,1 +1,4 @@
-<ng-content />
+<ng-container
+  [ngTemplateOutlet]="slot_page() || null"
+  [ngTemplateOutletContext]="{ $implicit: pageData }"
+></ng-container>
