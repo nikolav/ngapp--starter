@@ -1,6 +1,11 @@
 <app-layout-default class="page--index">
   <h2>&#64;page--index</h2>
-  <button mat-button (click)="ok(dd)" appLocalCache #dd="appLocalCache">
+  <button
+    mat-button
+    (click)="dd.cache.push({ foo: $$.uuid(), bar: $$.uuid() })"
+    appLocalCache
+    #dd="appLocalCache"
+  >
     ok
   </button>
   <div>
