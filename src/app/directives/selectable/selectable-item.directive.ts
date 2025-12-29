@@ -2,21 +2,19 @@ import {
   booleanAttribute,
   computed,
   Directive,
-  inject,
+  effect,
   input,
 } from "@angular/core";
+import { Subject } from "rxjs";
 
-import { SelectableHasItemsDirective } from "./selectable-has-items.directive";
-import { UseUtilsService } from "../../services";
+import { UseToggleFlagService } from "../../services";
 
 @Directive({
   selector: "[appSelectableItem]",
   exportAs: "appSelectableItem",
 })
 export class SelectableItemDirective {
-  protected $$ = inject(UseUtilsService);
-
-  readonly container = inject(SelectableHasItemsDirective);
+  protected $toggleIsSelected = new UseToggleFlagService();
 
   // @@
   readonly disabled = input(false, {
@@ -26,10 +24,19 @@ export class SelectableItemDirective {
 
   // @@
   readonly isSelected = computed(() =>
-    this.$$.includes(this.container.currentSelection(), this)
+    this.disabled() ? false : this.$toggleIsSelected.isActive()
   );
 
+  readonly change = new Subject<boolean>();
+
+  constructor() {
+    effect(() => {
+      this.change.next(this.isSelected());
+    });
+  }
+
   toggle(SELECTED?: boolean) {
-    this.container.toggleItem(this, SELECTED);
+    if (this.disabled()) return;
+    this.$toggleIsSelected.toggle(SELECTED);
   }
 }

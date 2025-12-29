@@ -12,10 +12,7 @@ import {
   CoreModulesShared,
 } from "../../modules";
 import { LayoutDefault } from "../../layouts";
-import {
-  SelectableHasItemsDirective,
-  SelectableItemDirective,
-} from "../../directives";
+import { SelectableItemDirective } from "../../directives";
 import { UseUtilsService } from "../../services";
 
 @Component({
@@ -25,7 +22,6 @@ import { UseUtilsService } from "../../services";
     MaterialSharedModule,
     LayoutDefault,
     IconxModule,
-    SelectableHasItemsDirective,
     SelectableItemDirective,
   ],
   templateUrl: "./index.component.html",
@@ -35,9 +31,7 @@ import { UseUtilsService } from "../../services";
 export class IndexComponent implements OnInit, OnDestroy {
   protected $$ = inject(UseUtilsService);
 
-  ok(sel: SelectableHasItemsDirective, item: SelectableItemDirective) {
-    console.log(sel.selection.isSelected(item));
-  }
+  ok() {}
   ngOnInit() {}
   ngOnDestroy() {}
 }

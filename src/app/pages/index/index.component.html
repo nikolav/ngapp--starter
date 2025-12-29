@@ -1,30 +1,28 @@
 <app-layout-default class="page--index">
   <h2>&#64;page--index</h2>
-  <button mat-button (click)="ok(sel, i1)">ok</button>
-  <div appSelectable #sel="appSelectable">
-    <div
-      appSelectableItem
-      #i1="appSelectableItem"
-      [class]="i1.isSelected() ? 'bg-yellow-500' : ''"
-      (click)="i1.toggle()"
-    >
-      item:1 [{{ i1.isSelected() }}]
-    </div>
-    <div
-      appSelectableItem
-      #i2="appSelectableItem"
-      [class]="i2.isSelected() ? 'bg-yellow-500' : ''"
-      (click)="i2.toggle()"
-    >
-      item:2 [{{ i2.isSelected() }}]
-    </div>
-    <div
-      appSelectableItem
-      #i3="appSelectableItem"
-      [class]="i3.isSelected() ? 'bg-yellow-500' : ''"
-      (click)="i3.toggle()"
-    >
-      item:3 [{{ i3.isSelected() }}]
-    </div>
+  <button mat-button (click)="ok()">ok</button>
+  <div
+    appSelectableItem
+    #i1="appSelectableItem"
+    [class]="i1.isSelected() ? 'bg-yellow-500' : ''"
+    (click)="i1.toggle()"
+  >
+    item:1 [{{ i1.isSelected() }}]
+  </div>
+  <div
+    appSelectableItem
+    #i2="appSelectableItem"
+    [class]="i2.isSelected() ? 'bg-yellow-500' : ''"
+    (click)="i2.toggle()"
+  >
+    item:2 [{{ i2.isSelected() }}]
+  </div>
+  <div
+    appSelectableItem
+    #i3="appSelectableItem"
+    [class]="i3.isSelected() ? 'bg-yellow-500' : ''"
+    (click)="i3.toggle()"
+  >
+    item:3 [{{ i3.isSelected() }}]
   </div>
 </app-layout-default>
