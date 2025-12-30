@@ -12,7 +12,7 @@ import { map, throttleTime } from "rxjs/operators";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 
 import { UseUtilsService } from "../utils";
-import { TOKEN_breakpoints } from "../../keys";
+import { TOKEN_breakpoints, TOKEN_windowDefaultView } from "../../keys";
 
 const Q_ORIENTATION_PORTRAIT = "(orientation: portrait)";
 const Q_ORIENTATION_LANDSCAPE = "(orientation: landscape)";
@@ -32,6 +32,7 @@ export class UseDisplayService {
   protected $b = inject(BreakpointObserver);
   protected BreakpointsCustom = inject(TOKEN_breakpoints);
   protected viewportRuler = inject(ViewportRuler);
+  protected window = inject(TOKEN_windowDefaultView);
 
   protected DISPLAY_NAMES = new Map([
     [this.BreakpointsCustom.XSmall, "xs"],
@@ -46,7 +47,7 @@ export class UseDisplayService {
   // @@
   readonly current = signal<string>(this.UNKNOWN);
   readonly orientation = signal<string>(this.UNKNOWN);
-  readonly width = signal<number>(window.innerWidth);
+  readonly width = signal<number>(this.window!.innerWidth);
 
   readonly xs = computed(() => "xs" === this.current());
   readonly sm = computed(() => "sm" === this.current());
@@ -66,7 +67,7 @@ export class UseDisplayService {
   // /@@
 
   // sync window width
-  protected width_s = fromEvent(window, "resize")
+  protected width_s = fromEvent(this.window!, "resize")
     .pipe(
       takeUntilDestroyed(this._destroyed),
       throttleTime(this.THROTTLE_TIME_wResize, undefined, {
@@ -74,7 +75,7 @@ export class UseDisplayService {
       })
     )
     .subscribe(() => {
-      this.width.set(window.innerWidth);
+      this.width.set(this.window!.innerWidth);
     });
 
   constructor() {

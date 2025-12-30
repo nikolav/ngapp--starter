@@ -4,23 +4,25 @@ import { DOCUMENT } from "@angular/common";
 import { UseProccessMonitorService, UseUtilsService } from "../utils";
 import { Observable } from "rxjs";
 import { PickFileOptions } from "../../types";
+import { TOKEN_windowDefaultView } from "../../keys";
 
 @Injectable()
 export class PickFilesService {
   private $$ = inject(UseUtilsService);
   private $ps = new UseProccessMonitorService();
   private document = inject(DOCUMENT);
+  protected window = inject(TOKEN_windowDefaultView);
   //
   readonly processing = computed(() => Boolean(this.$ps.processing()));
   //
   private _isProgressive(opts: PickFileOptions = {}) {
-    return !opts.directory && "showOpenFilePicker" in window;
+    return !opts.directory && "showOpenFilePicker" in Object(this.window);
   }
   // #progressive
   private async _openProgressive(opts: PickFileOptions = {}) {
-    const handles: FileSystemFileHandle[] = await (
-      window as any
-    ).showOpenFilePicker({
+    const handles: FileSystemFileHandle[] = await (<any>(
+      this.window
+    )).showOpenFilePicker({
       multiple: Boolean(opts.multiple),
       types: opts.accept
         ? [
