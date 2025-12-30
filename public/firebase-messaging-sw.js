@@ -94,6 +94,12 @@
   });
 
   // (Optional) lifecycle logs – helpful while debugging SW updates
+
+  //   @installed
   self.addEventListener("install", () => log("install"));
+
+  //   @active
+  //     listens events
+  //     can access resources under its scope
   self.addEventListener("activate", () => log("activate"));
 })();
