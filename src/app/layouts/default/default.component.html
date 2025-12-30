@@ -1,4 +1,15 @@
 <ng-container
   [ngTemplateOutlet]="slot_page() || null"
-  [ngTemplateOutletContext]="{ $implicit: pageData }"
+  [ngTemplateOutletContext]="{
+    $implicit: {
+      breakpoint : {
+        xs: $display.xs,
+        sm: $display.sm,
+        md: $display.md,
+        lg: $display.lg,
+        xl: $display.xl,
+      },
+      data: pageData,
+    },
+  }"
 ></ng-container>
