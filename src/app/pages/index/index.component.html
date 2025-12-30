@@ -8,9 +8,7 @@
         </small>
       </ng-template>
     </app-demo>
-    <button mat-button (click)="$$.onDebug({ document: app.document })">
-      ok
-    </button>
+    <button mat-button (click)="ok()">ok</button>
     <p>
       <small>
         <pre>{{ app.storage.data() | json }}</pre>

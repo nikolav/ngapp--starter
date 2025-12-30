@@ -1,4 +1,4 @@
-import { computed, Directive, ElementRef, inject } from "@angular/core";
+import { Directive, ElementRef, inject } from "@angular/core";
 
 @Directive({
   selector: "[hostElement]",
@@ -6,6 +6,9 @@ import { computed, Directive, ElementRef, inject } from "@angular/core";
 })
 export class HostElementDirective {
   protected hostRef = inject<ElementRef<HTMLElement>>(ElementRef);
+
   // @@
-  readonly element = computed(() => this.hostRef.nativeElement);
+  get element() {
+    return this.hostRef.nativeElement;
+  }
 }
