@@ -54,6 +54,7 @@ export const TOKEN_pageLayoutDefaultData = new InjectionToken<StoreDataCache>(
   "pageLayoutDefaultData:d925a91c-e4fe-554e-a6d4-54e24f9f1303",
   {
     providedIn: "root",
-    factory: () => new StoreDataCache().use(<any>{}),
+    factory: () =>
+      new StoreDataCache().use(<any>{ "@": new Date().toISOString() }),
   }
 );
