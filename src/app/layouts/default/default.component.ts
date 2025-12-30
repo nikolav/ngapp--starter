@@ -8,7 +8,10 @@ import {
 } from "@angular/core";
 
 import { CoreModulesShared } from "../../modules";
-import { TOKEN_pageLayoutDefaultData } from "../../keys";
+import {
+  TOKEN_pageLayoutDefaultData,
+  TOKEN_windowDefaultView,
+} from "../../keys";
 import {
   LocalStorageService,
   UseDisplayService,
@@ -26,9 +29,10 @@ import { TOrNoValue } from "../../types";
   },
 })
 export class DefaultComponent {
-  protected $storage = inject(LocalStorageService);
-  protected $ttl = inject(UsePageTitleService);
-  protected $display = inject(UseDisplayService);
+  readonly $storage = inject(LocalStorageService);
+  readonly $ttl = inject(UsePageTitleService);
+  readonly $display = inject(UseDisplayService);
+  readonly window = inject(TOKEN_windowDefaultView);
   readonly pageData = inject(TOKEN_pageLayoutDefaultData);
 
   readonly slot_page = contentChild("slot_page", { read: TemplateRef });

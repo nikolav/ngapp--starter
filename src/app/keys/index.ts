@@ -58,3 +58,6 @@ export const TOKEN_pageLayoutDefaultData = new InjectionToken<StoreDataCache>(
       new StoreDataCache().use(<any>{ "@": new Date().toISOString() }),
   }
 );
+export const TOKEN_windowDefaultView = new InjectionToken<Window | null>(
+  "Window:91418ac1-46ac-5b6d-8113-a6aa5344458f"
+);

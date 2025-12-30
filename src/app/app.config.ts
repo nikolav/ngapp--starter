@@ -5,7 +5,7 @@ import {
   // LOCALE_ID,
 } from "@angular/core";
 import type { ApplicationConfig } from "@angular/core";
-import { CommonModule } from "@angular/common";
+import { CommonModule, DOCUMENT } from "@angular/common";
 
 import {
   provideRouter,
@@ -68,6 +68,7 @@ import {
   provideMatDayjsAdapter,
   withDayjsAdapterOptions,
 } from "./modules/providers/mat-dayjs-adapter";
+import { TOKEN_windowDefaultView } from "./keys";
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -114,6 +115,11 @@ export const appConfig: ApplicationConfig = {
     provideCharts(withDefaultRegisterables()),
 
     // #provide:custom
+    {
+      provide: TOKEN_windowDefaultView,
+      useFactory: (doc: Document) => doc.defaultView,
+      deps: [DOCUMENT],
+    },
 
     // ##mat-datepicker
     // { provide: MAT_DATE_LOCALE, useValue: "sr-RS" },
