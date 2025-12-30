@@ -77,7 +77,7 @@
   messaging.onBackgroundMessage((payload) => {
     // Log the whole payload + a few useful fields
     try {
-      log("Received background message payload:", payload);
+      log("Received background message payload:", { payload });
 
       // Optional: quick summary to scan logs faster
       const summary = {
