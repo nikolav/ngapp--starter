@@ -6,7 +6,6 @@ import {
   OnDestroy,
   OnInit,
 } from "@angular/core";
-import { AsyncPipe } from "@angular/common";
 
 import {
   CoreModulesShared,
@@ -23,7 +22,6 @@ import { StoreAuth } from "../../stores";
     MaterialSharedModule,
     LayoutDefault,
     IconxModule,
-    AsyncPipe,
   ],
   templateUrl: "./app.component.html",
   styleUrls: ["./app.component.scss"],

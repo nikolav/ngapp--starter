@@ -8,21 +8,14 @@
         </small>
       </ng-template>
     </app-demo>
-    <button
-      mat-button
-      (click)="dd.cache.push({ foo: $$.uuid(), bar: $$.uuid() })"
-      appLocalCache
-      #dd="appLocalCache"
-    >
+    <button mat-button (click)="page.cache.push({ 'x:1': $$.idGen() })">
       ok
     </button>
-    <div>
-      <p>
-        <small>
-          <pre>{{ dd.cache.data() | json }}</pre>
-        </small>
-      </p>
-    </div>
+    <p>
+      <small>
+        <pre>{{ page.cache.data() | json }}</pre>
+      </small>
+    </p>
     <div
       appSelectableItem
       #i1="appSelectableItem"

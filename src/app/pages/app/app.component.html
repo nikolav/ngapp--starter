@@ -1,6 +1,11 @@
 <app-layout-default class="page--app">
-  <ng-template #slot_page let-pageData>
+  <ng-template #slot_page let-page>
     <h2>&#64;page--app</h2>
+    <p>
+      <small>
+        <pre>{{ page.cache.data() | json }}</pre>
+      </small>
+    </p>
     <button
       mat-button
       (click)="

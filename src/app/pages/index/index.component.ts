@@ -5,7 +5,6 @@ import {
   inject,
   ChangeDetectionStrategy,
 } from "@angular/core";
-import { JsonPipe } from "@angular/common";
 
 import {
   IconxModule,
@@ -13,9 +12,10 @@ import {
   CoreModulesShared,
 } from "../../modules";
 import { LayoutDefault } from "../../layouts";
-import { LocalCacheDirective, SelectableItemDirective } from "../../directives";
-import { UseUtilsService } from "../../services";
 import { DemoComponent } from "../../components/dev";
+
+import { SelectableItemDirective } from "../../directives";
+import { UseUtilsService } from "../../services";
 
 @Component({
   selector: "page-index",
@@ -25,8 +25,6 @@ import { DemoComponent } from "../../components/dev";
     LayoutDefault,
     IconxModule,
     SelectableItemDirective,
-    LocalCacheDirective,
-    JsonPipe,
     DemoComponent,
   ],
   templateUrl: "./index.component.html",
