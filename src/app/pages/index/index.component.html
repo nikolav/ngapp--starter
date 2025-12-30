@@ -1,5 +1,5 @@
 <app-layout-default class="page--index" pageTitle="🏠 page:home">
-  <ng-template #slot_page let-page>
+  <ng-template #slot_page let-app>
     <h2>&#64;page--index</h2>
     <app-demo>
       <ng-template #slot_header let-data>
@@ -8,12 +8,12 @@
         </small>
       </ng-template>
     </app-demo>
-    <button mat-button (click)="page.storage.push({ foo: $$.idGen() })">
+    <button mat-button (click)="app.storage.push({ foo: $$.idGen() })">
       ok
     </button>
     <p>
       <small>
-        <pre>{{ page.storage.data() | json }}</pre>
+        <pre>{{ app.storage.data() | json }}</pre>
       </small>
     </p>
     <div
