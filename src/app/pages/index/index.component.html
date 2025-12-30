@@ -8,7 +8,7 @@
         </small>
       </ng-template>
     </app-demo>
-    <button mat-button (click)="app.storage.push({ foo: $$.idGen() })">
+    <button mat-button (click)="$$.onDebug({ document: app.document })">
       ok
     </button>
     <p>

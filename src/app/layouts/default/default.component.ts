@@ -6,6 +6,7 @@ import {
   input,
   TemplateRef,
 } from "@angular/core";
+import { DOCUMENT } from "@angular/common";
 
 import { CoreModulesShared } from "../../modules";
 import {
@@ -32,6 +33,7 @@ export class DefaultComponent {
   readonly $storage = inject(LocalStorageService);
   readonly $ttl = inject(UsePageTitleService);
   readonly $display = inject(UseDisplayService);
+  readonly document = inject(DOCUMENT);
   readonly window = inject(TOKEN_windowDefaultView);
   readonly pageData = inject(TOKEN_pageLayoutDefaultData);
 
