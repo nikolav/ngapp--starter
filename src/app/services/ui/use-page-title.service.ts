@@ -5,7 +5,7 @@ import { Title } from "@angular/platform-browser";
   providedIn: "root",
 })
 export class UsePageTitleService {
-  private $title = inject(Title);
+  protected $title = inject(Title);
   readonly title = signal("🌎 page");
 
   constructor() {

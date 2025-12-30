@@ -1,7 +1,16 @@
-import { Component, contentChild, inject, TemplateRef } from "@angular/core";
+import {
+  Component,
+  contentChild,
+  effect,
+  inject,
+  input,
+  TemplateRef,
+} from "@angular/core";
 
 import { CoreModulesShared } from "../../modules";
 import { TOKEN_pageLayoutDefaultData } from "../../keys";
+import { UsePageTitleService } from "../../services";
+import { TOrNoValue } from "../../types";
 
 @Component({
   selector: "app-layout-default",
@@ -13,6 +22,18 @@ import { TOKEN_pageLayoutDefaultData } from "../../keys";
   },
 })
 export class DefaultComponent {
+  protected $ttl = inject(UsePageTitleService);
+
   readonly slot_page = contentChild("slot_page", { read: TemplateRef });
   readonly pageData = inject(TOKEN_pageLayoutDefaultData);
+
+  // @@
+  readonly pageTitle = input<TOrNoValue<string>>(null);
+
+  constructor() {
+    effect(() => {
+      if (null == this.pageTitle()) return;
+      this.$ttl.title.set(String(this.pageTitle()));
+    });
+  }
 }
