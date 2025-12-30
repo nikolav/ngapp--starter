@@ -26,7 +26,7 @@ import { TOrNoValue } from "../../types";
   },
 })
 export class DefaultComponent {
-  protected $localStorage = inject(LocalStorageService);
+  protected $storage = inject(LocalStorageService);
   protected $ttl = inject(UsePageTitleService);
   protected $display = inject(UseDisplayService);
   readonly pageData = inject(TOKEN_pageLayoutDefaultData);
