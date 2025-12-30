@@ -84,11 +84,11 @@ export class LocalStorageService implements OnDestroy {
         action: "push",
       });
     } catch (error) {
-      this.$$.onDebug("LocalStorageService --sync", error);
+      this.$$.onDebug({ ["LocalStorageService --sync"]: { error } });
     }
   }
-  // switch x <=> y
-  switch(path: string, x: any, y: any) {
+  // swap x <=> y
+  swap(path: string, x: any, y: any) {
     this.push({ [path]: x != this.item(path) ? x : y });
   }
   drop(...paths: string[]) {
@@ -100,7 +100,7 @@ export class LocalStorageService implements OnDestroy {
         action: "drop",
       });
     } catch (error) {
-      this.$$.onDebug("LocalStorageService --sync", error);
+      this.$$.onDebug({ ["LocalStorageService --sync"]: { error } });
     }
   }
   //

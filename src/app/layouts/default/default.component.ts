@@ -9,7 +9,11 @@ import {
 
 import { CoreModulesShared } from "../../modules";
 import { TOKEN_pageLayoutDefaultData } from "../../keys";
-import { UseDisplayService, UsePageTitleService } from "../../services";
+import {
+  LocalStorageService,
+  UseDisplayService,
+  UsePageTitleService,
+} from "../../services";
 import { TOrNoValue } from "../../types";
 
 @Component({
@@ -22,11 +26,12 @@ import { TOrNoValue } from "../../types";
   },
 })
 export class DefaultComponent {
+  protected $localStorage = inject(LocalStorageService);
   protected $ttl = inject(UsePageTitleService);
   protected $display = inject(UseDisplayService);
+  readonly pageData = inject(TOKEN_pageLayoutDefaultData);
 
   readonly slot_page = contentChild("slot_page", { read: TemplateRef });
-  readonly pageData = inject(TOKEN_pageLayoutDefaultData);
 
   // @@
   readonly pageTitle = input<TOrNoValue<string>>(null);

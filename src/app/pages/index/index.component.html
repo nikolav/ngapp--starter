@@ -8,12 +8,12 @@
         </small>
       </ng-template>
     </app-demo>
-    <button mat-button (click)="page.cache.push({ 'x:1': $$.idGen() })">
+    <button mat-button (click)="page.storage.push({ foo: $$.idGen() })">
       ok
     </button>
     <p>
       <small>
-        <pre>{{ page.cache.data() | json }}</pre>
+        <pre>{{ page.storage.data() | json }}</pre>
       </small>
     </p>
     <div
