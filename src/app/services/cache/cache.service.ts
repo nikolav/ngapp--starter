@@ -1,6 +1,6 @@
 import { Injectable, inject } from "@angular/core";
 import { map } from "rxjs/operators";
-import { Apollo } from "apollo-angular";
+import { Apollo, QueryRef } from "apollo-angular";
 import {
   Q_cacheRedisGetCacheByKey,
   M_cacheRedisCommit,
@@ -22,12 +22,12 @@ export class CacheService {
   static readonly ERR_CACHEKEY_EMPTY =
     "ERR_CACHEKEY_EMPTY:57221b6a-81de-52a0-a95a-3f1f2e212574";
 
-  private $apollo = inject(Apollo);
-  private $$ = inject(UseUtilsService);
-  private $config = inject(AppConfigService);
+  protected $apollo = inject(Apollo);
+  protected $$ = inject(UseUtilsService);
+  protected $config = inject(AppConfigService);
 
   key$$(cache_key: any) {
-    return new Observable((observer) => {
+    return new Observable<QueryRef<IResultApolloCacheService>>((observer) => {
       if (!cache_key) {
         observer.error(CacheService.ERR_CACHEKEY_EMPTY);
       } else {
@@ -77,7 +77,7 @@ export class CacheService {
     );
   }
 
-  private _wq(cache_key: any) {
+  protected _wq(cache_key: any) {
     return this.$apollo.watchQuery<IResultApolloCacheService>({
       query: Q_cacheRedisGetCacheByKey,
       variables: {

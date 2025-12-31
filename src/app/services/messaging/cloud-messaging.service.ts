@@ -29,7 +29,10 @@ export class CloudMessagingService {
   private deviceToken = signal<TOrNoValue<string>>(undefined);
   private $client = signal<TOrNoValue<Messaging>>(null);
   private tokensFCM = computed(() =>
-    this.$$.get(this.$auth.profile(), this.$config.key.CLOUD_MESSAGING_TOKENS)
+    this.$$.get(
+      this.$auth.profile.data(),
+      this.$config.key.CLOUD_MESSAGING_TOKENS
+    )
   );
   private serviceAvailable = computed(
     () =>
@@ -76,8 +79,8 @@ export class CloudMessagingService {
         this.deviceToken()! in this.tokensFCM()
       )
         return;
-      this.$auth
-        .profilePatch({
+      this.$auth.profile
+        .commit({
           [this.$config.key.CLOUD_MESSAGING_TOKENS]: {
             [this.deviceToken()!]: true,
           },

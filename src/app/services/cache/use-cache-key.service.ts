@@ -26,7 +26,7 @@ export class UseCacheKeyService {
   private q = computed(() => this.$cache.key(this.cache_key()));
   // #public
   readonly enabled = computed(
-    () => this.$auth.isAuthApi() && Boolean(this.cache_key())
+    () => Boolean(this.cache_key()) && this.$auth.isAuthApi()
   );
   readonly data = signal<any>(undefined);
   readonly io = computed(() =>
