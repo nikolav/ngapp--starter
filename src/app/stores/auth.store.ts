@@ -68,7 +68,7 @@ export class StoreAuth implements OnDestroy {
   readonly email = computed(() => this.$$.get(this.account(), "email", ""));
   // @@
   readonly isAuth = computed(() => Boolean(this.uid()));
-  protected prevAuth = signal(this.isAuth());
+  protected prevAuth = this.isAuth();
   // @@
   readonly isAuthApi = computed(() => Boolean(this.access_token()));
 
@@ -138,19 +138,19 @@ export class StoreAuth implements OnDestroy {
     // emit:IEventApp @auth
     effect(() => {
       // @login
-      if (!this.prevAuth() && this.isAuth()) {
+      if (!this.prevAuth && this.isAuth()) {
         this.$emitter.subject.next({
           type: this.$config.events.EVENT_TYPE_AUTH,
           payload: true,
         });
-      } else if (this.prevAuth() && !this.isAuth()) {
+      } else if (this.prevAuth && !this.isAuth()) {
         // @logout
         this.$emitter.subject.next({
           type: this.$config.events.EVENT_TYPE_AUTH,
           payload: false,
         });
       }
-      this.prevAuth.set(this.isAuth());
+      this.prevAuth = this.isAuth();
     });
 
     // ## profile:sync
