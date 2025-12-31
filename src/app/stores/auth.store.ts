@@ -184,7 +184,7 @@ export class StoreAuth implements OnDestroy {
     effect((cleanup) => {
       if (!this.profile._cacheKey() || !this.isAuthApi()) return;
       this.$sbs.push({
-        qProfile: this.$cache
+        profileQueryRef: this.$cache
           .key$$(this.profile._cacheKey())
           .pipe(catchError(() => this.$$.empty$$()))
           .subscribe((wq) => {
