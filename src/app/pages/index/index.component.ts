@@ -4,7 +4,7 @@ import {
   OnDestroy,
   inject,
   effect,
-  // ChangeDetectionStrategy,
+  ChangeDetectionStrategy,
 } from "@angular/core";
 import { catchError } from "rxjs/operators";
 
@@ -31,7 +31,7 @@ import {
   ],
   templateUrl: "./index.component.html",
   styleUrl: "./index.component.scss",
-  // changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class IndexComponent implements OnInit, OnDestroy {
   protected $$ = inject(UseUtilsService);
@@ -53,7 +53,9 @@ export class IndexComponent implements OnInit, OnDestroy {
   }
 
   ok() {
-    this.$cacheMain.commit({ foo: this.$$.idGen() }).subscribe();
+    this.$cacheMain
+      .commit({ foo: this.$$.idGen(), bar: this.$$.idGen() })
+      .subscribe();
   }
   ngOnInit() {}
   ngOnDestroy() {

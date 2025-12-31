@@ -59,7 +59,7 @@ export class StoreAuth implements OnDestroy {
   protected $emitter = inject(EmitterService);
   protected $cache = inject(CacheService);
 
-  protected $sbs = new ManageSubscriptionsService();
+  protected $s = new ManageSubscriptionsService();
   // update to run effect to signal app:logout
   protected $uniqIdLogout = new UseUniqueIdService();
 
@@ -100,9 +100,7 @@ export class StoreAuth implements OnDestroy {
 
     // @@
     commit: (patch: TOrNoValue<TRecordJson>, MERGE = true) => {
-      return this.profile._cacheKey()
-        ? this.$cache.commit(this.profile._cacheKey(), patch, MERGE)
-        : this.$$.error$$();
+      return this.$cache.commit(this.profile._cacheKey(), patch, MERGE);
     },
   };
 
@@ -110,7 +108,7 @@ export class StoreAuth implements OnDestroy {
 
   constructor() {
     // sync account:IUser
-    this.$sbs.push({
+    this.$s.push({
       account: this.user$.subscribe((user) => {
         this.account.set(user);
       }),
@@ -118,7 +116,7 @@ export class StoreAuth implements OnDestroy {
 
     // get api access_token
     effect(() => {
-      this.$sbs.push({
+      this.$s.push({
         access_token: from(
           this.account() ? this.account()!.getIdToken() : Promise.reject()
         )
@@ -171,7 +169,7 @@ export class StoreAuth implements OnDestroy {
     // ## profile:sync
     // @isAuthApi @QueryRef
     effect(() => {
-      this.$sbs.push({
+      this.$s.push({
         profile: this.profile._queryRef()?.valueChanges.subscribe((result) => {
           this.profile.data.set(
             this.$cache.data(result, this.profile._cacheKey())
@@ -183,12 +181,12 @@ export class StoreAuth implements OnDestroy {
     //   get QueryRef
     effect((cleanup) => {
       if (!this.profile._cacheKey() || !this.isAuthApi()) return;
-      this.$sbs.push({
+      this.$s.push({
         profileQueryRef: this.$cache
           .key$$(this.profile._cacheKey())
           .pipe(catchError(() => this.$$.empty$$()))
-          .subscribe((wq) => {
-            this.profile._queryRef.set(wq);
+          .subscribe((qr) => {
+            this.profile._queryRef.set(qr);
           }),
       });
       cleanup(() => {
@@ -198,7 +196,7 @@ export class StoreAuth implements OnDestroy {
 
     // @profile:io sync
     effect(() => {
-      this.$sbs.push({
+      this.$s.push({
         profile_io: this.profile
           ._io()
           .pipe(
@@ -230,7 +228,7 @@ export class StoreAuth implements OnDestroy {
   }
 
   destroy() {
-    this.$sbs.destroy();
+    this.$s.destroy();
   }
   //
   ngOnDestroy() {
