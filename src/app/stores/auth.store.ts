@@ -117,7 +117,7 @@ export class StoreAuth implements OnDestroy {
             ),
             catchError((error) => {
               this.access_token.set(null);
-              this.$$.onDebug({ "@error --access-token": error });
+              this.$$.onDebug({ "@error --authenticate": error });
               return this.$$.empty$$();
             })
           )
@@ -128,7 +128,7 @@ export class StoreAuth implements OnDestroy {
               // token invalid
               this.access_token.set(null);
               this.$$.onDebug({
-                "@error --api --access-token --invalid": error,
+                "@error --access-token --invalid": error,
               });
             }
           }),
