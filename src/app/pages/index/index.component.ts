@@ -30,8 +30,6 @@ import { UseUtilsService } from "../../services";
 export class IndexComponent implements OnInit, OnDestroy {
   protected $$ = inject(UseUtilsService);
 
-  constructor() {}
-
   ok() {}
   ngOnInit() {}
   ngOnDestroy() {}

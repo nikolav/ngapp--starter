@@ -9,7 +9,8 @@ import {
 } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { from } from "rxjs";
-import { mergeMap, catchError, filter, tap } from "rxjs/operators";
+import { mergeMap, catchError } from "rxjs/operators";
+import { toSignal } from "@angular/core/rxjs-interop";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -20,7 +21,6 @@ import {
 import {
   Auth,
   user as user$$,
-  type User as IUser,
   // type UserCredential as IUserCredential,
 } from "@angular/fire/auth";
 import { Socket } from "ngx-socket-io";
@@ -37,7 +37,6 @@ import {
   TopicsService,
   EmitterService,
   AppConfigService,
-  UseUniqueIdService,
   ManageSubscriptionsService,
   CacheService,
 } from "../services";
@@ -57,13 +56,10 @@ export class StoreAuth implements OnDestroy {
   protected $topics = inject(TopicsService);
   protected $emitter = inject(EmitterService);
   protected $cache = inject(CacheService);
-
   protected $s = new ManageSubscriptionsService();
-  // update to run effect to signal app:logout
-  protected $uniqIdLogout = new UseUniqueIdService();
 
   // @@
-  readonly account = signal<TOrNoValue<IUser>>(null);
+  readonly account = toSignal(user$$(this.$auth), { initialValue: null });
   // @@
   readonly access_token = signal<TOrNoValue<string>>(null);
   // @@
@@ -72,6 +68,7 @@ export class StoreAuth implements OnDestroy {
   readonly email = computed(() => this.$$.get(this.account(), "email", ""));
   // @@
   readonly isAuth = computed(() => Boolean(this.uid()));
+  protected prevAuth = signal(this.isAuth());
   // @@
   readonly isAuthApi = computed(() => Boolean(this.access_token()));
 
@@ -103,32 +100,25 @@ export class StoreAuth implements OnDestroy {
     },
   };
 
-  protected user$ = user$$(this.$auth);
-
   constructor() {
-    // sync account:IUser
-    this.$s.push({
-      account: this.user$.subscribe((user) => {
-        this.account.set(user);
-      }),
-    });
-
     // get api access_token
     effect(() => {
+      // @!account clear
+      const account_ = this.account();
+      if (!account_) {
+        this.$s.clear("access_token");
+        this.access_token.set(null);
+        return;
+      }
+
       this.$s.push({
-        access_token: from(
-          this.account() ? this.account()!.getIdToken() : Promise.reject()
-        )
+        access_token: from(account_.getIdToken())
           .pipe(
-            mergeMap((idToken) => {
-              return idToken
-                ? this.$http.post(URL_AUTH_authenticate, { idToken })
-                : this.$$.error$$();
-            }),
-            catchError(() => this.$$.empty$$())
-          )
-          .pipe(
+            mergeMap((idToken) =>
+              this.$http.post(URL_AUTH_authenticate, { idToken })
+            ),
             catchError((error) => {
+              this.access_token.set(null);
               this.$$.onDebug({ "@error --access-token": error });
               return this.$$.empty$$();
             })
@@ -138,6 +128,7 @@ export class StoreAuth implements OnDestroy {
               this.access_token.set(schemaJwt.parse(this.$$.get(res, "token")));
             } catch (error) {
               // token invalid
+              this.access_token.set(null);
               this.$$.onDebug({
                 "@error --api --access-token --invalid": error,
               });
@@ -146,46 +137,35 @@ export class StoreAuth implements OnDestroy {
       });
     });
 
-    // @logout clear access_token
-    this.$s.push({
-      onLogout_access_token_clear: this.$emitter.subject
-        .pipe(
-          // filter logout events
-          filter(
-            (event) =>
-              this.$config.events.EVENT_TYPE_AUTH === event.type &&
-              false === event.payload
-          )
-        )
-        .subscribe((_eventOnLogout) => {
-          this.access_token.set(null);
-        }),
-    });
-
     // emit:IEventApp @auth
     effect(() => {
       // @login
-      if (this.isAuth()) {
+      if (!this.prevAuth() && this.isAuth()) {
         this.$emitter.subject.next({
           type: this.$config.events.EVENT_TYPE_AUTH,
           payload: true,
         });
-        return;
-      }
-      // @logout
-      if (!this.isAuth() && this.$uniqIdLogout.ID()) {
+      } else if (this.prevAuth() && !this.isAuth()) {
+        // @logout
         this.$emitter.subject.next({
           type: this.$config.events.EVENT_TYPE_AUTH,
           payload: false,
         });
       }
+      this.prevAuth.set(this.isAuth());
     });
 
     // ## profile:sync
     // @isAuthApi @QueryRef
     effect(() => {
+      const qr = this.profile._queryRef();
+      if (!qr) {
+        this.$s.clear("profile");
+        return;
+      }
+
       this.$s.push({
-        profile: this.profile._queryRef()?.valueChanges.subscribe((result) => {
+        profile: qr.valueChanges.subscribe((result) => {
           this.profile.data.set(
             this.$cache.data(result, this.profile._cacheKey())
           );
@@ -194,8 +174,13 @@ export class StoreAuth implements OnDestroy {
     });
     // @isAuthApi
     //   get QueryRef
-    effect((cleanup) => {
-      if (!this.profile._cacheKey() || !this.isAuthApi()) return;
+    effect(() => {
+      if (!this.profile._cacheKey() || !this.isAuthApi()) {
+        this.$s.clear("profileQueryRef");
+        this.profile._queryRef.set(null);
+        this.profile.data.set(null);
+        return;
+      }
       this.$s.push({
         profileQueryRef: this.$cache
           .key$$(this.profile._cacheKey())
@@ -204,13 +189,10 @@ export class StoreAuth implements OnDestroy {
             this.profile._queryRef.set(qr);
           }),
       });
-      cleanup(() => {
-        this.profile.data.set(null);
-      });
     });
 
     // @profile:io sync
-    effect(() => {
+    effect((cleanup) => {
       this.$s.push({
         profile_io: this.profile
           ._io()
@@ -219,6 +201,9 @@ export class StoreAuth implements OnDestroy {
             catchError(() => this.$$.empty$$())
           )
           .subscribe(),
+      });
+      cleanup(() => {
+        this.$s.clear("profile_io");
       });
     });
   }
@@ -239,11 +224,7 @@ export class StoreAuth implements OnDestroy {
 
   // @@
   logout() {
-    return from(signOut(this.$auth)).pipe(
-      tap(() => {
-        this.$uniqIdLogout.next();
-      })
-    );
+    return from(signOut(this.$auth));
   }
 
   destroy() {

@@ -1,6 +1,16 @@
 <app-layout-default class="page--index" pageTitle="🏠 page:home">
   <ng-template #slot_page let-app>
     <h2>&#64;page--index</h2>
-    <button mat-button (click)="ok()">ok</button>
+    <button
+      mat-button
+      (click)="app.auth.profile.commit({ foo: $$.idGen() }).subscribe()"
+    >
+      ok
+    </button>
+    <p>
+      <small>
+        <pre>{{ app.auth.profile.data() | json }}</pre>
+      </small>
+    </p>
   </ng-template>
 </app-layout-default>
