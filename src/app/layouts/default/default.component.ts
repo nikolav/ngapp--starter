@@ -9,15 +9,14 @@ import {
 import { DOCUMENT } from "@angular/common";
 
 import { CoreModulesShared } from "../../modules";
-import {
-  TOKEN_pageLayoutDefaultData,
-  TOKEN_windowDefaultView,
-} from "../../keys";
+
+import { StoreMain } from "../../stores";
 import {
   LocalStorageService,
   UseDisplayService,
   UsePageTitleService,
 } from "../../services";
+import { TOKEN_windowDefaultView } from "../../keys";
 import { TOrNoValue } from "../../types";
 
 @Component({
@@ -35,7 +34,7 @@ export class DefaultComponent {
   readonly $display = inject(UseDisplayService);
   readonly document = inject(DOCUMENT);
   readonly window = inject(TOKEN_windowDefaultView);
-  readonly pageData = inject(TOKEN_pageLayoutDefaultData);
+  readonly cache = inject(StoreMain);
 
   readonly slot_page = contentChild("slot_page", { read: TemplateRef });
 

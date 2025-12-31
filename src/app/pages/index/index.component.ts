@@ -12,9 +12,7 @@ import {
   CoreModulesShared,
 } from "../../modules";
 import { LayoutDefault } from "../../layouts";
-import { DemoComponent } from "../../components/dev";
 
-import { SelectableItemDirective } from "../../directives";
 import { UseUtilsService } from "../../services";
 
 @Component({
@@ -24,8 +22,6 @@ import { UseUtilsService } from "../../services";
     MaterialSharedModule,
     LayoutDefault,
     IconxModule,
-    SelectableItemDirective,
-    DemoComponent,
   ],
   templateUrl: "./index.component.html",
   styleUrl: "./index.component.scss",
