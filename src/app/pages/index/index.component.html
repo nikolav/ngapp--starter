@@ -1,5 +1,11 @@
 <app-layout-default class="page--index" pageTitle="🏠 page:home">
   <ng-template #slot_page let-app>
     <h2>&#64;page--index</h2>
+    <button mat-button (click)="app.cache.push({ foo: $$.idGen() })">ok</button>
+    <p>
+      <small>
+        <pre>{{ app.cache.data() | json }}</pre>
+      </small>
+    </p>
   </ng-template>
 </app-layout-default>

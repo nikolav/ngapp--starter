@@ -1,9 +1,9 @@
 <app-layout-default class="page--app">
-  <ng-template #slot_page let-page>
+  <ng-template #slot_page let-app>
     <h2>&#64;page--app</h2>
     <p>
       <small>
-        <pre>{{ page.cache.data() | json }}</pre>
+        <pre>{{ app.cache.data() | json }}</pre>
       </small>
     </p>
     <button
