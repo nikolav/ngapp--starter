@@ -13,7 +13,7 @@ export class UseProccessMonitorService {
 
   begin(callback: any = this.$$.noop) {
     this.error.set(null);
-    this.success.set(null);
+    this.success.set(false);
     this.processing.set(true);
     callback();
   }
