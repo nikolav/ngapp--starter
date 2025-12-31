@@ -1,6 +1,8 @@
 import { Injectable, inject } from "@angular/core";
+import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import { Apollo, QueryRef } from "apollo-angular";
+
 import {
   Q_cacheRedisGetCacheByKey,
   M_cacheRedisCommit,
@@ -12,7 +14,6 @@ import type {
   IResultApolloCacheService,
   TOrNoValue,
 } from "../../types";
-import { Observable } from "rxjs";
 
 // #https://the-guild.dev/graphql/apollo-angular/docs/get-started#installation
 @Injectable({
@@ -23,6 +24,7 @@ export class CacheService {
     "ERR_CACHEKEY_EMPTY:57221b6a-81de-52a0-a95a-3f1f2e212574";
 
   protected $apollo = inject(Apollo);
+
   protected $$ = inject(UseUtilsService);
   protected $config = inject(AppConfigService);
 
