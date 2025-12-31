@@ -45,14 +45,16 @@ export class CacheService {
 
   commit(cache_key: any, patch: TOrNoValue<TRecordJson>, merge = true) {
     return cache_key && (merge ? !this.$$.isEmpty(patch) : patch)
-      ? this.$apollo.mutate({
-          mutation: M_cacheRedisCommit,
-          variables: {
-            cache_key,
-            patch,
-            merge,
-          },
-        })
+      ? this.$apollo
+          .mutate({
+            mutation: M_cacheRedisCommit,
+            variables: {
+              cache_key,
+              patch,
+              merge,
+            },
+          })
+          .pipe(map((res) => this.$$.get(res, "data.cacheRedisCommit")))
       : this.$$.error$$();
   }
 

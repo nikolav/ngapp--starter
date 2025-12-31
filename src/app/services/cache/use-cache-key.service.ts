@@ -8,8 +8,8 @@ import {
   ManageSubscriptionsService,
   UseUtilsService,
 } from "../../services";
-import { TOrNoValue } from "../../types";
 import { StoreAuth } from "../../stores";
+import type { TOrNoValue } from "../../types";
 
 @Injectable()
 export class UseCacheKeyService {
@@ -43,12 +43,14 @@ export class UseCacheKeyService {
   );
 
   constructor() {
-    effect((cleanup) => {
-      if (!this.enabled()) return;
-      this.start();
-      cleanup(() => {
+    effect(() => {
+      const syncField = "data";
+      if (!this.enabled()) {
+        this.$s.clear(syncField);
         this.data.set(undefined);
-      });
+        return;
+      }
+      this.start(syncField);
     });
   }
 
@@ -64,7 +66,7 @@ export class UseCacheKeyService {
 
   // @@
   reload() {
-    return from(this.q() ? this.q()!.refetch() : Promise.reject());
+    return this.q() ? from(this.q()!.refetch()) : this.$$.empty$$();
   }
 
   // @@
@@ -73,9 +75,9 @@ export class UseCacheKeyService {
     return this;
   }
 
-  start() {
+  start(syncField: string) {
     this.$s.push({
-      data: this.q()?.valueChanges.subscribe((res) =>
+      [syncField]: this.q()?.valueChanges.subscribe((res) =>
         this.data.set(this.$cache.data(res, this.cache_key()))
       ),
     });
