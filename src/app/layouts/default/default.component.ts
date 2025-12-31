@@ -10,12 +10,12 @@ import { DOCUMENT } from "@angular/common";
 
 import { CoreModulesShared } from "../../modules";
 
-import { StoreFlags, StoreMain } from "../../stores";
+import { StoreAppProcessing, StoreFlags, StoreMain } from "../../stores";
 import {
+  EmitterService,
   LocalStorageService,
   UseDisplayService,
   UsePageTitleService,
-  UseToggleFlagService,
 } from "../../services";
 import { TOKEN_windowDefaultView } from "../../keys";
 import { TOrNoValue } from "../../types";
@@ -37,6 +37,8 @@ export class DefaultComponent {
   readonly window = inject(TOKEN_windowDefaultView);
   readonly $cache = inject(StoreMain);
   readonly $flags = inject(StoreFlags);
+  readonly $ps = inject(StoreAppProcessing);
+  readonly $emitter = inject(EmitterService);
 
   readonly slot_page = contentChild("slot_page", { read: TemplateRef });
 

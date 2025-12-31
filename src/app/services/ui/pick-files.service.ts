@@ -1,17 +1,17 @@
 import { computed, inject, Injectable } from "@angular/core";
 import { DOCUMENT } from "@angular/common";
+import { Observable } from "rxjs";
 
 import { UseProccessMonitorService, UseUtilsService } from "../utils";
-import { Observable } from "rxjs";
 import { PickFileOptions } from "../../types";
 import { TOKEN_windowDefaultView } from "../../keys";
 
 @Injectable()
 export class PickFilesService {
   private $$ = inject(UseUtilsService);
-  private $ps = new UseProccessMonitorService();
   private document = inject(DOCUMENT);
   protected window = inject(TOKEN_windowDefaultView);
+  private $ps = new UseProccessMonitorService();
   //
   readonly processing = computed(() => Boolean(this.$ps.processing()));
   //

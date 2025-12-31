@@ -2,6 +2,7 @@
   [ngTemplateOutlet]="slot_page() || null"
   [ngTemplateOutletContext]="{
     $implicit: {
+
       document: document,
       window: window,
       breakpoint : {
@@ -11,9 +12,13 @@
         lg: $display.lg,
         xl: $display.xl,
       },
+
       cache: $cache,
       flags: $flags,
+      ps: $ps,
       storage: $storage,
+
+      emitter: $emitter,
     },
   }"
 ></ng-container>

@@ -1,22 +1,30 @@
 import { computed, inject, Injectable, Signal, signal } from "@angular/core";
+
 import { UseUtilsService } from "../services";
 
 @Injectable()
 export class UseIsProcessingService {
-  private $$ = inject(UseUtilsService);
-  private tracked = signal<Signal<any>[]>([]);
+  protected $$ = inject(UseUtilsService);
 
-  readonly isActive = computed(() =>
-    this.$$.some(this.tracked(), (sig) => sig())
+  protected trackSignals = signal<Signal<any>[]>([]);
+
+  // @@
+  readonly processing = computed(() =>
+    this.$$.some(this.trackSignals(), (sig) => sig())
   );
 
+  // @@
   watch(...signals: Signal<any>[]) {
-    this.tracked.update((s) => [...s, ...signals]);
+    this.trackSignals.update((ws) => Array.from(new Set([...ws, ...signals])));
   }
+
+  // @@
   unwatch(...signals: Signal<any>[]) {
-    this.tracked.update((s) => this.$$.without(s, ...signals));
+    this.trackSignals.update((s) => this.$$.without(s, ...signals));
   }
+
+  // @@
   destroy() {
-    this.tracked.set([]);
+    this.trackSignals.set([]);
   }
 }

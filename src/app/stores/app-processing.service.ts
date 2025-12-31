@@ -5,21 +5,34 @@ import {
   inject,
   type Signal,
 } from "@angular/core";
+
 import { UseUtilsService } from "../services";
 
 @Injectable({
   providedIn: "root",
 })
 export class AppProcessingService {
-  private $$ = inject(UseUtilsService);
+  protected $$ = inject(UseUtilsService);
 
-  private watched_ = signal<Signal<any>[]>([]);
+  protected watchSignals = signal<Signal<any>[]>([]);
 
-  processing = computed(() => this.$$.some(this.watched_(), (sig) => sig()));
-  watch(...nodes: Signal<any>[]) {
-    this.watched_.set([...this.watched_(), ...nodes]);
+  // @@
+  readonly processing = computed(() =>
+    this.$$.some(this.watchSignals(), (sig) => sig())
+  );
+
+  // @@
+  watch(...signals: Signal<any>[]) {
+    this.watchSignals.update((ws) => Array.from(new Set([...ws, ...signals])));
   }
-  unwatch() {
-    this.watched_.set([]);
+
+  // @@
+  unwatch(...signals: Signal<any>[]) {
+    this.watchSignals.update((ws) => this.$$.without(ws, ...signals));
+  }
+
+  // @@
+  destroy() {
+    this.watchSignals.set([]);
   }
 }
