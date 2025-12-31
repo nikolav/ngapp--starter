@@ -61,9 +61,9 @@ export interface IResultCollectionsDocs {
   };
 }
 
-export interface IEventApp {
+export interface IEventApp<TEventAppPayload = any> {
   type: string;
-  payload: any;
+  payload: TEventAppPayload;
 }
 export interface IEventOnStorage extends IEventApp {
   action: "push" | "drop";

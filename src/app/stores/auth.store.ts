@@ -8,8 +8,8 @@ import {
   effect,
 } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
-import { mergeMap, from } from "rxjs";
-import { catchError } from "rxjs/operators";
+import { from } from "rxjs";
+import { mergeMap, catchError, filter, tap } from "rxjs/operators";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -29,7 +29,6 @@ import type { QueryRef } from "apollo-angular";
 import type {
   IAuthCreds,
   TOrNoValue,
-  IEventApp,
   IResultApolloCacheService,
   TRecordJson,
 } from "../types";
@@ -147,11 +146,27 @@ export class StoreAuth implements OnDestroy {
       });
     });
 
+    // @logout clear access_token
+    this.$s.push({
+      access_token_onLogout_clear: this.$emitter.subject
+        .pipe(
+          // filter logout events
+          filter(
+            (event) =>
+              this.$config.events.EVENT_TYPE_AUTH === event.type &&
+              false === event.payload
+          )
+        )
+        .subscribe((_eventOnLogout) => {
+          this.access_token.set(null);
+        }),
+    });
+
     // emit:IEventApp @auth
     effect(() => {
       // @login
       if (this.isAuth()) {
-        this.$emitter.subject.next(<IEventApp>{
+        this.$emitter.subject.next({
           type: this.$config.events.EVENT_TYPE_AUTH,
           payload: true,
         });
@@ -159,7 +174,7 @@ export class StoreAuth implements OnDestroy {
       }
       // @logout
       if (!this.isAuth() && this.$uniqIdLogout.ID()) {
-        this.$emitter.subject.next(<IEventApp>{
+        this.$emitter.subject.next({
           type: this.$config.events.EVENT_TYPE_AUTH,
           payload: false,
         });
@@ -224,7 +239,11 @@ export class StoreAuth implements OnDestroy {
 
   // @@
   logout() {
-    return from(signOut(this.$auth));
+    return from(signOut(this.$auth)).pipe(
+      tap(() => {
+        this.$uniqIdLogout.next();
+      })
+    );
   }
 
   destroy() {
