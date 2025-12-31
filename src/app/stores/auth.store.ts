@@ -104,15 +104,13 @@ export class StoreAuth implements OnDestroy {
     // get api access_token
     effect(() => {
       // @!account clear
-      const account_ = this.account();
-      if (!account_) {
+      if (!this.account()) {
         this.$s.clear("access_token");
         this.access_token.set(null);
         return;
       }
-
       this.$s.push({
-        access_token: from(account_.getIdToken())
+        access_token: from(this.account()!.getIdToken())
           .pipe(
             mergeMap((idToken) =>
               this.$http.post(URL_AUTH_authenticate, { idToken })
@@ -158,14 +156,13 @@ export class StoreAuth implements OnDestroy {
     // ## profile:sync
     // @isAuthApi @QueryRef
     effect(() => {
-      const qr = this.profile._queryRef();
-      if (!qr) {
+      const q = this.profile._queryRef();
+      if (!q) {
         this.$s.clear("profile");
         return;
       }
-
       this.$s.push({
-        profile: qr.valueChanges.subscribe((result) => {
+        profile: q.valueChanges.subscribe((result) => {
           this.profile.data.set(
             this.$cache.data(result, this.profile._cacheKey())
           );
@@ -185,14 +182,14 @@ export class StoreAuth implements OnDestroy {
         profileQueryRef: this.$cache
           .key$$(this.profile._cacheKey())
           .pipe(catchError(() => this.$$.empty$$()))
-          .subscribe((qr) => {
-            this.profile._queryRef.set(qr);
+          .subscribe((q) => {
+            this.profile._queryRef.set(q);
           }),
       });
     });
 
     // @profile:io sync
-    effect((cleanup) => {
+    effect(() => {
       this.$s.push({
         profile_io: this.profile
           ._io()
@@ -201,9 +198,6 @@ export class StoreAuth implements OnDestroy {
             catchError(() => this.$$.empty$$())
           )
           .subscribe(),
-      });
-      cleanup(() => {
-        this.$s.clear("profile_io");
       });
     });
   }
