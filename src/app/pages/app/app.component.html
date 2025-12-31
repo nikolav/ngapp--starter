@@ -9,7 +9,7 @@
     <button
       mat-button
       (click)="
-        $auth
+        app.auth
           .authenticate({
             email: 'admin@nikolav.rs',
             password: 'admin@nikolav.rs'
@@ -19,7 +19,9 @@
     >
       auth:login
     </button>
-    <button mat-button (click)="$auth.logout().subscribe()">auth:logout</button>
+    <button mat-button (click)="app.auth.logout().subscribe()">
+      auth:logout
+    </button>
     <p>
       <small>
         <pre>{{ idToken() | async }}</pre>

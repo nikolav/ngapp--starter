@@ -28,11 +28,8 @@ import { StoreAuth } from "../../stores";
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent implements OnDestroy, OnInit {
-  readonly $auth = inject(StoreAuth);
-  idToken = computed(() => this.$auth.account()?.getIdToken());
-
-  constructor() {}
-
+  protected $auth = inject(StoreAuth);
+  readonly idToken = computed(() => this.$auth.account()?.getIdToken());
   //
   ngOnInit() {}
   ngOnDestroy() {}
