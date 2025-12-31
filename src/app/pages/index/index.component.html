@@ -4,7 +4,7 @@
     <button mat-button (click)="ok()">profile:push</button>
     <p>
       <small>
-        <pre>{{ app.auth.account() | json }}</pre>
+        <pre>{{ $cacheMain.data() | json }}</pre>
       </small>
     </p>
   </ng-template>

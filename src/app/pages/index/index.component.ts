@@ -3,8 +3,10 @@ import {
   OnInit,
   OnDestroy,
   inject,
-  ChangeDetectionStrategy,
+  effect,
+  // ChangeDetectionStrategy,
 } from "@angular/core";
+import { catchError } from "rxjs/operators";
 
 import {
   IconxModule,
@@ -13,7 +15,11 @@ import {
 } from "../../modules";
 import { LayoutDefault } from "../../layouts";
 
-import { UseUtilsService } from "../../services";
+import {
+  ManageSubscriptionsService,
+  UseCacheKeyService,
+  UseUtilsService,
+} from "../../services";
 
 @Component({
   selector: "page-index",
@@ -25,12 +31,32 @@ import { UseUtilsService } from "../../services";
   ],
   templateUrl: "./index.component.html",
   styleUrl: "./index.component.scss",
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  // changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class IndexComponent implements OnInit, OnDestroy {
   protected $$ = inject(UseUtilsService);
 
-  ok() {}
+  protected $s = new ManageSubscriptionsService();
+  readonly $cacheMain = new UseCacheKeyService().use("main");
+
+  constructor() {
+    effect(() => {
+      this.$s.push({
+        mainIO: this.$cacheMain
+          .io()
+          .pipe(catchError(() => this.$$.empty$$()))
+          .subscribe(() => {
+            this.$cacheMain.reload().subscribe();
+          }),
+      });
+    });
+  }
+
+  ok() {
+    this.$cacheMain.commit({ foo: this.$$.idGen() }).subscribe();
+  }
   ngOnInit() {}
-  ngOnDestroy() {}
+  ngOnDestroy() {
+    this.$s.destroy();
+  }
 }
