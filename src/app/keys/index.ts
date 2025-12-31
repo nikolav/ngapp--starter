@@ -1,4 +1,5 @@
-import { InjectionToken } from "@angular/core";
+import { inject, InjectionToken } from "@angular/core";
+import { DOCUMENT } from "@angular/common";
 import { Subject } from "rxjs";
 
 import { StoreDataCache } from "../stores";
@@ -50,14 +51,13 @@ export const TOKEN_breakpoints = new InjectionToken<typeof BreakpointsCustom>(
     factory: () => BreakpointsCustom,
   }
 );
-export const TOKEN_pageLayoutDefaultData = new InjectionToken<StoreDataCache>(
-  "pageLayoutDefaultData:d925a91c-e4fe-554e-a6d4-54e24f9f1303",
+export const TOKEN_windowDefaultView = new InjectionToken<Window | null>(
+  "Window:91418ac1-46ac-5b6d-8113-a6aa5344458f",
   {
     providedIn: "root",
-    factory: () =>
-      new StoreDataCache().use(<any>{ "@": new Date().toISOString() }),
+    factory: () => {
+      const doc = inject(DOCUMENT);
+      return doc.defaultView;
+    },
   }
-);
-export const TOKEN_windowDefaultView = new InjectionToken<Window | null>(
-  "Window:91418ac1-46ac-5b6d-8113-a6aa5344458f"
 );
