@@ -2,6 +2,7 @@ import {
   Component,
   OnInit,
   OnDestroy,
+  inject,
   ChangeDetectionStrategy,
 } from "@angular/core";
 
@@ -11,6 +12,9 @@ import {
   CoreModulesShared,
 } from "../../modules";
 import { LayoutDefault } from "../../layouts";
+
+import { UseUtilsService } from "../../services";
+
 @Component({
   selector: "page-index",
   imports: [
@@ -24,9 +28,9 @@ import { LayoutDefault } from "../../layouts";
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class IndexComponent implements OnInit, OnDestroy {
-  ok() {
-    console.log("ok");
-  }
+  protected $$ = inject(UseUtilsService);
+
+  ok() {}
   ngOnInit() {}
   ngOnDestroy() {}
 }

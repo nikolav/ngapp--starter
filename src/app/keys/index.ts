@@ -1,7 +1,7 @@
 import { InjectionToken } from "@angular/core";
 import { Subject } from "rxjs";
 
-import { DataCacheService } from "../stores/cache-data.service";
+import { StoreDataCache } from "../stores";
 import { BreakpointsCustom } from "../assets/breakpoints";
 
 export const TOKEN_localStorage = new InjectionToken<Storage>(
@@ -21,11 +21,11 @@ export const TOKEN_localStorage = new InjectionToken<Storage>(
 //     },
 //   }
 // );
-export const TOKEN_cacheDemo = new InjectionToken<DataCacheService>(
+export const TOKEN_cacheDemo = new InjectionToken<StoreDataCache>(
   "cache:demo:55729762-a63f-5812-a58a-ab4b88b80dc9",
   {
     providedIn: "root",
-    factory: () => new DataCacheService().use({}),
+    factory: () => new StoreDataCache().use({}),
   }
 );
 export const TOKEN_emitterDemo = new InjectionToken<Subject<unknown>>(
@@ -49,4 +49,15 @@ export const TOKEN_breakpoints = new InjectionToken<typeof BreakpointsCustom>(
     providedIn: "root",
     factory: () => BreakpointsCustom,
   }
+);
+export const TOKEN_pageLayoutDefaultData = new InjectionToken<StoreDataCache>(
+  "pageLayoutDefaultData:d925a91c-e4fe-554e-a6d4-54e24f9f1303",
+  {
+    providedIn: "root",
+    factory: () =>
+      new StoreDataCache().use(<any>{ "@": new Date().toISOString() }),
+  }
+);
+export const TOKEN_windowDefaultView = new InjectionToken<Window | null>(
+  "Window:91418ac1-46ac-5b6d-8113-a6aa5344458f"
 );

@@ -1,10 +1,18 @@
-import { Injectable, computed, inject, signal } from "@angular/core";
+import {
+  DestroyRef,
+  Injectable,
+  computed,
+  inject,
+  signal,
+} from "@angular/core";
 import { BreakpointObserver } from "@angular/cdk/layout";
-import { Subject, fromEvent } from "rxjs";
-import { takeUntil, throttleTime } from "rxjs/operators";
+import { ViewportRuler } from "@angular/cdk/scrolling";
+import { fromEvent } from "rxjs";
+import { map, throttleTime } from "rxjs/operators";
+import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 
 import { UseUtilsService } from "../utils";
-import { TOKEN_breakpoints } from "../../keys";
+import { TOKEN_breakpoints, TOKEN_windowDefaultView } from "../../keys";
 
 const Q_ORIENTATION_PORTRAIT = "(orientation: portrait)";
 const Q_ORIENTATION_LANDSCAPE = "(orientation: landscape)";
@@ -23,6 +31,8 @@ export class UseDisplayService {
   protected $$ = inject(UseUtilsService);
   protected $b = inject(BreakpointObserver);
   protected BreakpointsCustom = inject(TOKEN_breakpoints);
+  protected viewportRuler = inject(ViewportRuler);
+  protected window = inject(TOKEN_windowDefaultView);
 
   protected DISPLAY_NAMES = new Map([
     [this.BreakpointsCustom.XSmall, "xs"],
@@ -32,12 +42,12 @@ export class UseDisplayService {
     [this.BreakpointsCustom.XLarge, "xl"],
   ]);
 
-  protected _destroyed = new Subject<void>();
+  protected _destroyed = inject(DestroyRef);
 
   // @@
   readonly current = signal<string>(this.UNKNOWN);
   readonly orientation = signal<string>(this.UNKNOWN);
-  readonly width = signal<number>(window.innerWidth);
+  readonly width = signal<number>(this.window!.innerWidth);
 
   readonly xs = computed(() => "xs" === this.current());
   readonly sm = computed(() => "sm" === this.current());
@@ -47,18 +57,25 @@ export class UseDisplayService {
 
   readonly landscape = computed(() => "landscape" === this.orientation());
   readonly portrait = computed(() => "portrait" === this.orientation());
+
+  readonly viewportSize$ = this.viewportRuler
+    .change(this.THROTTLE_TIME_wResize)
+    .pipe(
+      takeUntilDestroyed(this._destroyed),
+      map((event) => ({ event, ruler: this.viewportRuler }))
+    );
   // /@@
 
   // sync window width
-  protected width_s = fromEvent(window, "resize")
+  protected width_s = fromEvent(this.window!, "resize")
     .pipe(
-      takeUntil(this._destroyed),
+      takeUntilDestroyed(this._destroyed),
       throttleTime(this.THROTTLE_TIME_wResize, undefined, {
         trailing: true,
       })
     )
     .subscribe(() => {
-      this.width.set(window.innerWidth);
+      this.width.set(this.window!.innerWidth);
     });
 
   constructor() {
@@ -71,7 +88,7 @@ export class UseDisplayService {
         this.BreakpointsCustom.Large,
         this.BreakpointsCustom.XLarge,
       ])
-      .pipe(takeUntil(this._destroyed))
+      .pipe(takeUntilDestroyed(this._destroyed))
       .subscribe((result) => {
         const query = this.$$.findKey(result.breakpoints, (value) => value);
         if (query) {
@@ -81,7 +98,7 @@ export class UseDisplayService {
     // sync orientation
     this.$b
       .observe([Q_ORIENTATION_PORTRAIT, Q_ORIENTATION_LANDSCAPE])
-      .pipe(takeUntil(this._destroyed))
+      .pipe(takeUntilDestroyed(this._destroyed))
       .subscribe((result) => {
         const query = this.$$.findKey(result.breakpoints, (value) => value);
         if (query) {
@@ -100,7 +117,5 @@ export class UseDisplayService {
   // @@
   destroy() {
     this.width_s?.unsubscribe();
-    this._destroyed.next();
-    this._destroyed.complete();
   }
 }

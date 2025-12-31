@@ -2,9 +2,14 @@ import {
   ChangeDetectionStrategy,
   Component,
   contentChild,
+  OnDestroy,
+  signal,
   TemplateRef,
 } from "@angular/core";
+import { interval } from "rxjs";
+
 import { CoreModulesShared } from "../../../modules";
+import { ManageSubscriptionsService } from "../../../services";
 
 @Component({
   selector: "app-demo",
@@ -13,9 +18,23 @@ import { CoreModulesShared } from "../../../modules";
   styleUrl: "./demo.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DemoComponent {
+export class DemoComponent implements OnDestroy {
+  protected $sbs = new ManageSubscriptionsService();
   readonly slotHeader = contentChild("slot_header", {
     read: TemplateRef,
   });
-  readonly slotData = { foo: 1 };
+
+  protected counter = signal<number>(-1);
+
+  constructor() {
+    this.$sbs.push({
+      counter: interval(1000).subscribe((n) => {
+        this.counter.set(n);
+      }),
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.$sbs.destroy();
+  }
 }

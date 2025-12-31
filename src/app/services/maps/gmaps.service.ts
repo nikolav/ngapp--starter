@@ -4,12 +4,14 @@ import { Observable } from "rxjs";
 
 import { TOrNoValue } from "../../types";
 import { AppConfigService, ManageSubscriptionsService } from "../utils";
+import { TOKEN_windowDefaultView } from "../../keys";
 
 @Injectable({
   providedIn: "root",
 })
 export class GmapsService {
   private document = inject(DOCUMENT);
+  protected window = inject(TOKEN_windowDefaultView);
 
   private $config = inject(AppConfigService);
   private $sbs = new ManageSubscriptionsService();
@@ -35,7 +37,9 @@ export class GmapsService {
   protected start() {
     this.$sbs.push({
       gmapsClientAvailable: new Observable<typeof google.maps>((obs) => {
-        const maps = <typeof google.maps | undefined>(<any>window).google?.maps;
+        const maps = <typeof google.maps | undefined>(
+          (<any>this.window).google.maps
+        );
         if (maps) {
           obs.next(maps);
           obs.complete();
@@ -51,7 +55,7 @@ export class GmapsService {
 
         const onLoad = () => {
           const maps_ = <typeof google.maps | undefined>(
-            (<any>window).google?.maps
+            (<any>this.window).google.maps
           );
           if (maps_) {
             obs.next(maps_);

@@ -1,14 +1,15 @@
 import { Injectable, inject, signal } from "@angular/core";
-import type { TOrNoValue } from "../../types";
+
 import { UseUtilsService } from "../../services";
+import type { TOrNoValue } from "../../types";
 
 @Injectable()
 export class UseProccessMonitorService {
   private $$ = inject(UseUtilsService);
 
-  processing = signal<TOrNoValue<boolean>>(null);
-  error = signal<TOrNoValue<any>>(null);
-  success = signal<TOrNoValue<boolean>>(null);
+  readonly processing = signal<TOrNoValue<boolean>>(null);
+  readonly error = signal<TOrNoValue<any>>(null);
+  readonly success = signal<TOrNoValue<boolean>>(null);
 
   begin(callback: any = this.$$.noop) {
     this.error.set(null);
@@ -16,15 +17,15 @@ export class UseProccessMonitorService {
     this.processing.set(true);
     callback();
   }
-  done(callback: any = this.$$.noop) {
-    this.processing.set(false);
-    callback();
-  }
-  setError(error: any) {
+  setError(error: unknown) {
     this.error.set(error);
   }
   successful(callback: any = this.$$.noop) {
     this.success.set(true);
+    callback();
+  }
+  done(callback: any = this.$$.noop) {
+    this.processing.set(false);
     callback();
   }
 }

@@ -8,17 +8,17 @@ import { UseUtilsService } from "../services";
 export class StoreMain {
   private $$ = inject(UseUtilsService);
 
-  readonly store = signal(<any>{});
+  readonly data = signal(<any>{});
 
   push(patch: any) {
-    this.store.update((store_) =>
+    this.data.update((d) =>
       this.$$.reduce(
         patch,
         (acc, value, path) => {
           this.$$.set(acc, path, value);
           return acc;
         },
-        this.$$.structuredClone(store_)
+        this.$$.cloned(d)
       )
     );
   }
@@ -34,24 +34,24 @@ export class StoreMain {
     );
   }
   item(path: string, DEFAULT?: any) {
-    return this.$$.get(this.store(), path, DEFAULT);
+    return this.$$.get(this.data(), path, DEFAULT);
   }
-  exists(path: string) {
-    return this.$$.has(this.store(), path);
+  has(path: string) {
+    return this.$$.has(this.data(), path);
   }
   use(newStore: any) {
-    this.store.set(newStore);
+    this.data.set(newStore);
     return this;
   }
   unset(...paths: string[]) {
-    this.store.update((store_) =>
+    this.data.update((d) =>
       this.$$.reduce(
         paths,
         (acc, path) => {
           this.$$.unset(acc, path);
           return acc;
         },
-        this.$$.structuredClone(store_)
+        this.$$.cloned(d)
       )
     );
   }

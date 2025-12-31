@@ -1,7 +1,10 @@
-<p>--component DemoComponent</p>
+<hr />
+<p>&#64;DemoComponent</p>
 <div>
   <ng-container
-    *ngTemplateOutlet="slotHeader() || null; context: { $implicit: slotData }"
+    [ngTemplateOutlet]="slotHeader() || null"
+    [ngTemplateOutletContext]="{ $implicit: { counter } }"
   />
 </div>
-<p>END --component DemoComponent</p>
+<p>END:DemoComponent</p>
+<hr />

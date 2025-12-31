@@ -1,4 +1,5 @@
 import { Injectable, signal, inject } from "@angular/core";
+
 import { UseUtilsService } from "../services";
 
 @Injectable()
@@ -22,7 +23,7 @@ export class DataCacheService {
           this.$$.set(accum, path, value);
           return accum;
         },
-        this.$$.structuredClone(d)
+        this.$$.cloned(d)
       )
     );
   }
@@ -49,7 +50,7 @@ export class DataCacheService {
           this.$$.unset(accum, path);
           return accum;
         },
-        this.$$.structuredClone(d)
+        this.$$.cloned(d)
       )
     );
   }

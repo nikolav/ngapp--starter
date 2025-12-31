@@ -4,8 +4,7 @@ import { Injectable } from "@angular/core";
 import lodash from "lodash";
 import { v4 as uuid } from "uuid";
 import md5 from "md5";
-import URLParse from "url-parse";
-import qs from "qs";
+import qs from "query-string";
 // #https://github.com/validatorjs/validator.js
 import isEmail from "validator/es/lib/isEmail";
 import isURL from "validator/es/lib/isURL";
@@ -47,6 +46,7 @@ const {
   debounce,
   defaults,
   defaultsDeep,
+  difference,
   each,
   entries,
   escapeRegExp,
@@ -123,6 +123,7 @@ export class UseUtilsService {
   deepmerge = deepmerge;
   defaults = defaults;
   defaultsDeep = defaultsDeep;
+  difference = difference;
   each = each;
   entries = entries;
   escapeRegExp = escapeRegExp;
@@ -189,7 +190,6 @@ export class UseUtilsService {
   uuid = uuid;
 
   // urls, paths
-  urlParse = URLParse;
   qs = qs;
 
   // local
@@ -221,8 +221,7 @@ export class UseUtilsService {
   Math = Math;
   Date = Date;
   JSON = JSON;
-  structuredClone = structuredClone;
-  cloned = structuredClone;
+  cloned = structuredClone.bind(null);
 
   // etc.
   copy = Object.assign.bind(Object);

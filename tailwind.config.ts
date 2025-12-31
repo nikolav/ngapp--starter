@@ -24,38 +24,43 @@ export default <Partial<Config>>{
        */
       screens: {
         /* size tiers */
-        xs: "480px", // replaces implicit <sm
-        sm: "768px",
-        md: "1024px",
-        lg: "1440px",
-        xl: { min: "1441px" },
-        // xl: "1920px",
+        xs: "599.98px", // replaces implicit <sm
+        sm: "959.98px",
+        md: "1279.98px",
+        lg: "1919.98px",
+        xl: { min: "1920px" },
 
         /* semantic device ranges */
-        handset: { max: "767.99px" },
-        tablet: { min: "768px", max: "1023.99px" },
-        web: { min: "1024px" },
+        handset: {
+          raw: "(max-width: 599.98px) and (orientation: portrait), (max-width: 959.98px) and (orientation: landscape)",
+        },
+        tablet: {
+          raw: "(min-width: 600px) and (max-width: 839.98px) and (orientation: portrait), (min-width: 960px) and (max-width: 1279.98px) and (orientation: landscape)",
+        },
+        web: {
+          raw: "(min-width: 840px) and (orientation: portrait), (min-width: 1280px) and (orientation: landscape)",
+        },
 
         /* orientation-aware */
         "handset-p": {
-          raw: "(max-width: 767.99px) and (orientation: portrait)",
+          raw: "(max-width: 599.98px) and (orientation: portrait)",
         },
         "handset-l": {
-          raw: "(max-width: 767.99px) and (orientation: landscape)",
+          raw: "(max-width: 959.98px) and (orientation: landscape)",
         },
 
         "tablet-p": {
-          raw: "(min-width: 768px) and (max-width: 1023.99px) and (orientation: portrait)",
+          raw: "(min-width: 600px) and (max-width: 839.98px) and (orientation: portrait)",
         },
         "tablet-l": {
-          raw: "(min-width: 768px) and (max-width: 1023.99px) and (orientation: landscape)",
+          raw: "(min-width: 960px) and (max-width: 1279.98px) and (orientation: landscape)",
         },
 
         "web-p": {
-          raw: "(min-width: 1024px) and (orientation: portrait)",
+          raw: "(min-width: 840px) and (orientation: portrait)",
         },
         "web-l": {
-          raw: "(min-width: 1024px) and (orientation: landscape)",
+          raw: "(min-width: 1280px) and (orientation: landscape)",
         },
       },
 

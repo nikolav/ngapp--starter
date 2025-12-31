@@ -1,4 +1,5 @@
 import { inject, Injectable, signal } from "@angular/core";
+
 import { UseUtilsService } from "../services";
 import { ISToreFlagsCache } from "../types";
 
@@ -8,12 +9,10 @@ import { ISToreFlagsCache } from "../types";
 export class StoreFlagsService {
   private $$ = inject(UseUtilsService);
 
-  readonly store = signal(<ISToreFlagsCache>{});
+  readonly data = signal(<ISToreFlagsCache>{});
 
   push(flags: ISToreFlagsCache) {
-    this.store.update((storeCurrent) =>
-      this.$$.copy(<ISToreFlagsCache>{}, storeCurrent, flags)
-    );
+    this.data.update((d) => this.$$.copy(<ISToreFlagsCache>{}, d, flags));
   }
   on(name: string) {
     this.push(<ISToreFlagsCache>{ [name]: true });
@@ -24,11 +23,11 @@ export class StoreFlagsService {
   toggle(name: string) {
     this.push(<ISToreFlagsCache>{ [name]: !this.item(name) });
   }
-  item(name: string) {
-    return Boolean(this.store()[name]);
+  item(name: string, DEFAULT = false) {
+    return this.data()[name] ?? DEFAULT;
   }
   use(newStore: ISToreFlagsCache) {
-    this.store.set(newStore);
+    this.data.set(newStore);
     return this;
   }
 }

@@ -77,7 +77,7 @@
   messaging.onBackgroundMessage((payload) => {
     // Log the whole payload + a few useful fields
     try {
-      log("Received background message payload:", payload);
+      log("Received background message payload:", { payload });
 
       // Optional: quick summary to scan logs faster
       const summary = {
@@ -94,6 +94,12 @@
   });
 
   // (Optional) lifecycle logs – helpful while debugging SW updates
+
+  //   @installed
   self.addEventListener("install", () => log("install"));
+
+  //   @active
+  //     listens events
+  //     can access resources under its scope
   self.addEventListener("activate", () => log("activate"));
 })();

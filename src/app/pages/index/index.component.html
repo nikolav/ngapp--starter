@@ -1,130 +1,132 @@
-<app-layout-default class="page--index">
-  <section class="px-4 py-10 min-h-screen bg-neutral-950 text-neutral-100">
-    <div class="__sizer__ mx-auto max-w-3xl">
-      <!-- Header -->
-      <header class="mb-8">
-        <h1 class="flex items-center gap-2 text-3xl font-semibold">
-          👋 Zdravo
-        </h1>
-      </header>
+<app-layout-default class="page--index" pageTitle="🏠 Dobrodošli | page:index">
+  <ng-template #slot_page let-app>
+    <section class="px-4 py-10 min-h-screen bg-neutral-950 text-neutral-100">
+      <div class="__sizer__ mx-auto max-w-3xl">
+        <!-- Header -->
+        <header class="mb-8">
+          <h1 class="flex items-center gap-2 text-3xl font-semibold">
+            👋 Zdravo
+          </h1>
+        </header>
 
-      <!-- Cards -->
-      <div class="space-y-4">
-        <!-- Name -->
-        <div
-          class="flex items-start gap-4 rounded-2xl bg-neutral-900/80 p-5 shadow-md ring-1 ring-white/5"
-        >
-          <span class="text-xl">🧑</span>
-          <div>
-            <div class="text-xs uppercase tracking-wider text-neutral-500">
-              Ime i prezime
-            </div>
-            <div class="text-lg font-medium text-neutral-100">
-              Nikola Vuković
+        <!-- Cards -->
+        <div class="space-y-4">
+          <!-- Name -->
+          <div
+            class="flex items-start gap-4 rounded-2xl bg-neutral-900/80 p-5 shadow-md ring-1 ring-white/5"
+          >
+            <span class="text-xl">🧑</span>
+            <div>
+              <div class="text-xs uppercase tracking-wider text-neutral-500">
+                Ime i prezime
+              </div>
+              <div class="text-lg font-medium text-neutral-100">
+                Nikola Vuković
+              </div>
             </div>
           </div>
-        </div>
 
-        <!-- Email -->
-        <div
-          class="flex items-start gap-4 rounded-2xl bg-neutral-900/80 p-5 shadow-md ring-1 ring-white/5"
-        >
-          <span class="text-xl">📧</span>
-          <div>
-            <div class="text-xs uppercase tracking-wider text-neutral-500">
-              Email
-            </div>
-            <a
-              href="mailto:admin@nikolav.rs"
-              class="text-lg font-medium text-sky-400 hover:text-sky-300 underline underline-offset-4"
-            >
-              admin&#64;nikolav.rs
-            </a>
-          </div>
-        </div>
-
-        <!-- Phone -->
-        <div
-          class="flex items-start gap-4 rounded-2xl bg-neutral-900/80 p-5 shadow-md ring-1 ring-white/5"
-        >
-          <span class="text-xl">📱</span>
-          <div>
-            <div class="text-xs uppercase tracking-wider text-neutral-500">
-              Telefon
-            </div>
-            <a
-              href="tel:+381695725523"
-              class="text-lg font-medium text-emerald-400 hover:text-emerald-300 underline underline-offset-4"
-            >
-              069 572 55 23
-            </a>
-            <div class="mt-1 text-sm text-neutral-500">
-              🇷🇸 Srbija (dodirnite za poziv 👆)
+          <!-- Email -->
+          <div
+            class="flex items-start gap-4 rounded-2xl bg-neutral-900/80 p-5 shadow-md ring-1 ring-white/5"
+          >
+            <span class="text-xl">📧</span>
+            <div>
+              <div class="text-xs uppercase tracking-wider text-neutral-500">
+                Email
+              </div>
+              <a
+                href="mailto:admin@nikolav.rs"
+                class="text-lg font-medium text-sky-400 hover:text-sky-300 underline underline-offset-4"
+              >
+                admin&#64;nikolav.rs
+              </a>
             </div>
           </div>
-        </div>
 
-        <!-- X -->
-        <div
-          class="flex items-start gap-4 rounded-2xl bg-neutral-900/80 p-5 shadow-md ring-1 ring-white/5"
-        >
-          <span class="text-xl">𝕏</span>
-          <div>
-            <div class="text-xs uppercase tracking-wider text-neutral-500">
-              X (Twitter)
+          <!-- Phone -->
+          <div
+            class="flex items-start gap-4 rounded-2xl bg-neutral-900/80 p-5 shadow-md ring-1 ring-white/5"
+          >
+            <span class="text-xl">📱</span>
+            <div>
+              <div class="text-xs uppercase tracking-wider text-neutral-500">
+                Telefon
+              </div>
+              <a
+                href="tel:+381695725523"
+                class="text-lg font-medium text-emerald-400 hover:text-emerald-300 underline underline-offset-4"
+              >
+                069 572 55 23
+              </a>
+              <div class="mt-1 text-sm text-neutral-500">
+                🇷🇸 Srbija (dodirnite za poziv 👆)
+              </div>
             </div>
-            <a
-              href="https://x.com/twiNikola"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="break-all text-lg font-medium text-fuchsia-400 hover:text-fuchsia-300 underline underline-offset-4"
-            >
-              https://x.com/twiNikola
-            </a>
           </div>
-        </div>
 
-        <!-- Facebook -->
-        <div
-          class="flex items-start gap-4 rounded-2xl bg-neutral-900/80 p-5 shadow-md ring-1 ring-white/5"
-        >
-          <span class="text-xl">📘</span>
-          <div>
-            <div class="text-xs uppercase tracking-wider text-neutral-500">
-              Facebook
+          <!-- X -->
+          <div
+            class="flex items-start gap-4 rounded-2xl bg-neutral-900/80 p-5 shadow-md ring-1 ring-white/5"
+          >
+            <span class="text-xl">𝕏</span>
+            <div>
+              <div class="text-xs uppercase tracking-wider text-neutral-500">
+                X (Twitter)
+              </div>
+              <a
+                href="https://x.com/twiNikola"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="break-all text-lg font-medium text-fuchsia-400 hover:text-fuchsia-300 underline underline-offset-4"
+              >
+                https://x.com/twiNikola
+              </a>
             </div>
-            <a
-              href="https://www.facebook.com/nikolav.me/"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="break-all text-lg font-medium text-blue-400 hover:text-blue-300 underline underline-offset-4"
-            >
-              https://www.facebook.com/nikolav.me/
-            </a>
           </div>
-        </div>
 
-        <!-- GitHub -->
-        <div
-          class="flex items-start gap-4 rounded-2xl bg-neutral-900/80 p-5 shadow-md ring-1 ring-white/5"
-        >
-          <span class="text-xl">👨‍💻</span>
-          <div>
-            <div class="text-xs uppercase tracking-wider text-neutral-500">
-              <span class="font-bold">&lt;&sol;&gt;</span>
-              GitHub
+          <!-- Facebook -->
+          <div
+            class="flex items-start gap-4 rounded-2xl bg-neutral-900/80 p-5 shadow-md ring-1 ring-white/5"
+          >
+            <span class="text-xl">📘</span>
+            <div>
+              <div class="text-xs uppercase tracking-wider text-neutral-500">
+                Facebook
+              </div>
+              <a
+                href="https://www.facebook.com/nikolav.me/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="break-all text-lg font-medium text-blue-400 hover:text-blue-300 underline underline-offset-4"
+              >
+                https://www.facebook.com/nikolav.me/
+              </a>
             </div>
-            <a
-              href="https://github.com/nikolav"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="break-all text-lg font-medium text-slate-300 hover:text-white underline underline-offset-4"
-            >
-              https://github.com/nikolav
-            </a>
+          </div>
+
+          <!-- GitHub -->
+          <div
+            class="flex items-start gap-4 rounded-2xl bg-neutral-900/80 p-5 shadow-md ring-1 ring-white/5"
+          >
+            <span class="text-xl">👨‍💻</span>
+            <div>
+              <div class="text-xs uppercase tracking-wider text-neutral-500">
+                <span class="font-bold">&lt;&sol;&gt;</span>
+                GitHub
+              </div>
+              <a
+                href="https://github.com/nikolav"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="break-all text-lg font-medium text-slate-300 hover:text-white underline underline-offset-4"
+              >
+                https://github.com/nikolav
+              </a>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </ng-template>
 </app-layout-default>
