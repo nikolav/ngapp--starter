@@ -148,7 +148,7 @@ export class StoreAuth implements OnDestroy {
 
     // @logout clear access_token
     this.$s.push({
-      access_token_onLogout_clear: this.$emitter.subject
+      onLogout_access_token_clear: this.$emitter.subject
         .pipe(
           // filter logout events
           filter(
