@@ -26,10 +26,10 @@
 
       density: 0
     ),
-    $overrides: (
-      //
-      // theme-overrides
-    )
+    // $overrides: (
+    //   //
+    //   // theme-overrides
+    // )
   );
 }
 
@@ -41,7 +41,16 @@
   color-scheme: light;
 }
 
-// // override theme for a container
+// // override theme, class scoped
+// .example-orange-primary-container {
+//   @include mat.theme-overrides(
+//     (
+//       primary-container: #84ffff,
+//     )
+//   );
+// }
+
+// // declare theme, container scoped
 // .example-bright-container {
 //   @include mat.theme(
 //     (
@@ -55,12 +64,11 @@
   // // ==theme:overrides
   // @include mat.theme-overrides(
   //   (
-  //     // primary: #ebdcff,
-  //     // on-primary: #230f46,
-  //     // body-medium: 500 1.15rem/1.3rem Arial,
-  //     // corner-large: 32px,
-  //     // level3: 0 4px 6px 1px var(--mat-sys-surface-dim),
-  //     // primary-container: #84ffff,
+  //     primary: #ebdcff,
+  //     on-primary: #230f46,
+  //     body-medium: 500 1.15rem/1.3rem Arial,
+  //     corner-large: 32px,
+  //     level3: 0 4px 6px 1px var(--mat-sys-surface-dim),
   //   )
   // );
   // // ==component:overrides button
@@ -90,41 +98,22 @@
   );
 }
 
-// .app-density1 {
-//   @include mat.theme(
-//     (
-//       density: -1,
-//     )
-//   );
-// }
-// .app-density2 {
-//   @include mat.theme(
-//     (
-//       density: -2,
-//     )
-//   );
-// }
-// .app-density3 {
-//   @include mat.theme(
-//     (
-//       density: -3,
-//     )
-//   );
-// }
-// .app-density4 {
-//   @include mat.theme(
-//     (
-//       density: -4,
-//     )
-//   );
-// }
-// .app-density5 {
-//   @include mat.theme(
-//     (
-//       density: -5,
-//     )
-//   );
-// }
+.app-density-compact {
+  @include mat.theme-overrides(
+    (
+      density: -1,
+    )
+  );
+}
+
+.app-density-dense {
+  @include mat.theme-overrides(
+    (
+      density: -3,
+    )
+  );
+}
+
 .app-mat-form-field-underline {
   @include mat.form-field-overrides(
     (
