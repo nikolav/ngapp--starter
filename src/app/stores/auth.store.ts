@@ -8,7 +8,7 @@ import {
   effect,
 } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
-import { from } from "rxjs";
+import { from, Subject } from "rxjs";
 import { mergeMap, catchError } from "rxjs/operators";
 import { toSignal } from "@angular/core/rxjs-interop";
 import {
@@ -25,12 +25,7 @@ import {
 } from "@angular/fire/auth";
 
 import type { IAuthCreds, TOrNoValue } from "../types";
-import {
-  UseUtilsService,
-  EmitterService,
-  AppConfigService,
-  ManageSubscriptionsService,
-} from "../services";
+import { UseUtilsService, ManageSubscriptionsService } from "../services";
 import { schemaJwt } from "../schemas";
 import { URL_AUTH_authenticate } from "../config";
 
@@ -42,10 +37,7 @@ export class StoreAuth implements OnDestroy {
   private $auth = inject(Auth);
 
   private $$ = inject(UseUtilsService);
-  private $config = inject(AppConfigService);
-  private $emitter = inject(EmitterService);
-
-  private $s = new ManageSubscriptionsService();
+  private $subs = new ManageSubscriptionsService();
 
   // @@
   readonly account = toSignal(user$$(this.$auth), { initialValue: null });
@@ -57,20 +49,25 @@ export class StoreAuth implements OnDestroy {
   readonly email = computed(() => this.$$.get(this.account(), "email", ""));
   // @@
   readonly isAuth = computed(() => Boolean(this.uid()));
-  private prevAuth = this.isAuth();
   // @@
   readonly isAuthApi = computed(() => Boolean(this.access_token()));
+  // @@
+  readonly onLogin = new Subject<void>();
+  // @@
+  readonly onLogout = new Subject<void>();
+
+  private prevAuth = this.isAuth();
 
   constructor() {
     // get api access_token
     effect(() => {
       // @!account clear
       if (!this.account()) {
-        this.$s.clear("access_token");
+        this.$subs.clear("access_token");
         this.access_token.set(null);
         return;
       }
-      this.$s.push({
+      this.$subs.push({
         access_token: from(this.account()!.getIdToken())
           .pipe(
             mergeMap((idToken) =>
@@ -98,18 +95,10 @@ export class StoreAuth implements OnDestroy {
 
     // emit:IEventApp @auth
     effect(() => {
-      // @login
       if (!this.prevAuth && this.isAuth()) {
-        this.$emitter.subject.next({
-          type: this.$config.events.EVENT_TYPE_AUTH,
-          payload: true,
-        });
+        this.onLogin.next();
       } else if (this.prevAuth && !this.isAuth()) {
-        // @logout
-        this.$emitter.subject.next({
-          type: this.$config.events.EVENT_TYPE_AUTH,
-          payload: false,
-        });
+        this.onLogout.next();
       }
       this.prevAuth = this.isAuth();
     });
@@ -135,7 +124,7 @@ export class StoreAuth implements OnDestroy {
   }
 
   destroy() {
-    this.$s.destroy();
+    this.$subs.destroy();
   }
   //
   ngOnDestroy() {
