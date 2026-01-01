@@ -14,14 +14,14 @@
           // theme-type: light,
           theme-type: color-scheme
         ),
-      // typography: Roboto,
+      // typography: Inter,
       typography:
         (
-          brand-family: Roboto,
-          plain-family: "Open Sans",
-          // bold-weight: 900,
+          brand-family: "Open Sans",
+          plain-family: Inter,
+          // bold-weight: 700,
           // medium-weight: 500,
-          // regular-weight: 300
+          // regular-weight: 400,,,,,,
         ),
 
       density: 0
@@ -32,37 +32,51 @@
     )
   );
 }
-// body.dark-mode {
-//   color-scheme: dark;
+
+.app-theme-dark {
+  color-scheme: dark;
+}
+
+.app-theme-light {
+  color-scheme: light;
+}
+
+// // override theme for a container
+// .example-bright-container {
+//   @include mat.theme(
+//     (
+//       color: mat.$cyan-palette,
+//     )
+//   );
 // }
 
 // =====================
 :root {
-  // ==theme:overrides
-  @include mat.theme-overrides(
-    (
-      // primary: #ebdcff,
-      // on-primary: #230f46,
-      // body-medium: 500 1.15rem/1.3rem Arial,
-      // corner-large: 32px,
-      // level3: 0 4px 6px 1px var(--mat-sys-surface-dim),
-      // primary-container: #84ffff,
-    )
-  );
-  // ==component:overrides button
-  @include mat.button-overrides(
-    (
-      //
-      // filled-container-shape: 0.22rem,
-    )
-  );
-  // ==component:overrides card
-  @include mat.card-overrides(
-    (
-      //
-      elevated-container-color: var(--mat-sys-surface-container-lowest)
-    )
-  );
+  // // ==theme:overrides
+  // @include mat.theme-overrides(
+  //   (
+  //     // primary: #ebdcff,
+  //     // on-primary: #230f46,
+  //     // body-medium: 500 1.15rem/1.3rem Arial,
+  //     // corner-large: 32px,
+  //     // level3: 0 4px 6px 1px var(--mat-sys-surface-dim),
+  //     // primary-container: #84ffff,
+  //   )
+  // );
+  // // ==component:overrides button
+  // @include mat.button-overrides(
+  //   (
+  //     //
+  //     // filled-container-shape: 0.22rem,
+  //   )
+  // );
+  // // ==component:overrides card
+  // @include mat.card-overrides(
+  //   (
+  //     //
+  //     elevated-container-color: var(--mat-sys-surface-container-lowest)
+  //   )
+  // );
   // ==component:overrides sidenav
   @include mat.sidenav-overrides(
     (
@@ -76,47 +90,41 @@
   );
 }
 
-.app-theme-dark {
-  color-scheme: dark;
-}
-.app-theme-light {
-  color-scheme: light;
-}
-.app-density1 {
-  @include mat.theme(
-    (
-      density: -1,
-    )
-  );
-}
-.app-density2 {
-  @include mat.theme(
-    (
-      density: -2,
-    )
-  );
-}
-.app-density3 {
-  @include mat.theme(
-    (
-      density: -3,
-    )
-  );
-}
-.app-density4 {
-  @include mat.theme(
-    (
-      density: -4,
-    )
-  );
-}
-.app-density5 {
-  @include mat.theme(
-    (
-      density: -5,
-    )
-  );
-}
+// .app-density1 {
+//   @include mat.theme(
+//     (
+//       density: -1,
+//     )
+//   );
+// }
+// .app-density2 {
+//   @include mat.theme(
+//     (
+//       density: -2,
+//     )
+//   );
+// }
+// .app-density3 {
+//   @include mat.theme(
+//     (
+//       density: -3,
+//     )
+//   );
+// }
+// .app-density4 {
+//   @include mat.theme(
+//     (
+//       density: -4,
+//     )
+//   );
+// }
+// .app-density5 {
+//   @include mat.theme(
+//     (
+//       density: -5,
+//     )
+//   );
+// }
 .app-mat-form-field-underline {
   @include mat.form-field-overrides(
     (
