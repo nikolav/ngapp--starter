@@ -13,6 +13,7 @@ import { CoreModulesShared } from "../../modules";
 import {
   StoreAppProcessing,
   StoreAuth,
+  StoreAuthProfile,
   StoreFlags,
   StoreMain,
 } from "../../stores";
@@ -45,6 +46,7 @@ export class DefaultComponent {
   readonly $ps = inject(StoreAppProcessing);
   readonly $emitter = inject(EmitterService);
   readonly $auth = inject(StoreAuth);
+  readonly $userData = inject(StoreAuthProfile);
 
   readonly slot_page = contentChild("slot_page", { read: TemplateRef });
 

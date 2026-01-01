@@ -3,13 +3,13 @@
     <h2>&#64;page--index</h2>
     <button
       mat-button
-      (click)="app.auth.profile.commit({ foo: $$.idGen() }).subscribe()"
+      (click)="app.userData.profile.commit({ foo: $$.idGen() }).subscribe()"
     >
       ok
     </button>
     <p>
       <small>
-        <pre>{{ app.auth.profile.data() | json }}</pre>
+        <pre>{{ app.userData.profile.data() | json }}</pre>
       </small>
     </p>
   </ng-template>

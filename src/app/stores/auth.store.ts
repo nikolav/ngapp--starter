@@ -23,22 +23,13 @@ import {
   user as user$$,
   // type UserCredential as IUserCredential,
 } from "@angular/fire/auth";
-import { Socket } from "ngx-socket-io";
-import type { QueryRef } from "apollo-angular";
 
-import type {
-  IAuthCreds,
-  TOrNoValue,
-  IResultApolloCacheService,
-  TRecordJson,
-} from "../types";
+import type { IAuthCreds, TOrNoValue } from "../types";
 import {
   UseUtilsService,
-  TopicsService,
   EmitterService,
   AppConfigService,
   ManageSubscriptionsService,
-  CacheService,
 } from "../services";
 import { schemaJwt } from "../schemas";
 import { URL_AUTH_authenticate } from "../config";
@@ -47,16 +38,14 @@ import { URL_AUTH_authenticate } from "../config";
   providedIn: "root",
 })
 export class StoreAuth implements OnDestroy {
-  protected $http = inject(HttpClient);
-  protected $io = inject(Socket);
-  protected $auth = inject(Auth);
+  private $http = inject(HttpClient);
+  private $auth = inject(Auth);
 
-  protected $$ = inject(UseUtilsService);
-  protected $config = inject(AppConfigService);
-  protected $topics = inject(TopicsService);
-  protected $emitter = inject(EmitterService);
-  protected $cache = inject(CacheService);
-  protected $s = new ManageSubscriptionsService();
+  private $$ = inject(UseUtilsService);
+  private $config = inject(AppConfigService);
+  private $emitter = inject(EmitterService);
+
+  private $s = new ManageSubscriptionsService();
 
   // @@
   readonly account = toSignal(user$$(this.$auth), { initialValue: null });
@@ -68,37 +57,9 @@ export class StoreAuth implements OnDestroy {
   readonly email = computed(() => this.$$.get(this.account(), "email", ""));
   // @@
   readonly isAuth = computed(() => Boolean(this.uid()));
-  protected prevAuth = this.isAuth();
+  private prevAuth = this.isAuth();
   // @@
   readonly isAuthApi = computed(() => Boolean(this.access_token()));
-
-  // @@
-  readonly profile = {
-    _cacheKey: computed(() => this.$topics.authProfile(this.uid())),
-    _queryRef: signal<TOrNoValue<QueryRef<IResultApolloCacheService>>>(null),
-    _io: () => {
-      return this.profile._cacheKey()
-        ? this.$io.fromEvent(
-            this.$topics.ioEventOnCache(this.profile._cacheKey())
-          )
-        : this.$$.error$$();
-    },
-
-    // @@
-    data: signal<any>(null),
-
-    // @@
-    reload: () => {
-      return this.profile._queryRef()
-        ? from(this.profile._queryRef()!.refetch())
-        : this.$$.error$$();
-    },
-
-    // @@
-    commit: (patch: TOrNoValue<TRecordJson>, MERGE = true) => {
-      return this.$cache.commit(this.profile._cacheKey(), patch, MERGE);
-    },
-  };
 
   constructor() {
     // get api access_token
@@ -151,54 +112,6 @@ export class StoreAuth implements OnDestroy {
         });
       }
       this.prevAuth = this.isAuth();
-    });
-
-    // ## profile:sync
-    // @isAuthApi @QueryRef
-    effect(() => {
-      const q = this.profile._queryRef();
-      if (!q) {
-        this.$s.clear("profile");
-        return;
-      }
-      this.$s.push({
-        profile: q.valueChanges.subscribe((result) => {
-          this.profile.data.set(
-            this.$cache.data(result, this.profile._cacheKey())
-          );
-        }),
-      });
-    });
-    // @isAuthApi
-    //   get QueryRef
-    effect(() => {
-      if (!this.profile._cacheKey() || !this.isAuthApi()) {
-        this.$s.clear("profileQueryRef");
-        this.profile._queryRef.set(null);
-        this.profile.data.set(null);
-        return;
-      }
-      this.$s.push({
-        profileQueryRef: this.$cache
-          .key$$(this.profile._cacheKey())
-          .pipe(catchError(() => this.$$.empty$$()))
-          .subscribe((q) => {
-            this.profile._queryRef.set(q);
-          }),
-      });
-    });
-
-    // @profile:io sync
-    effect(() => {
-      this.$s.push({
-        profile_io: this.profile
-          ._io()
-          .pipe(
-            mergeMap(() => this.profile.reload()),
-            catchError(() => this.$$.empty$$())
-          )
-          .subscribe(),
-      });
     });
   }
 
