@@ -52,9 +52,9 @@ export class StoreAuth implements OnDestroy {
   // @@
   readonly isAuthApi = computed(() => Boolean(this.access_token()));
   // @@
-  readonly onLogin = new Subject<void>();
+  readonly login$ = new Subject<void>();
   // @@
-  readonly onLogout = new Subject<void>();
+  readonly logout$ = new Subject<void>();
 
   private prevAuth = this.isAuth();
 
@@ -96,9 +96,9 @@ export class StoreAuth implements OnDestroy {
     // emit:IEventApp @auth
     effect(() => {
       if (!this.prevAuth && this.isAuth()) {
-        this.onLogin.next();
+        this.login$.next();
       } else if (this.prevAuth && !this.isAuth()) {
-        this.onLogout.next();
+        this.logout$.next();
       }
       this.prevAuth = this.isAuth();
     });
