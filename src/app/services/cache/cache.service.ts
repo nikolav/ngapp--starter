@@ -1,6 +1,8 @@
 import { Injectable, inject } from "@angular/core";
+import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
-import { Apollo } from "apollo-angular";
+import { Apollo, QueryRef } from "apollo-angular";
+
 import {
   Q_cacheRedisGetCacheByKey,
   M_cacheRedisCommit,
@@ -12,7 +14,6 @@ import type {
   IResultApolloCacheService,
   TOrNoValue,
 } from "../../types";
-import { Observable } from "rxjs";
 
 // #https://the-guild.dev/graphql/apollo-angular/docs/get-started#installation
 @Injectable({
@@ -22,12 +23,13 @@ export class CacheService {
   static readonly ERR_CACHEKEY_EMPTY =
     "ERR_CACHEKEY_EMPTY:57221b6a-81de-52a0-a95a-3f1f2e212574";
 
-  private $apollo = inject(Apollo);
-  private $$ = inject(UseUtilsService);
-  private $config = inject(AppConfigService);
+  protected $apollo = inject(Apollo);
+
+  protected $$ = inject(UseUtilsService);
+  protected $config = inject(AppConfigService);
 
   key$$(cache_key: any) {
-    return new Observable((observer) => {
+    return new Observable<QueryRef<IResultApolloCacheService>>((observer) => {
       if (!cache_key) {
         observer.error(CacheService.ERR_CACHEKEY_EMPTY);
       } else {
@@ -43,14 +45,16 @@ export class CacheService {
 
   commit(cache_key: any, patch: TOrNoValue<TRecordJson>, merge = true) {
     return cache_key && (merge ? !this.$$.isEmpty(patch) : patch)
-      ? this.$apollo.mutate({
-          mutation: M_cacheRedisCommit,
-          variables: {
-            cache_key,
-            patch,
-            merge,
-          },
-        })
+      ? this.$apollo
+          .mutate({
+            mutation: M_cacheRedisCommit,
+            variables: {
+              cache_key,
+              patch,
+              merge,
+            },
+          })
+          .pipe(map((res) => this.$$.get(res, "data.cacheRedisCommit")))
       : this.$$.error$$();
   }
 
@@ -77,7 +81,7 @@ export class CacheService {
     );
   }
 
-  private _wq(cache_key: any) {
+  protected _wq(cache_key: any) {
     return this.$apollo.watchQuery<IResultApolloCacheService>({
       query: Q_cacheRedisGetCacheByKey,
       variables: {

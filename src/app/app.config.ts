@@ -115,11 +115,6 @@ export const appConfig: ApplicationConfig = {
     provideCharts(withDefaultRegisterables()),
 
     // #provide:custom
-    {
-      provide: TOKEN_windowDefaultView,
-      useFactory: (doc: Document) => doc.defaultView,
-      deps: [DOCUMENT],
-    },
 
     // ##mat-datepicker
     // { provide: MAT_DATE_LOCALE, useValue: "sr-RS" },

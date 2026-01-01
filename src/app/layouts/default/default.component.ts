@@ -10,7 +10,13 @@ import { DOCUMENT } from "@angular/common";
 
 import { CoreModulesShared } from "../../modules";
 
-import { StoreAppProcessing, StoreFlags, StoreMain } from "../../stores";
+import {
+  StoreAppProcessing,
+  StoreAuth,
+  StoreAuthProfile,
+  StoreFlags,
+  StoreMain,
+} from "../../stores";
 import {
   EmitterService,
   LocalStorageService,
@@ -39,6 +45,8 @@ export class DefaultComponent {
   readonly $flags = inject(StoreFlags);
   readonly $ps = inject(StoreAppProcessing);
   readonly $emitter = inject(EmitterService);
+  readonly $auth = inject(StoreAuth);
+  readonly $userData = inject(StoreAuthProfile);
 
   readonly slot_page = contentChild("slot_page", { read: TemplateRef });
 

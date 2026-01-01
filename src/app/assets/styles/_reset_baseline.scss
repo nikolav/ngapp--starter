@@ -1,0 +1,90 @@
+/* ==========================================================================
+   Vanilla App Baseline (reset + sensible defaults)
+   ========================================================================== */
+
+/* 1) Predictable sizing */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* 2) Core document defaults */
+html {
+  line-height: 1.5;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  overflow-wrap: anywhere; /* long URLs/ids won't break layouts */
+  scrollbar-gutter: stable; /* prevents layout shift when scrollbar toggles */
+  font-synthesis: none; /* avoid fake bold/italic */
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Optional for app-shell layouts */
+/* html, body { height: 100%; } */
+
+body {
+  margin: 0;
+  font-family: Inter, "Open Sans", system-ui, -apple-system, "Segoe UI", Roboto,
+    Ubuntu, Cantarell, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* 3) Selection (optional aesthetic) */
+::selection {
+  background: #b3d4fc;
+  text-shadow: none;
+}
+
+/* 4) Media behaves predictably */
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* 5) Forms inherit typography (but keep native controls usable) */
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+/* 6) Better default monospace */
+code,
+pre,
+kbd,
+samp {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
+  font-size: 1em;
+}
+
+/* 7) Accessible focus ring */
+:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+/* 8) Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* 9) Smooth scrolling is a UX choice — enable only if you want it */
+html {
+  scroll-behavior: smooth;
+}

@@ -9,7 +9,7 @@ import {
 } from "firebase/messaging";
 import type { Messaging } from "firebase/messaging";
 
-import { StoreAuth } from "../../stores";
+import { StoreAuth, StoreAuthProfile } from "../../stores";
 import { NotificationsRequestService } from "./notifications-request.service";
 import { UseUtilsService, AppConfigService } from "../../services";
 import { app as firebaseApp } from "../../config/firebase";
@@ -25,11 +25,15 @@ export class CloudMessagingService {
   private $auth = inject(StoreAuth);
   private $$ = inject(UseUtilsService);
   private $config = inject(AppConfigService);
+  private $userData = inject(StoreAuthProfile);
 
   private deviceToken = signal<TOrNoValue<string>>(undefined);
   private $client = signal<TOrNoValue<Messaging>>(null);
   private tokensFCM = computed(() =>
-    this.$$.get(this.$auth.profile(), this.$config.key.CLOUD_MESSAGING_TOKENS)
+    this.$$.get(
+      this.$userData.profile.data(),
+      this.$config.key.CLOUD_MESSAGING_TOKENS
+    )
   );
   private serviceAvailable = computed(
     () =>
@@ -76,8 +80,8 @@ export class CloudMessagingService {
         this.deviceToken()! in this.tokensFCM()
       )
         return;
-      this.$auth
-        .profilePatch({
+      this.$userData.profile
+        .commit({
           [this.$config.key.CLOUD_MESSAGING_TOKENS]: {
             [this.deviceToken()!]: true,
           },

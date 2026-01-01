@@ -1,11 +1,12 @@
 import { inject, Injectable } from "@angular/core";
+
 import { UseUtilsService } from "./use-utils.service";
-import { TManageSubscriptionsCache } from "../../types";
+import type { TManageSubscriptionsCache } from "../../types";
 
 @Injectable()
 export class ManageSubscriptionsService {
-  private $$ = inject(UseUtilsService);
-  private cache = <TManageSubscriptionsCache>{};
+  protected $$ = inject(UseUtilsService);
+  protected cache = <TManageSubscriptionsCache>{};
 
   clear(...keys: string[]) {
     keys.forEach((key) => {
@@ -17,9 +18,7 @@ export class ManageSubscriptionsService {
   }
   push(subs: TManageSubscriptionsCache) {
     this.$$.each(subs, (sub, key) => {
-      if (this.$$.hasOwn(this.cache, key)) {
-        this.cache[key]?.unsubscribe();
-      }
+      this.cache[key]?.unsubscribe();
       this.cache[key] = sub;
     });
   }
@@ -30,6 +29,6 @@ export class ManageSubscriptionsService {
     this.use({});
   }
   use(newCache: TManageSubscriptionsCache) {
-    this.cache = newCache;
+    this.cache = { ...newCache };
   }
 }
