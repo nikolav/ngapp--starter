@@ -1,6 +1,6 @@
 import type { ApplicationConfig } from "@angular/core";
+import type { MatDateFormats } from "@angular/material/core";
 import { COMMA, ENTER, TAB } from "@angular/cdk/keycodes";
-import { MatDateFormats } from "@angular/material/core";
 import { MAT_CHIPS_DEFAULT_OPTIONS } from "@angular/material/chips";
 import { MAT_DIALOG_DEFAULT_OPTIONS } from "@angular/material/dialog";
 import { MAT_SELECT_CONFIG } from "@angular/material/select";

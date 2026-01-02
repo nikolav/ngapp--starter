@@ -1,16 +1,45 @@
 <app-layout-default class="page--index" pageTitle="🏠 page:home">
   <ng-template #slot_page let-app>
     <h2>&#64;page--index</h2>
-    <button
-      mat-button
-      (click)="app.userData.profile.commit({ foo: $$.idGen() }).subscribe()"
-    >
-      ok
+    <button mat-button (click)="ok()">ok</button>
+    <button mat-button (click)="$popups.destroy()">destroy</button>
+    <button mat-button (click)="$$.log({ overlays: $popups.overlays })">
+      overlays
     </button>
-    <p>
-      <small>
-        <pre>{{ app.userData.profile.data() | json }}</pre>
-      </small>
-    </p>
+    <ng-template #popup1>
+      <app-focus-captured
+        class="w-full"
+        [@fadeSlideUp]="$popups.state('popup1')"
+        (@fadeSlideUp.done)="
+          $popups.overlays['popup1']?.onCloseAnimationDone($event)
+        "
+      >
+        <mat-card class="app-elevated-lg w-full h-full">
+          <mat-card-content>
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet
+              sequi repellat minus.
+            </p>
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet
+              sequi repellat minus.
+            </p>
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet
+              sequi repellat minus.
+            </p>
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet
+              sequi repellat minus.
+            </p>
+          </mat-card-content>
+          <mat-card-actions align="end">
+            <button mat-button (click)="$popups.close({ popup1: false })">
+              close
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      </app-focus-captured>
+    </ng-template>
   </ng-template>
 </app-layout-default>

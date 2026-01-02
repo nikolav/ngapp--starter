@@ -1,17 +1,20 @@
-import { GuardResult, MaybeAsync } from "@angular/router";
-import { type Subscription } from "rxjs";
-import { OverlayConfig } from "@angular/cdk/overlay";
+import type { Injector, ViewContainerRef } from "@angular/core";
+import type { GuardResult, MaybeAsync } from "@angular/router";
+import type { OverlayConfig } from "@angular/cdk/overlay";
+import type { Subscription } from "rxjs";
 
 import type {
   JsonDataRecord as TRecordJson,
   TJson,
   TJsonLiteral,
 } from "../schemas/json.schema";
+import type { Point as PointPopupDetached } from "../services/ui/popup-detached.service";
 
 export type ElementOf<T extends readonly unknown[]> = T[number];
 export type TFunctionVoid = (...args: any[]) => void;
 export type TOrNoValue<T = any> = T | undefined | null;
 export type THasId<T = any> = T & { id: any };
+export type TSize = { width?: number | string; height?: number | string };
 export interface IAuthCreds {
   email: string;
   password: string;
@@ -106,6 +109,53 @@ export interface ITriggerFadeScaleConfig {
   ease?: any;
 }
 export type TScrollStrategyName = "reposition" | "close" | "block" | "noop";
+export interface CdkPortalFactoryOptions {
+  // Required for TemplatePortal (and for ComponentPortal if you want a specific host)
+  viewContainerRef?: ViewContainerRef;
+  // Optional: pass context for <ng-template let-...>
+  context?: Record<string, unknown>;
+  // Optional injector for TemplatePortal / ComponentPortal
+  injector?: Injector;
+  // Optional: custom DI for ComponentPortal (takes priority over injector)
+  componentInjector?: Injector;
+  // Optional: projected nodes into component (rare; matches ComponentPortal signature)
+  projectableNodes?: Node[][];
+}
+export interface IPopupDetachedOverlayOptions {
+  // Position source
+  point?: PointPopupDetached; // direct [x,y]
+  event?: PointerEvent | MouseEvent; // from click / pointerdown etc
+
+  // centering in viewport
+  fullscreen?: boolean;
+  centered?: boolean;
+  centeredX?: boolean;
+  centeredY?: boolean;
+
+  // Optional offsets applied after computing point
+  offsetX?: number;
+  offsetY?: number;
+
+  // CSS units allowed
+  size?: TSize;
+  minWidth?: number | string;
+  minHeight?: number | string;
+  maxWidth?: number | string;
+  maxHeight?: number | string;
+
+  // UI defaults */
+  hasBackdrop?: boolean;
+  backdropClass?: string;
+  panelClass?: string | string[];
+  scrolling?: TScrollStrategyName;
+
+  // Behavior
+  closeOnBackdropClick?: boolean;
+  closeOnEscape?: boolean;
+
+  // Advanced
+  disposeOnNavigation?: boolean;
+}
 
 //##
 export type { TRecordJson, TJson, TJsonLiteral, MaybeAsync as TMaybeAsync };
@@ -116,4 +166,5 @@ export type {
   TBreakpointKeyCustom,
 } from "../assets/breakpoints";
 
+//
 export * from "./models";

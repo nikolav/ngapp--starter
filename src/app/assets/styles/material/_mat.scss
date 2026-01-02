@@ -79,12 +79,12 @@
   //   )
   // );
   // // ==component:overrides card
-  // @include mat.card-overrides(
-  //   (
-  //     //
-  //     elevated-container-color: var(--mat-sys-surface-container-lowest)
-  //   )
-  // );
+  @include mat.card-overrides(
+    (
+      //
+      elevated-container-color: var(--mat-sys-surface-container-lowest)
+    )
+  );
   // ==component:overrides sidenav
   @include mat.sidenav-overrides(
     (
