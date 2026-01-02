@@ -41,7 +41,7 @@ export const triggerVisibleHiddenFadeSlide = (
         translate: `${_.offsetX} ${_.offsetY}`,
       })
     ),
-    transition("visible => hidden", animate(`${dur / 2}ms ${_.ease}`)),
+    transition("* => hidden", animate(`${dur / 2}ms ${_.ease}`)),
     transition("* => visible", animate(`${dur}ms ${_.ease}`)),
   ]);
 };
