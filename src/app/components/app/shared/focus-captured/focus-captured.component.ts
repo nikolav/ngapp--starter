@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import {
+  ChangeDetectionStrategy,
+  Component,
+  booleanAttribute,
+  input,
+} from "@angular/core";
 
 import { CoreModulesShared } from "../../../../modules";
 
@@ -8,11 +13,16 @@ import { CoreModulesShared } from "../../../../modules";
   templateUrl: "./focus-captured.component.html",
   styleUrl: "./focus-captured.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    class: "w-full m-0 p-0",
+    "[class.!bg-lime-200]": "debugContainer()",
+  },
 })
-export class AppFocusCapturedComponent {}
-
-// <app-focus-captured>
-//   <mat-card>
-//     lorem
-//   </mat-card>
-// </app-focus-captured>
+export class AppFocusCapturedComponent {
+  debugContainer = input(false, { transform: booleanAttribute });
+  // <app-focus-captured>
+  //   <mat-card>
+  //     lorem
+  //   </mat-card>
+  // </app-focus-captured>
+}

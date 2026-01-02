@@ -6,14 +6,7 @@ import {
   runInInjectionContext,
   signal,
 } from "@angular/core";
-import {
-  Overlay,
-  OverlayRef,
-  OverlayConfig,
-  GlobalPositionStrategy,
-  PositionStrategy,
-  ScrollStrategy,
-} from "@angular/cdk/overlay";
+import { Overlay, OverlayRef } from "@angular/cdk/overlay";
 import { Portal } from "@angular/cdk/portal";
 import { from, of } from "rxjs";
 import { filter, map, mergeMap, reduce } from "rxjs/operators";
@@ -26,17 +19,9 @@ import type {
   TFunctionVoid,
   THiddenOrVisible,
 } from "../../types";
+import { CdkOverlayUtilsService } from "./cdk-overlay-utils.service";
 
-export class Point {
-  constructor(public x: number, public y: number) {}
-  static from(p: { x: number; y: number }) {
-    return new Point(p.x, p.y);
-  }
-  static fromEvent(event: PointerEvent | MouseEvent) {
-    return new Point(event.clientX, event.clientY);
-  }
-}
-
+// internal client for single overlayRef
 export class OverlayRefHandle {
   private $subs!: ManageSubscriptionsService;
 
@@ -58,12 +43,12 @@ export class OverlayRefHandle {
     public optionsFactory: CdkPortalFactoryOptions,
     public onDetached: TFunctionVoid
   ) {
-    // attach
-    this.open();
-
     runInInjectionContext(optionsFactory.injector!, () => {
       this.$subs = new ManageSubscriptionsService();
     });
+
+    // attach
+    this.open();
 
     // @destroy callback:onDetached
     this.$subs.push({
@@ -75,9 +60,9 @@ export class OverlayRefHandle {
     // @backdropClick
     if (this.optionsOverlay.closeOnBackdropClick) {
       this.$subs.push({
-        backdropClick: this.overlayRef
-          .backdropClick()
-          .subscribe(() => this.close(false)),
+        backdropClick: this.overlayRef.backdropClick().subscribe(() => {
+          this.close(false);
+        }),
       });
     }
 
@@ -93,6 +78,8 @@ export class OverlayRefHandle {
     // init animations
     this.visible();
   }
+
+  // @@
   isOpened() {
     return this.overlayRef.hasAttached();
   }
@@ -139,7 +126,8 @@ export class PopupDetachedService {
   private readonly $injector = inject(Injector);
   private readonly $overlay = inject(Overlay);
 
-  private $$ = inject(UseUtilsService);
+  private readonly $$ = inject(UseUtilsService);
+  private readonly $overlayUtils = inject(CdkOverlayUtilsService);
 
   private readonly SCROLL_STRATEGIES = {
     reposition: this.$overlay.scrollStrategies.reposition(),
@@ -147,10 +135,9 @@ export class PopupDetachedService {
     close: this.$overlay.scrollStrategies.close(),
     noop: this.$overlay.scrollStrategies.noop(),
   };
-
   private readonly DEFAULT_factoryOptions: CdkPortalFactoryOptions = {
     // viewContainerRef: ViewContainerRef,
-    // context?: Record<string, unknown>;
+    context: { $implicit: <any>{} },
     injector: this.$injector,
     // componentInjector?: Injector;
     // projectableNodes?: Node[][];
@@ -182,6 +169,7 @@ export class PopupDetachedService {
     // backdropClass: "cdk-overlay-dark-backdrop",
     backdropClass: "cdk-overlay-dark-backdrop-blured",
     panelClass: ["global-overlay-panel"],
+    fullscreenClass: ["is-fullscreen"],
     scrolling: "reposition",
 
     // # Behavior
@@ -192,11 +180,14 @@ export class PopupDetachedService {
     disposeOnNavigation: true,
   };
   // ## overlay size defaults
-  // for non-fullscreen, keep it within viewport with a small margin by default.
-  private readonly DEFAULT_MaxWidth = "calc(100vw - 16px)";
-  private readonly DEFAULT_MaxHeight = "calc(100vh - 16px)";
+  // for non-fullscreen within viewport with a small margin by default
+  // private readonly DEFAULT_MaxWidth = "calc(100vw - 16px)";
+  // private readonly DEFAULT_MaxHeight = "calc(100vh - 16px)";
+  private readonly DEFAULT_MaxWidth = "100vw";
+  private readonly DEFAULT_MaxHeight = "100vh";
   private readonly DEFAULT_concurrency = 10;
 
+  // @@
   readonly overlays = <IOverlayRefHandles>{};
 
   // @@
@@ -243,19 +234,21 @@ export class PopupDetachedService {
           );
 
           // merge overlay options
-          const optionsOverlay_ = this.$$.copy(
-            <IPopupDetachedOverlayOptions>{},
-            this.DEFAULT_overlayOptions,
-            overlayOptions
+          const optionsOverlay_ = this.$overlayUtils.overlayOptionsNormalized(
+            this.$$.copy(
+              <IPopupDetachedOverlayOptions>{},
+              this.DEFAULT_overlayOptions,
+              overlayOptions
+            )
           );
 
           // generate OverlayConfig
           // create OverlayRef
-          const overlayConfig_ = createOverlayConfig(
+          const overlayConfig_ = this.$overlayUtils.createOverlayConfig(
             optionsOverlay_,
 
             // calc OverlayConfig.positionStrategy
-            createGlobalPositionStrategy(this.$overlay, optionsOverlay_),
+            this.$overlayUtils.createGlobalPositionStrategy(optionsOverlay_),
 
             // calc OverlayConfig.scrollStrategy
             this.SCROLL_STRATEGIES[optionsOverlay_.scrolling ?? "reposition"],
@@ -274,7 +267,8 @@ export class PopupDetachedService {
             portal,
             optionsOverlay_,
             optionsFactory_,
-            // .onDetached(); drop key
+            // @detachment
+            // clear from .overlays cache
             (key: string) => {
               delete this.overlays[key];
             }
@@ -309,134 +303,8 @@ export class PopupDetachedService {
   // @@
   // force close all popups
   destroy() {
-    this.$$.transform(
-      this.overlays,
-      (accum, handle, key) => {
-        handle?.close(true);
-        delete accum[key];
-      },
-      this.overlays
-    );
+    this.$$.each(this.overlays, (handle) => {
+      handle.close(true);
+    });
   }
-}
-
-// --utils
-function px(v: number) {
-  return `${Math.round(v)}px`;
-}
-
-/**
- * Build OverlayConfig for overlay.create(config) from IPopupDetachedOverlayOptions.
- * - positionStrategy + scrollStrategy are provided (already calculated elsewhere)
- * - sets sane defaults for sizing/backdrop/classes/navigation
- */
-function createOverlayConfig(
-  opts: IPopupDetachedOverlayOptions,
-  positionStrategy: PositionStrategy,
-  scrollStrategy: ScrollStrategy,
-  //
-  defaultMaxWidth: string | number,
-  defaultMaxHeight: string | number
-): OverlayConfig {
-  // If fullscreen, force viewport-sized overlay unless user overrides explicitly.
-  const fullscreen = !!opts.fullscreen;
-
-  // Normalize panelClass to array (CDK accepts string|string[])
-  const panelClass = normalizeClasses(
-    opts.panelClass,
-    fullscreen ? ["is-fullscreen"] : []
-  );
-
-  // If fullscreen, default to full viewport. Otherwise use opts.size if provided.
-  const width = fullscreen ? opts.size?.width ?? "100vw" : opts.size?.width;
-  const height = fullscreen ? opts.size?.height ?? "100vh" : opts.size?.height;
-
-  const maxWidth = opts.maxWidth ?? (fullscreen ? "100vw" : defaultMaxWidth);
-  const maxHeight = opts.maxHeight ?? (fullscreen ? "100vh" : defaultMaxHeight);
-
-  return <OverlayConfig>{
-    positionStrategy,
-    scrollStrategy,
-    hasBackdrop: opts.hasBackdrop,
-    backdropClass: opts.backdropClass,
-    panelClass,
-    disposeOnNavigation: opts.disposeOnNavigation,
-
-    width,
-    height,
-    minWidth: opts.minWidth,
-    minHeight: opts.minHeight,
-    maxWidth,
-    maxHeight,
-  };
-}
-
-function normalizeClasses(
-  input: string | string[] | undefined,
-  defaults: string[]
-): string[] {
-  const arr = Array.isArray(input) ? input : input ? [input] : [];
-  // merge defaults + user classes, keep order, de-dupe
-  const out: string[] = [];
-  for (const c of [...defaults, ...arr]) {
-    if (c && !out.includes(c)) out.push(c);
-  }
-  return out;
-}
-
-/**
- * Factory: creates GlobalPositionStrategy for OverlayConfig.positionStrategy
- *
- * Priority:
- * 1) point/event => absolute left/top (plus offsets)
- * 2) fullscreen  => top-left anchored (size handled in OverlayConfig, not here)
- * 3) centered    => centerHorizontally/centerVertically (centered implies both axes)
- * 4) fallback    => use provided offsets with optional centeredX/Y; otherwise top-left (0,0)
- */
-function createGlobalPositionStrategy(
-  overlay: Overlay,
-  opts: IPopupDetachedOverlayOptions = {}
-): GlobalPositionStrategy {
-  const s = overlay.position().global();
-
-  const offsetX = opts.offsetX ?? 0;
-  const offsetY = opts.offsetY ?? 0;
-
-  // 1) event/point positioning
-  const p = opts.event ? Point.fromEvent(opts.event) : opts.point;
-  if (p) {
-    // left/top use viewport coordinates; global strategy is fixed to viewport
-    return s.left(px(p.x + offsetX)).top(px(p.y + offsetY));
-  }
-
-  // 2) fullscreen (position only; width/height should be set on OverlayConfig)
-  if (opts.fullscreen) {
-    return s.left(px(offsetX)).top(px(offsetY));
-  }
-
-  // 3) centered (implies both axes)
-  const centeredX = !!(opts.centered || opts.centeredX);
-  const centeredY = !!(opts.centered || opts.centeredY);
-
-  // If centered in both axes, prefer CDK centering API.
-  if (centeredX && centeredY) {
-    // NOTE: CDK allows centering with optional offsets.
-    return s.centerHorizontally(px(offsetX)).centerVertically(px(offsetY));
-  }
-
-  // Partial centering is tricky because GlobalPositionStrategy can’t be both centered
-  // on one axis and explicitly left/top on the other in a perfect “mixed” way without
-  // knowing size. We handle the common cases:
-  if (centeredX && !centeredY) {
-    // center X, set top
-    return s.centerHorizontally(px(offsetX)).top(px(offsetY));
-  }
-
-  if (!centeredX && centeredY) {
-    // left, center Y
-    return s.left(px(offsetX)).centerVertically(px(offsetY));
-  }
-
-  // 4) fallback: top-left with offsets (or 0,0)
-  return s.left(px(offsetX)).top(px(offsetY));
 }

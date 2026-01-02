@@ -8,7 +8,7 @@ import type {
   TJson,
   TJsonLiteral,
 } from "../schemas/json.schema";
-import type { Point as PointPopupDetached } from "../services/ui/popup-detached.service";
+import type { Point as PointPopupDetached } from "./models";
 
 export type ElementOf<T extends readonly unknown[]> = T[number];
 export type TFunctionVoid = (...args: any[]) => void;
@@ -126,27 +126,34 @@ export interface IPopupDetachedOverlayOptions {
   point?: PointPopupDetached; // direct [x,y]
   event?: PointerEvent | MouseEvent; // from click / pointerdown etc
 
+  // relative to viewport (global strategy)
+  top?: number | string;
+  right?: number | string;
+  bottom?: number | string;
+  left?: number | string;
+
   // centering in viewport
-  fullscreen?: boolean;
   centered?: boolean;
   centeredX?: boolean;
   centeredY?: boolean;
 
-  // Optional offsets applied after computing point
+  // Optional offsets applied after computing point / side anchors
   offsetX?: number;
   offsetY?: number;
 
   // CSS units allowed
   size?: TSize;
+  fullscreen?: boolean;
   minWidth?: number | string;
   minHeight?: number | string;
   maxWidth?: number | string;
   maxHeight?: number | string;
 
-  // UI defaults */
+  // UI defaults
   hasBackdrop?: boolean;
   backdropClass?: string;
   panelClass?: string | string[];
+  fullscreenClass?: string | string[];
   scrolling?: TScrollStrategyName;
 
   // Behavior
@@ -155,6 +162,18 @@ export interface IPopupDetachedOverlayOptions {
 
   // Advanced
   disposeOnNavigation?: boolean;
+}
+export interface INormalizedOverlayOptions
+  extends Omit<
+    IPopupDetachedOverlayOptions,
+    "panelClass" | "fullscreenClass" | "hasBackdrop"
+  > {
+  fullscreen: boolean;
+  fullscreenClass: string[];
+  hasBackdrop: boolean;
+  panelClass: string[];
+  offsetX: number;
+  offsetY: number;
 }
 
 //##
@@ -165,6 +184,3 @@ export type {
   TBreakpointCustom,
   TBreakpointKeyCustom,
 } from "../assets/breakpoints";
-
-//
-export * from "./models";

@@ -7,7 +7,8 @@ import {
 } from "@angular/animations";
 import dayjs from "dayjs";
 
-import { ITriggerFadeSlideConfig } from "../../types";
+import type { ITriggerFadeSlideConfig } from "../../types";
+import { transformTriggerFadeSlideConfig } from "../../schemas";
 
 const DEFAULT_CONFIG: ITriggerFadeSlideConfig = {
   name: "fadeSlide",
@@ -20,7 +21,9 @@ const DEFAULT_CONFIG: ITriggerFadeSlideConfig = {
 export const triggerVisibleHiddenFadeSlide = (
   config?: ITriggerFadeSlideConfig
 ) => {
-  const _ = Object.assign({}, DEFAULT_CONFIG, config);
+  const _ = transformTriggerFadeSlideConfig.parse(
+    Object.assign({}, DEFAULT_CONFIG, config)
+  );
   const dur = dayjs.duration(_.duration).asMilliseconds();
   return trigger(_.name, [
     state("visible", style({ opacity: 1, translate: "0 0" })),

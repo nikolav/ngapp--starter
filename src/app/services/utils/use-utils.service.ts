@@ -35,8 +35,8 @@ import {
   arrayLs,
   toObs$$,
   strEnsureHasPrefix,
-  //
   ngTemplateToPortal,
+  normalizedSet,
 } from "../../utils";
 
 const {
@@ -211,6 +211,7 @@ export class UseUtilsService {
   res = StatusResult.init.bind(StatusResult);
   ls = arrayLs;
   strEnsureHasPrefix = strEnsureHasPrefix;
+  normalizedSet = normalizedSet;
 
   // observables factory
   error$$ = error$$;

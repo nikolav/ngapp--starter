@@ -6,6 +6,6 @@
 
 @layer components {
   .cdk-overlay-dark-backdrop-blured {
-    @apply backdrop-blur-sm bg-black/20 transition-opacity;
+    @apply backdrop-blur-sm bg-black/10 transition-opacity;
   }
 }

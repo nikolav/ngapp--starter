@@ -1,3 +1,8 @@
-<section class="contents" cdkTrapFocus cdkTrapFocusAutoCapture>
+<section
+  class="contents"
+  [class.!bg-red-500]="debugContainer()"
+  cdkTrapFocus
+  cdkTrapFocusAutoCapture
+>
   <ng-content></ng-content>
 </section>

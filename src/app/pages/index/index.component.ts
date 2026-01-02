@@ -32,25 +32,32 @@ import { AppFocusCapturedComponent } from "../../components/app";
   templateUrl: "./index.component.html",
   styleUrl: "./index.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
-  animations: [triggerVisibleHiddenFadeSlide({ name: "fadeSlideUp" })],
+  animations: [
+    triggerVisibleHiddenFadeSlide({
+      name: "fadeSlideUp",
+    }),
+  ],
 })
 export class IndexComponent implements OnInit, OnDestroy {
-  readonly $$ = inject(UseUtilsService);
-  readonly $popups = inject(PopupDetachedService);
-
   readonly $vcr = inject(ViewContainerRef);
 
-  private Popup1 = viewChild("popup1", { read: TemplateRef });
+  readonly $$ = inject(UseUtilsService);
+  readonly $popup = inject(PopupDetachedService);
+
+  private tPopup1 = viewChild("popup1", { read: TemplateRef });
 
   ok() {
-    this.$popups
+    this.$popup
       .open({
         popup1: {
-          target: this.Popup1()!,
+          target: this.tPopup1()!,
           overlayOptions: {
-            centered: true,
-            fullscreen: true,
-            // size: { width: 320 },
+            // centered: true,
+            // fullscreen: true,
+            // point: { x: 122, y: 200 },
+            size: { width: 320, height: "100vh" },
+            top: 0,
+            right: 0,
             // closeOnEscape: true,
             // hasBackdrop: true,
             // closeOnBackdropClick: true,

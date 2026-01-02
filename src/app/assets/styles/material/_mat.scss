@@ -98,6 +98,15 @@
   );
 }
 
+.app-mat-card-rounded-off {
+  @include mat.card-overrides(
+    (
+      elevated-container-shape: 0,
+      outlined-container-shape: 0,
+    )
+  );
+}
+
 .app-density-compact {
   @include mat.theme-overrides(
     (
