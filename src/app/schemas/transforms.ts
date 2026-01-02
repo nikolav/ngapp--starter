@@ -2,7 +2,7 @@ import { z } from "zod";
 import transform from "lodash/transform";
 
 import { isNumeric } from "../utils/is-numeric";
-import { coreHasOwn } from "../utils";
+import { coreHasOwn } from "../utils/core-has-own";
 import type { ITriggerFadeSlideConfig } from "../types";
 
 // #https://zod.dev/api?id=transforms
