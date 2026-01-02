@@ -1,27 +1,5 @@
 <app-layout-default class="page--index" pageTitle="🏠 page:home">
   <ng-template #slot_page let-app>
     <h2>&#64;page--index</h2>
-    <button mat-button (click)="ok()">ok</button>
-    <button mat-button (click)="$popup.close({ popup1: false })">
-      popup1:close
-    </button>
-    <button mat-button (click)="$popup.destroy()">destroy</button>
-    <button mat-button (click)="$$.log({ overlays: $popup.overlays })">
-      overlays
-    </button>
-    <ng-template #popup1>
-      <app-focus-captured
-        [@fadeSlideUp]="$popup.state('popup1')"
-        (@fadeSlideUp.done)="
-          $popup.overlays['popup1']?.onCloseAnimationDone($event)
-        "
-      >
-        <mat-card class="!bg-sky-200 h-full w-full">
-          <mat-card-content>
-            <p>Lorem ipsum</p>
-          </mat-card-content>
-        </mat-card>
-      </app-focus-captured>
-    </ng-template>
   </ng-template>
 </app-layout-default>
