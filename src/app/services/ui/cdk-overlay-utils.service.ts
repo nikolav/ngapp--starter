@@ -208,18 +208,19 @@ export class CdkOverlayUtilsService {
       positionStrategy,
       scrollStrategy,
 
-      hasBackdrop: opts.hasBackdrop,
-      backdropClass: opts.backdropClass,
-      panelClass: opts.panelClass,
-
-      disposeOnNavigation: opts.disposeOnNavigation,
-
       width,
       height,
       minWidth: opts.minWidth,
       minHeight: opts.minHeight,
       maxWidth,
       maxHeight,
+
+      hasBackdrop: opts.hasBackdrop,
+      backdropClass: opts.backdropClass,
+      panelClass: opts.panelClass,
+
+      direction: opts.direction,
+      disposeOnNavigation: opts.disposeOnNavigation,
     };
   }
 }

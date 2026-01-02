@@ -161,6 +161,7 @@ export interface IPopupDetachedOverlayOptions {
   closeOnEscape?: boolean;
 
   // Advanced
+  direction?: OverlayConfig["direction"];
   disposeOnNavigation?: boolean;
 }
 export interface INormalizedOverlayOptions
