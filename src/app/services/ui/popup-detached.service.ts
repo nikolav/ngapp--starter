@@ -177,6 +177,7 @@ export class PopupDetachedService {
     // closeOnEscape?: boolean;
 
     // # Advanced
+    // direction?: OverlayConfig['direction']
     disposeOnNavigation: true,
   };
   // ## overlay size defaults
