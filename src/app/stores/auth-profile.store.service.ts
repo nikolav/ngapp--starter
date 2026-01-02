@@ -1,5 +1,5 @@
 import { computed, effect, inject, Injectable, OnDestroy } from "@angular/core";
-import { catchError } from "rxjs/operators";
+import { catchError, mergeMap } from "rxjs/operators";
 
 import {
   ManageSubscriptionsService,
@@ -35,10 +35,11 @@ export class StoreAuthProfile implements OnDestroy {
       this.$s.push({
         profile_io: this.profile
           .io()
-          .pipe(catchError(() => this.$$.empty$$()))
-          .subscribe(() => {
-            this.profile.reload().subscribe();
-          }),
+          .pipe(
+            mergeMap(() => this.profile.reload()),
+            catchError(() => this.$$.empty$$())
+          )
+          .subscribe(),
       });
     });
   }
