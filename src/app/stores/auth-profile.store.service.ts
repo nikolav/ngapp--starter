@@ -17,7 +17,7 @@ export class StoreAuthProfile implements OnDestroy {
   private $auth = inject(StoreAuth);
   private $topics = inject(TopicsService);
 
-  private $s = new ManageSubscriptionsService();
+  private $subs = new ManageSubscriptionsService();
 
   // @@
   readonly profile = new UseCacheKeyService();
@@ -32,7 +32,7 @@ export class StoreAuthProfile implements OnDestroy {
     });
 
     effect(() => {
-      this.$s.push({
+      this.$subs.push({
         profile_io: this.profile
           .io()
           .pipe(
@@ -45,7 +45,7 @@ export class StoreAuthProfile implements OnDestroy {
   }
 
   destroy() {
-    this.$s.destroy();
+    this.$subs.destroy();
   }
 
   ngOnDestroy() {
