@@ -2,6 +2,7 @@ import { inject, InjectionToken } from "@angular/core";
 import { DOCUMENT } from "@angular/common";
 import { Subject } from "rxjs";
 
+import type { IEventApp } from "../types";
 import { StoreDataCache } from "../stores";
 import { BreakpointsCustom } from "../assets/breakpoints";
 
@@ -36,11 +37,11 @@ export const TOKEN_emitterDemo = new InjectionToken<Subject<unknown>>(
     factory: () => new Subject(),
   }
 );
-export const TOKEN_emitterNavigation = new InjectionToken<Subject<unknown>>(
+export const TOKEN_emitterNavigation = new InjectionToken<Subject<IEventApp>>(
   "emitter:navigation:2b57a0c1-bd62-5241-8a9d-7aec08f8a56c",
   {
     providedIn: "root",
-    factory: () => new Subject(),
+    factory: () => new Subject<IEventApp>(),
   }
 );
 

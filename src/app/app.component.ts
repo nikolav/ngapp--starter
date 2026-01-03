@@ -67,9 +67,10 @@ export class AppComponent implements OnInit {
     // @route:emit
     this.$router.events.subscribe((event) => {
       if (event instanceof NavigationStart)
-        this.$emitterNavigation.next(
-          this.$config.events.ROUTER_NAVIGATION_START
-        );
+        this.$emitterNavigation.next({
+          type: this.$config.events.ROUTER_NAVIGATION_START,
+          payload: null,
+        });
       if (
         this.$$.some([
           event instanceof NavigationEnd,
@@ -77,7 +78,10 @@ export class AppComponent implements OnInit {
           event instanceof NavigationError,
         ])
       ) {
-        this.$emitterNavigation.next(this.$config.events.ROUTER_NAVIGATION_END);
+        this.$emitterNavigation.next({
+          type: this.$config.events.ROUTER_NAVIGATION_END,
+          payload: null,
+        });
       }
     });
 

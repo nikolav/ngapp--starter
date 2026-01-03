@@ -1,8 +1,8 @@
 import { effect, inject, Injectable, OnDestroy, signal } from "@angular/core";
-import { filter as opFilter } from "rxjs/operators";
+import { filter } from "rxjs/operators";
 
+import type { IEventOnStorage, TOrNoValue, TRecordJson } from "../../types";
 import { schemaStoragePatch, schemaStoragePatchField } from "../../schemas";
-import { IEventOnStorage, TOrNoValue, TRecordJson } from "../../types";
 import {
   AppConfigService,
   EmitterService,
@@ -45,26 +45,22 @@ export class LocalStorageService implements OnDestroy {
     this.$subs.push({
       data: this.$emitter.subject
         .pipe(
-          opFilter(
-            (event: any) => this.ON_STORAGE === this.$$.get(event, "type")
-          )
+          filter((event: any) => this.ON_STORAGE === this.$$.get(event, "type"))
         )
-        .subscribe((event: IEventOnStorage) => {
+        .subscribe((event: IEventOnStorage<IEventOnStorage>) => {
           this.data.update((data_) =>
             data_ && "push" === event.action
-              ? this.$$.reduce(
+              ? this.$$.transform(
                   event.payload,
                   (dd, value, path) => {
                     this.$$.set(dd, path, value);
-                    return dd;
                   },
                   this.$$.cloned(data_)
                 )
-              : this.$$.reduce(
+              : this.$$.transform(
                   event.payload,
                   (dd, path) => {
-                    this.$$.unset(dd, path);
-                    return dd;
+                    this.$$.unset(dd, <string>path);
                   },
                   this.$$.cloned(data_)
                 )

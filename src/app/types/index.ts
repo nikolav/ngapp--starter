@@ -64,11 +64,12 @@ export interface IResultCollectionsDocs {
   };
 }
 
-export interface IEventApp<TEventAppPayload = any> {
+export interface IEventApp<TEventAppPayload = unknown> {
   type: string;
   payload: TEventAppPayload;
 }
-export interface IEventOnStorage extends IEventApp {
+export interface IEventOnStorage<TPayload = unknown>
+  extends IEventApp<TPayload> {
   action: "push" | "drop";
 }
 export type PickFileOptions = {

@@ -2,6 +2,7 @@ import {
   Injectable,
   Injector,
   TemplateRef,
+  computed,
   inject,
   runInInjectionContext,
   signal,
@@ -12,13 +13,13 @@ import { from, of } from "rxjs";
 import { filter, map, mergeMap, reduce } from "rxjs/operators";
 import type { AnimationEvent } from "@angular/animations";
 
-import { ManageSubscriptionsService, UseUtilsService } from "../utils";
 import type {
   CdkPortalFactoryOptions,
   IPopupDetachedOverlayOptions,
   TFunctionVoid,
   THiddenOrVisible,
 } from "../../types";
+import { ManageSubscriptionsService, UseUtilsService } from "../utils";
 import { CdkOverlayUtilsService } from "./cdk-overlay-utils.service";
 
 // internal client for single overlayRef
@@ -192,9 +193,8 @@ export class PopupDetachedService {
   readonly overlays = <IOverlayRefHandles>{};
 
   // @@
-  state(key: string) {
-    return this.overlays[key]?.state() ?? false;
-  }
+  // # state('popup_x')
+  state = (key: string) => this.overlays[key]?.state() ?? false;
 
   // @@
   // { [popupKey: string]: force:boolean }
