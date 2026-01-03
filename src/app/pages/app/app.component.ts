@@ -14,6 +14,7 @@ import {
 } from "../../modules";
 import { LayoutDefault } from "../../layouts";
 import { StoreAuth } from "../../stores";
+import { UseUtilsService } from "../../services";
 
 @Component({
   selector: "page-app",
@@ -28,7 +29,8 @@ import { StoreAuth } from "../../stores";
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent implements OnDestroy, OnInit {
-  protected $auth = inject(StoreAuth);
+  readonly $$ = inject(UseUtilsService);
+  readonly $auth = inject(StoreAuth);
   readonly idToken = computed(() => this.$auth.account()?.getIdToken());
   //
   ngOnInit() {}

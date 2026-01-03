@@ -37,13 +37,12 @@ import { TOKEN_emitterNavigation } from "./keys";
 export class AppComponent implements OnInit {
   private $renderer = inject(Renderer2);
   private $router = inject(Router);
+  private document = inject(DOCUMENT);
 
   private $$ = inject(UseUtilsService);
   private $config = inject(AppConfigService);
   private $storage = inject(LocalStorageService);
   private $cm = inject(CloudMessagingService);
-
-  private document = inject(DOCUMENT);
   private $emitterNavigation = inject(TOKEN_emitterNavigation);
 
   private appThemeIsDark = computed(() =>

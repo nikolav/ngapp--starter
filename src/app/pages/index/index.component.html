@@ -1,5 +1,11 @@
 <app-layout-default class="page--index" pageTitle="🏠 page:home">
   <ng-template #slot_page let-app>
     <h2>&#64;page--index</h2>
+    <button
+      mat-button
+      (click)="app.storage.swap($config.key.APP_THEME_DARK, false, true)"
+    >
+      ok
+    </button>
   </ng-template>
 </app-layout-default>

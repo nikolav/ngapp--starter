@@ -1,11 +1,6 @@
 <app-layout-default class="page--app">
   <ng-template #slot_page let-app>
     <h2>&#64;page--app</h2>
-    <p>
-      <small>
-        <pre>{{ app.cache.data() | json }}</pre>
-      </small>
-    </p>
     <button
       mat-button
       (click)="
@@ -22,9 +17,17 @@
     <button mat-button (click)="app.auth.logout().subscribe()">
       auth:logout
     </button>
+    <button mat-button (click)="app.cache.push({ foo: $$.idGen() })">
+      cache:push
+    </button>
     <p>
       <small>
         <pre>{{ idToken() | async }}</pre>
+      </small>
+    </p>
+    <p>
+      <small>
+        <pre>{{ app.cache.data() | json }}</pre>
       </small>
     </p>
   </ng-template>
