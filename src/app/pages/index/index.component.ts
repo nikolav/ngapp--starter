@@ -21,7 +21,6 @@ import { UseUtilsService } from "../../services";
     MaterialSharedModule,
     LayoutDefault,
     IconxModule,
-    AppFocusCapturedComponent,
   ],
   templateUrl: "./index.component.html",
   styleUrl: "./index.component.scss",

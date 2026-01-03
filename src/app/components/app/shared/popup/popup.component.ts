@@ -72,7 +72,7 @@ export class PopupConnectedComponent {
     this.state.set("visible");
   }
 
-  // @@ # pain bg-red for layout debug
+  // @@ # paint bg-red for layout debug
   debugContainer = input(false, { transform: booleanAttribute });
 
   // @@ # defines how the overlay is aligned relative to the trigger
