@@ -48,7 +48,11 @@ export class DefaultComponent {
   readonly $auth = inject(StoreAuth);
   readonly $userData = inject(StoreAuthProfile);
 
-  readonly slot_page = contentChild("slot_page", { read: TemplateRef });
+  readonly slot_page = contentChild("slot_page", {
+    read: TemplateRef,
+    // direct child template only
+    descendants: false,
+  });
 
   // [@@]
   readonly pageTitle = input<TOrNoValue<string>>(null);
