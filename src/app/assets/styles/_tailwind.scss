@@ -9,3 +9,54 @@
     @apply backdrop-blur-sm bg-black/10 transition-opacity;
   }
 }
+
+@layer utilities {
+  /**
+   * Popup / Overlay container reset
+   * Structural wrapper only — NO visual responsibility
+   */
+  .app-popup-container {
+    @apply block
+      relative
+      box-border
+      m-0
+      p-0
+      border-0
+      bg-transparent
+
+      text-inherit
+      text-left
+
+      pointer-events-auto
+      touch-manipulation
+
+      outline-none;
+  }
+
+  /* Absolute overlay root */
+  .app-popup-container--absolute {
+    @apply absolute inset-0;
+  }
+
+  /* Fixed viewport overlay (modal root) */
+  .app-popup-container--fixed {
+    @apply fixed inset-0;
+  }
+
+  /* Animation-safe container */
+  .app-popup-container--animated {
+    will-change: transform, opacity;
+    transform-origin: center;
+  }
+
+  /* Force stacking context isolation */
+  .app-popup-container--isolated {
+    isolation: isolate;
+  }
+
+  .app-popup-panel {
+    @apply box-border
+      max-w-full
+      max-h-full;
+  }
+}

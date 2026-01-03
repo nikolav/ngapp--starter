@@ -1,4 +1,5 @@
 @import "./app/assets/styles/vars";
+@import "./app/assets/styles/globals";
 
 @import "./app/assets/styles/base";
 @import "./app/assets/styles/reset_baseline";
@@ -8,6 +9,6 @@
 @import "./app/assets/styles/tailwind";
 
 @import "./app/assets/styles/material/mat";
-@import "./app/assets/styles/mat_custom";
+@import "./app/assets/styles/material/custom";
 
 @import "@fancyapps/ui/dist/fancybox/fancybox.css";

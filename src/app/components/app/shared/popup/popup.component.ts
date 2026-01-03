@@ -31,13 +31,16 @@ import { CdkModulesShared } from "../../../../modules";
   templateUrl: "./popup.component.html",
   styleUrl: "./popup.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    class: "app-popup-container",
+    "[class.!bg-red-500]": "debugContainer()",
+  },
 })
 export class PopupConnectedComponent {
   protected $$ = inject(UseUtilsService);
   protected $overlay = inject(Overlay);
 
   protected portal = viewChild(CdkPortal);
-
   protected overlayRef = signal<TOrNoValue<OverlayRef>>(null);
 
   protected DEFAULT_POSITIONS: ConnectedPosition[] = [
@@ -69,6 +72,9 @@ export class PopupConnectedComponent {
     this.state.set("visible");
   }
 
+  // @@ # pain bg-red for layout debug
+  debugContainer = input(false, { transform: booleanAttribute });
+
   // @@ # defines how the overlay is aligned relative to the trigger
   positions = input<ConnectedPosition[]>([]);
   // @@ # locks overlay to the first successful position
@@ -92,14 +98,13 @@ export class PopupConnectedComponent {
   clickOutside = output<void>();
 
   // @@
-  readonly isOpened = computed(() => null != this.overlayRef());
+  readonly isOpened = computed(() => this.overlayRef()?.hasAttached() ?? false);
 
   protected offset_ = computed(() => {
     try {
       return transformOverlayOffsets.parse(this.offset());
     } catch (error) {
-      // debug
-      console.warn(error);
+      this.$$.onDebug({ "app-popup offset:parse": error });
     }
     return [0, 0];
   });
@@ -109,18 +114,25 @@ export class PopupConnectedComponent {
   );
 
   constructor() {
-    // @detach state hidden
+    // @detach reset/destroy
     effect((cleanup) => {
-      const sbs = this.overlayRef()
-        ?.detachments()
-        .subscribe(() => this.hidden());
+      if (!this.overlayRef()) return;
+      const sbs = this.overlayRef()!
+        .detachments()
+        .subscribe(() => {
+          this.hidden();
+          this.overlayRef.set(null);
+        });
       cleanup(() => sbs?.unsubscribe());
     });
     // @clickOutside emit
     effect((cleanup) => {
-      const sbs = this.overlayRef()
-        ?.outsidePointerEvents()
-        .subscribe(() => this.clickOutside.emit());
+      if (!this.overlayRef()) return;
+      const sbs = this.overlayRef()!
+        .outsidePointerEvents()
+        .subscribe(() => {
+          this.clickOutside.emit();
+        });
       cleanup(() => sbs?.unsubscribe());
     });
   }
@@ -163,7 +175,6 @@ export class PopupConnectedComponent {
     if (!this.isOpened()) return;
     if (force) {
       this.overlayRef()!.dispose();
-      this.overlayRef.set(null);
       return;
     }
     this.hidden();

@@ -14,8 +14,8 @@ import { CoreModulesShared } from "../../../../modules";
   styleUrl: "./focus-captured.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    class: "w-full m-0 p-0",
-    "[class.!bg-lime-200]": "debugContainer()",
+    class: "app-popup-container app-popup-container--animated app-popup-panel",
+    "[class.!bg-red-500]": "debugContainer()",
   },
 })
 export class AppFocusCapturedComponent {
