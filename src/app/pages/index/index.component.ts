@@ -13,7 +13,7 @@ import {
   CoreModulesShared,
 } from "../../modules";
 
-import { AppConfigService, UseUtilsService } from "../../services";
+import { UseUtilsService } from "../../services";
 
 @Component({
   selector: "page-index",
@@ -29,7 +29,6 @@ import { AppConfigService, UseUtilsService } from "../../services";
 })
 export class IndexComponent implements OnInit, OnDestroy {
   readonly $$ = inject(UseUtilsService);
-  readonly $config = inject(AppConfigService);
 
   ok() {}
   ngOnInit() {}
