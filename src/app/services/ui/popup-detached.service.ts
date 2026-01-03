@@ -1,8 +1,8 @@
 import {
+  DestroyRef,
   Injectable,
   Injector,
   TemplateRef,
-  computed,
   inject,
   runInInjectionContext,
   signal,
@@ -11,16 +11,23 @@ import { Overlay, OverlayRef } from "@angular/cdk/overlay";
 import { Portal } from "@angular/cdk/portal";
 import { from, of } from "rxjs";
 import { filter, map, mergeMap, reduce } from "rxjs/operators";
+import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import type { AnimationEvent } from "@angular/animations";
 
 import type {
   CdkPortalFactoryOptions,
+  IEventApp,
   IPopupDetachedOverlayOptions,
   TFunctionVoid,
   THiddenOrVisible,
 } from "../../types";
-import { ManageSubscriptionsService, UseUtilsService } from "../utils";
+import {
+  AppConfigService,
+  ManageSubscriptionsService,
+  UseUtilsService,
+} from "../utils";
 import { CdkOverlayUtilsService } from "./cdk-overlay-utils.service";
+import { TOKEN_emitterNavigation } from "../../keys";
 
 // internal client for single overlayRef
 export class OverlayRefHandle {
@@ -126,9 +133,12 @@ export interface IOverlayRefHandles {
 export class PopupDetachedService {
   private readonly $injector = inject(Injector);
   private readonly $overlay = inject(Overlay);
+  private readonly $destroyRef = inject(DestroyRef);
 
   private readonly $$ = inject(UseUtilsService);
   private readonly $overlayUtils = inject(CdkOverlayUtilsService);
+  private readonly $emitterNav = inject(TOKEN_emitterNavigation);
+  private readonly $config = inject(AppConfigService);
 
   private readonly SCROLL_STRATEGIES = {
     reposition: this.$overlay.scrollStrategies.reposition(),
@@ -191,6 +201,23 @@ export class PopupDetachedService {
 
   // @@
   readonly overlays = <IOverlayRefHandles>{};
+
+  constructor() {
+    // close:hard all popups @nav
+    if (this.$config.app.DESTROY_POPUPS_ON_NAV_START) {
+      this.$emitterNav
+        .pipe(
+          filter(
+            (event: IEventApp) =>
+              this.$config.events.ROUTER_NAVIGATION_START === event.type
+          ),
+          takeUntilDestroyed(this.$destroyRef)
+        )
+        .subscribe((_event) => {
+          this.destroy();
+        });
+    }
+  }
 
   // @@
   // # state('popup_x')
