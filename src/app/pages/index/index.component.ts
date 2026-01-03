@@ -11,7 +11,6 @@ import {
   CoreModulesShared,
 } from "../../modules";
 import { LayoutDefault } from "../../layouts";
-import { AppFocusCapturedComponent } from "../../components/app";
 
 @Component({
   selector: "page-index",
