@@ -17,6 +17,33 @@ export const MAT_DAYJS_DATE_FORMATS: MatDateFormats = {
     monthYearA11yLabel: "MMMM YYYY",
   },
 };
+// Serbian (sr-RS) date formats for Angular Material + Day.js
+export const MAT_DAYJS_DATE_FORMATS_sr_RS: MatDateFormats = {
+  parse: {
+    // User input in datepicker
+    dateInput: "DD.MM.YYYY",
+    // dateInput: ["DD.MM.YYYY", "YYYY-MM-DD"],
+
+    // timepicker parses this
+    timeInput: "HH:mm",
+  },
+  display: {
+    // Input field value
+    dateInput: "DD.MM.YYYY",
+
+    // Calendar header (month + year)
+    monthYearLabel: "MMMM YYYY",
+
+    // Accessibility (screen readers)
+    dateA11yLabel: "D. MMMM YYYY.",
+    monthYearA11yLabel: "MMMM YYYY",
+
+    // input text shown in time field
+    timeInput: "HH:mm",
+    // list options label
+    timeOptionLabel: "HH:mm",
+  },
+};
 
 export const MAT_DEFAULTS: ApplicationConfig["providers"] = [
   {

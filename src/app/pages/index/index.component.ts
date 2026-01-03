@@ -6,14 +6,15 @@ import {
   inject,
 } from "@angular/core";
 
+import { LayoutDefault } from "../../layouts";
 import {
   IconxModule,
   MaterialSharedModule,
   CoreModulesShared,
 } from "../../modules";
-import { LayoutDefault } from "../../layouts";
-import { AppFocusCapturedComponent } from "../../components/app";
+
 import { UseUtilsService } from "../../services";
+
 @Component({
   selector: "page-index",
   imports: [

@@ -50,7 +50,7 @@ export class DefaultComponent {
 
   readonly slot_page = contentChild("slot_page", { read: TemplateRef });
 
-  // @@
+  // [@@]
   readonly pageTitle = input<TOrNoValue<string>>(null);
 
   constructor() {

@@ -6,6 +6,6 @@ import { IEventApp } from "../../types";
 @Injectable({
   providedIn: "root",
 })
-export class EmitterService {
-  subject = new Subject<IEventApp>();
+export class EmitterService<TEvent = IEventApp> {
+  subject = new Subject<TEvent>();
 }

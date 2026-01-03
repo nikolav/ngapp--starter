@@ -57,6 +57,7 @@ import {
   ENDPOINT_GRAPHQL,
   configSocketIO,
   MAT_DAYJS_DATE_FORMATS,
+  // MAT_DAYJS_DATE_FORMATS_sr_RS,
 } from "./config";
 
 import {
@@ -115,10 +116,11 @@ export const appConfig: ApplicationConfig = {
 
     // #provide:custom
 
-    // ##mat-datepicker
+    // ## mat-datepicker/timepicker
     // { provide: MAT_DATE_LOCALE, useValue: "sr-RS" },
     provideMatDayjsAdapter(withDayjsAdapterOptions({ useUtc: false })),
     { provide: MAT_DATE_FORMATS, useValue: MAT_DAYJS_DATE_FORMATS },
+    // { provide: MAT_DATE_FORMATS, useValue: MAT_DAYJS_DATE_FORMATS_sr_RS },
 
     // ##mat
     ...MAT_DEFAULTS,
