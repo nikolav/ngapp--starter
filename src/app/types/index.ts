@@ -186,3 +186,4 @@ export type {
   TBreakpointCustom,
   TBreakpointKeyCustom,
 } from "../assets/breakpoints";
+export type { ISelectableItemChangeEventPayload } from "../directives/selectable/selectable-item.directive";

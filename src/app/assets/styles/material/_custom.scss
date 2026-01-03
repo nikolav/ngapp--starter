@@ -1,0 +1,30 @@
+.app-elevated-off {
+  box-shadow: var(--mat-sys-level0) !important;
+}
+.app-elevated {
+  box-shadow: var(--mat-sys-level1) !important;
+}
+.app-elevated-lg {
+  box-shadow: var(--mat-sys-level2) !important;
+}
+.app-elevated-xl {
+  box-shadow: var(--mat-sys-level3) !important;
+}
+.app-bg-primary {
+  background-color: var(--mat-sys-primary);
+}
+.\!app-bg-primary {
+  background-color: var(--mat-sys-primary) !important;
+}
+.app-color-primary {
+  color: var(--mat-sys-primary);
+}
+.\!app-color-primary {
+  color: var(--mat-sys-primary) !important;
+}
+.app-color-on-primary {
+  color: var(--mat-sys-on-primary);
+}
+.\!app-color-on-primary {
+  color: var(--mat-sys-on-primary) !important;
+}
