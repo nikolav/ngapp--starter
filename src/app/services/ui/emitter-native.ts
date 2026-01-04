@@ -34,7 +34,9 @@ export class EventEmitterNativeService {
     supressContextMs: 250,
     preferMs: 122,
   };
+
   private readonly document = inject(DOCUMENT);
+
   private readonly $$ = inject(UseUtilsService);
 
   onContext(
