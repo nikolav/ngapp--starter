@@ -12,6 +12,8 @@ import {
 } from "../../keys";
 import { UseUtilsService } from "../utils";
 import type {
+  TCashDomCash,
+  TCashDomContext,
   TCashDomSelector,
   THTMLElementLike,
   TOrNoValue,
@@ -30,9 +32,9 @@ export class UseDomAccessService {
   private readonly $$ = inject(UseUtilsService);
 
   // @
-  ngUnwrapElement<T extends HTMLElement = HTMLElement>(
+  ngUnwrapElement = <T extends HTMLElement = HTMLElement>(
     node: THTMLElementLike<T>
-  ) {
+  ) => {
     if (node instanceof ElementRef) {
       return node.nativeElement;
     }
@@ -42,7 +44,11 @@ export class UseDomAccessService {
     }
 
     return node;
-  }
+  };
+
+  // @
+  query = (sel?: TCashDomSelector, ctx?: TCashDomContext | TCashDomCash) =>
+    this.$cd.pipe(map(($c) => $c(sel, ctx).get()));
 
   // @
   class = {
