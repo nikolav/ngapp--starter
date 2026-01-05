@@ -4,7 +4,7 @@ import { takeUntil } from "rxjs/operators";
 
 const destroyMap = new WeakMap<DestroyRef, Subject<void>>();
 
-export const untilDestroyed = <T>() => {
+export const untilDestroyed = () => {
   const dr = inject(DestroyRef);
   let destroy$ = destroyMap.get(dr);
   if (!destroy$) {
@@ -18,5 +18,5 @@ export const untilDestroyed = <T>() => {
     });
   }
 
-  return takeUntil<T>(destroy$);
+  return takeUntil(destroy$);
 };
