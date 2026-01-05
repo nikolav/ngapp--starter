@@ -66,3 +66,6 @@ export const TOKEN_windowDefaultView = new InjectionToken<Window | null>(
     factory: () => inject(DOCUMENT).defaultView,
   }
 );
+
+// #
+export { TOKEN_cachDom } from "./token-cach-dom";

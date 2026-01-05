@@ -191,3 +191,4 @@ export type {
   TBreakpointKeyCustom,
 } from "../assets/breakpoints";
 export type { ISelectableItemChangeEventPayload } from "../directives/selectable/selectable-item.directive";
+export type { Selector as TCashDomSelector } from "cash-dom";
