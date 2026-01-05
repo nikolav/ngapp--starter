@@ -35,6 +35,8 @@ import {
   arrayLs,
   toObs$$,
   strEnsureHasPrefix,
+  ngTemplateToPortal,
+  normalizedSet,
 } from "../../utils";
 
 const {
@@ -94,6 +96,7 @@ const {
   takeRight,
   throttle,
   toPairs,
+  transform,
   trim,
   trimEnd,
   trimStart,
@@ -172,6 +175,7 @@ export class UseUtilsService {
   takeRight = takeRight;
   throttle = throttle;
   toPairs = toPairs;
+  transform = transform;
   trim = trim;
   trimEnd = trimEnd;
   trimStart = trimStart;
@@ -207,6 +211,7 @@ export class UseUtilsService {
   res = StatusResult.init.bind(StatusResult);
   ls = arrayLs;
   strEnsureHasPrefix = strEnsureHasPrefix;
+  normalizedSet = normalizedSet;
 
   // observables factory
   error$$ = error$$;
@@ -226,4 +231,7 @@ export class UseUtilsService {
   // etc.
   copy = Object.assign.bind(Object);
   log = console.log.bind(console);
+
+  // ng:utils
+  ngTemplateToPortal = ngTemplateToPortal;
 }

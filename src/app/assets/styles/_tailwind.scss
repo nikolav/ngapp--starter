@@ -1,8 +1,73 @@
-@import "tailwindcss/base";
-@import "tailwindcss/components";
-@import "tailwindcss/utilities";
-@import "tailwindcss/variants";
-@import "tailwindcss/screens";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+// @import "tailwindcss/base";
+// @import "tailwindcss/components";
+// @import "tailwindcss/utilities";
+// @import "tailwindcss/variants";
+// @import "tailwindcss/screens";
 
 @layer components {
+  .cdk-overlay-dark-backdrop-blured {
+    @apply backdrop-blur-sm bg-black/10 transition-opacity;
+  }
+}
+
+@layer utilities {
+  .app-container-reset {
+    /* layout sanity */
+    @apply box-border min-w-0 min-h-0;
+
+    /* spacing reset */
+    @apply m-0 p-0;
+
+    /* visual reset */
+    @apply bg-transparent border-0 rounded-none shadow-none outline-none;
+
+    // /* typography: neutral but modern */
+    // @apply font-normal tracking-normal normal-case whitespace-normal text-left;
+    // @apply text-inherit; /* requires Tailwind v3.4+ (text-inherit) */
+    // @apply leading-normal;
+
+    /* interaction */
+    @apply select-auto pointer-events-auto;
+
+    /* isolate stacking context (prevents weird z-index bleed) */
+    @apply isolate;
+  }
+
+  /**
+   * Popup / Overlay container reset
+   * Structural wrapper only — NO visual responsibility
+   */
+  .app-popup-container {
+    @apply block
+      relative
+      box-border
+      m-0
+      p-0
+      border-0
+      bg-transparent
+
+      text-inherit
+      text-left
+
+      pointer-events-auto
+      touch-manipulation
+
+      outline-none;
+  }
+
+  /* Animation-safe container */
+  .app-popup-container--animated {
+    will-change: transform, opacity;
+    transform-origin: center;
+  }
+
+  .app-popup-panel {
+    @apply box-border
+      max-w-full
+      max-h-full;
+  }
 }

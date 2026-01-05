@@ -3,13 +3,10 @@ import {
   Component,
   contentChild,
   OnDestroy,
-  signal,
   TemplateRef,
 } from "@angular/core";
-import { interval } from "rxjs";
 
 import { CoreModulesShared } from "../../../modules";
-import { ManageSubscriptionsService } from "../../../services";
 
 @Component({
   selector: "app-demo",
@@ -17,24 +14,15 @@ import { ManageSubscriptionsService } from "../../../services";
   templateUrl: "./demo.component.html",
   styleUrl: "./demo.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    class: "app-container-reset !bg-red-200 block",
+  },
 })
 export class DemoComponent implements OnDestroy {
-  protected $sbs = new ManageSubscriptionsService();
-  readonly slotHeader = contentChild("slot_header", {
+  readonly slot_demo = contentChild("slot_demo", {
     read: TemplateRef,
+    // descendants: false,
   });
 
-  protected counter = signal<number>(-1);
-
-  constructor() {
-    this.$sbs.push({
-      counter: interval(1000).subscribe((n) => {
-        this.counter.set(n);
-      }),
-    });
-  }
-
-  ngOnDestroy(): void {
-    this.$sbs.destroy();
-  }
+  ngOnDestroy() {}
 }

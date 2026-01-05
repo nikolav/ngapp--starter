@@ -7,7 +7,8 @@ import {
 } from "@angular/animations";
 import dayjs from "dayjs";
 
-import { ITriggerFadeSlideConfig } from "../../types";
+import type { ITriggerFadeSlideConfig } from "../../types";
+import { transformTriggerFadeSlideConfig } from "../../schemas";
 
 const DEFAULT_CONFIG: ITriggerFadeSlideConfig = {
   name: "fadeSlide",
@@ -20,20 +21,27 @@ const DEFAULT_CONFIG: ITriggerFadeSlideConfig = {
 export const triggerVisibleHiddenFadeSlide = (
   config?: ITriggerFadeSlideConfig
 ) => {
-  const _ = Object.assign({}, DEFAULT_CONFIG, config);
+  const _ = transformTriggerFadeSlideConfig.parse(
+    Object.assign({}, DEFAULT_CONFIG, config)
+  );
+  const dur = dayjs.duration(_.duration).asMilliseconds();
   return trigger(_.name, [
     state("visible", style({ opacity: 1, translate: "0 0" })),
     state(
       "hidden",
-      style({ opacity: 0, translate: `${_.offsetX} ${_.offsetY}` })
+      style({
+        opacity: 0,
+        translate: `${_.offsetX} ${_.offsetY}`,
+      })
     ),
-    transition(
-      "hidden => visible",
-      animate(`${dayjs.duration(_.duration).asMilliseconds()}ms ${_.ease}`)
+    state(
+      "false",
+      style({
+        opacity: 0,
+        translate: `${_.offsetX} ${_.offsetY}`,
+      })
     ),
-    transition(
-      "visible => hidden",
-      animate(`${dayjs.duration(_.duration).asMilliseconds() / 2}ms ${_.ease}`)
-    ),
+    transition("* => hidden", animate(`${dur / 2}ms ${_.ease}`)),
+    transition("* => visible", animate(`${dur}ms ${_.ease}`)),
   ]);
 };

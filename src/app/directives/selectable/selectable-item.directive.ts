@@ -1,48 +1,41 @@
-import {
-  booleanAttribute,
-  computed,
-  Directive,
-  effect,
-  input,
-} from "@angular/core";
-import { Subject } from "rxjs";
+import { Directive, effect, input, model, output } from "@angular/core";
 
-import { UseToggleFlagService } from "../../services";
-import { TOrNoValue } from "../../types";
+import type { IEventApp, TOrNoValue } from "../../types";
+
+export interface ISelectableItemChangeEventPayload {
+  selected: boolean;
+  target: SelectableItemDirective;
+}
 
 @Directive({
   selector: "[appSelectableItem]",
   exportAs: "appSelectableItem",
 })
 export class SelectableItemDirective {
-  protected $toggleIsSelected = new UseToggleFlagService();
+  static readonly EVENT_CHANGE =
+    "EVENT:CHANGE:SelectableItemDirective:83e250b8-d422-57c6-982d-fc2de293ff8b";
 
-  // @@
+  // [(@@)]
+  readonly selected = model<boolean>(false, {
+    alias: "appSelectableItemSelected",
+  });
+
+  // [@@]
   readonly name = input<TOrNoValue<string>>(null, {
     alias: "appSelectableItemName",
   });
 
-  // @@
-  readonly disabled = input(false, {
-    alias: "appSelectableItemDisabled",
-    transform: booleanAttribute,
+  // (@@)
+  readonly change = output<IEventApp<ISelectableItemChangeEventPayload>>({
+    alias: "appSelectableItemChange",
   });
-
-  readonly change = new Subject<boolean>();
-
-  // @@
-  readonly isSelected = computed(() =>
-    this.disabled() ? false : this.$toggleIsSelected.isActive()
-  );
 
   constructor() {
     effect(() => {
-      this.change.next(this.isSelected());
+      this.change.emit({
+        type: SelectableItemDirective.EVENT_CHANGE,
+        payload: { selected: this.selected(), target: this },
+      });
     });
-  }
-
-  toggle(SELECTED?: boolean) {
-    if (this.disabled()) return;
-    this.$toggleIsSelected.toggle(SELECTED);
   }
 }

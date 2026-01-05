@@ -5,7 +5,7 @@ import {
   // LOCALE_ID,
 } from "@angular/core";
 import type { ApplicationConfig } from "@angular/core";
-import { CommonModule, DOCUMENT } from "@angular/common";
+import { CommonModule } from "@angular/common";
 
 import {
   provideRouter,
@@ -57,6 +57,7 @@ import {
   ENDPOINT_GRAPHQL,
   configSocketIO,
   MAT_DAYJS_DATE_FORMATS,
+  // MAT_DAYJS_DATE_FORMATS_sr_RS,
 } from "./config";
 
 import {
@@ -68,7 +69,6 @@ import {
   provideMatDayjsAdapter,
   withDayjsAdapterOptions,
 } from "./modules/providers/mat-dayjs-adapter";
-import { TOKEN_windowDefaultView } from "./keys";
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -116,11 +116,11 @@ export const appConfig: ApplicationConfig = {
 
     // #provide:custom
 
-    // ##mat-datepicker
+    // ## mat-datepicker/timepicker
     // { provide: MAT_DATE_LOCALE, useValue: "sr-RS" },
-    { provide: MAT_DATE_FORMATS, useValue: MAT_DAYJS_DATE_FORMATS },
-    // provideNativeDateAdapter(),
     provideMatDayjsAdapter(withDayjsAdapterOptions({ useUtc: false })),
+    { provide: MAT_DATE_FORMATS, useValue: MAT_DAYJS_DATE_FORMATS },
+    // { provide: MAT_DATE_FORMATS, useValue: MAT_DAYJS_DATE_FORMATS_sr_RS },
 
     // ##mat
     ...MAT_DEFAULTS,

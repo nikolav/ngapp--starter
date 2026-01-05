@@ -1,17 +1,20 @@
-import { GuardResult, MaybeAsync } from "@angular/router";
-import { type Subscription } from "rxjs";
-import { OverlayConfig } from "@angular/cdk/overlay";
+import type { Injector, ViewContainerRef } from "@angular/core";
+import type { GuardResult, MaybeAsync } from "@angular/router";
+import type { OverlayConfig } from "@angular/cdk/overlay";
+import type { Subscription } from "rxjs";
 
 import type {
   JsonDataRecord as TRecordJson,
   TJson,
   TJsonLiteral,
 } from "../schemas/json.schema";
+import type { Point as PointPopupDetached } from "./models";
 
 export type ElementOf<T extends readonly unknown[]> = T[number];
 export type TFunctionVoid = (...args: any[]) => void;
 export type TOrNoValue<T = any> = T | undefined | null;
 export type THasId<T = any> = T & { id: any };
+export type TSize = { width?: number | string; height?: number | string };
 export interface IAuthCreds {
   email: string;
   password: string;
@@ -61,11 +64,12 @@ export interface IResultCollectionsDocs {
   };
 }
 
-export interface IEventApp<TEventAppPayload = any> {
+export interface IEventApp<TEventAppPayload = unknown> {
   type: string;
   payload: TEventAppPayload;
 }
-export interface IEventOnStorage extends IEventApp {
+export interface IEventOnStorage<TPayload = unknown>
+  extends IEventApp<TPayload> {
   action: "push" | "drop";
 }
 export type PickFileOptions = {
@@ -106,6 +110,73 @@ export interface ITriggerFadeScaleConfig {
   ease?: any;
 }
 export type TScrollStrategyName = "reposition" | "close" | "block" | "noop";
+export interface CdkPortalFactoryOptions {
+  // Required for TemplatePortal (and for ComponentPortal if you want a specific host)
+  viewContainerRef?: ViewContainerRef;
+  // Optional: pass context for <ng-template let-...>
+  context?: Record<string, unknown>;
+  // Optional injector for TemplatePortal / ComponentPortal
+  injector?: Injector;
+  // Optional: custom DI for ComponentPortal (takes priority over injector)
+  componentInjector?: Injector;
+  // Optional: projected nodes into component (rare; matches ComponentPortal signature)
+  projectableNodes?: Node[][];
+}
+export interface IPopupDetachedOverlayOptions {
+  // Position source
+  point?: PointPopupDetached; // direct [x,y]
+  event?: PointerEvent | MouseEvent; // from click / pointerdown etc
+
+  // relative to viewport (global strategy)
+  top?: number | string;
+  right?: number | string;
+  bottom?: number | string;
+  left?: number | string;
+
+  // centering in viewport
+  centered?: boolean;
+  centeredX?: boolean;
+  centeredY?: boolean;
+
+  // Optional offsets applied after computing point / side anchors
+  offsetX?: number;
+  offsetY?: number;
+
+  // CSS units allowed
+  size?: TSize;
+  fullscreen?: boolean;
+  minWidth?: number | string;
+  minHeight?: number | string;
+  maxWidth?: number | string;
+  maxHeight?: number | string;
+
+  // UI defaults
+  hasBackdrop?: boolean;
+  backdropClass?: string;
+  panelClass?: string | string[];
+  fullscreenClass?: string | string[];
+  scrolling?: TScrollStrategyName;
+
+  // Behavior
+  closeOnBackdropClick?: boolean;
+  closeOnEscape?: boolean;
+
+  // Advanced
+  direction?: OverlayConfig["direction"];
+  disposeOnNavigation?: boolean;
+}
+export interface INormalizedOverlayOptions
+  extends Omit<
+    IPopupDetachedOverlayOptions,
+    "panelClass" | "fullscreenClass" | "hasBackdrop"
+  > {
+  fullscreen: boolean;
+  fullscreenClass: string[];
+  hasBackdrop: boolean;
+  panelClass: string[];
+  offsetX: number;
+  offsetY: number;
+}
 
 //##
 export type { TRecordJson, TJson, TJsonLiteral, MaybeAsync as TMaybeAsync };
@@ -115,5 +186,4 @@ export type {
   TBreakpointCustom,
   TBreakpointKeyCustom,
 } from "../assets/breakpoints";
-
-export * from "./models";
+export type { ISelectableItemChangeEventPayload } from "../directives/selectable/selectable-item.directive";

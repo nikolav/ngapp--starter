@@ -16,6 +16,8 @@ export { empty$$ } from "./void-observable";
 export { StatusResult } from "./status-result";
 export { arrayLs } from "./array-ls";
 export { toObs$$ } from "./to-obs";
+export { ngTemplateToPortal } from "./ng-template-to-portal";
+export { normalizedSet } from "./normalized-set";
 
 //
 export * from "./str";

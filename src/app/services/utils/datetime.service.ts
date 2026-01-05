@@ -2,6 +2,10 @@ import { Injectable } from "@angular/core";
 
 import dayjs from "dayjs";
 
+// import "dayjs/locale/sr";
+// import "dayjs/locale/sr-cyrl";
+// dayjs.locale("sr");
+
 // Core, high-value plugins
 import plugin_advancedFormat from "dayjs/plugin/advancedFormat";
 import plugin_customParseFormat from "dayjs/plugin/customParseFormat";
@@ -11,8 +15,6 @@ import plugin_relativeTime from "dayjs/plugin/relativeTime";
 import plugin_timezone from "dayjs/plugin/timezone";
 import plugin_updateLocale from "dayjs/plugin/updateLocale";
 import plugin_utc from "dayjs/plugin/utc";
-
-import "dayjs/locale/sr";
 
 // // Nice-to-have in many apps
 // import isoWeek from "dayjs/plugin/isoWeek";

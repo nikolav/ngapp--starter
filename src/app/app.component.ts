@@ -37,13 +37,12 @@ import { TOKEN_emitterNavigation } from "./keys";
 export class AppComponent implements OnInit {
   private $renderer = inject(Renderer2);
   private $router = inject(Router);
+  private document = inject(DOCUMENT);
 
   private $$ = inject(UseUtilsService);
   private $config = inject(AppConfigService);
   private $storage = inject(LocalStorageService);
   private $cm = inject(CloudMessagingService);
-
-  private document = inject(DOCUMENT);
   private $emitterNavigation = inject(TOKEN_emitterNavigation);
 
   private appThemeIsDark = computed(() =>
@@ -67,9 +66,10 @@ export class AppComponent implements OnInit {
     // @route:emit
     this.$router.events.subscribe((event) => {
       if (event instanceof NavigationStart)
-        this.$emitterNavigation.next(
-          this.$config.events.ROUTER_NAVIGATION_START
-        );
+        this.$emitterNavigation.next({
+          type: this.$config.events.ROUTER_NAVIGATION_START,
+          payload: null,
+        });
       if (
         this.$$.some([
           event instanceof NavigationEnd,
@@ -77,7 +77,10 @@ export class AppComponent implements OnInit {
           event instanceof NavigationError,
         ])
       ) {
-        this.$emitterNavigation.next(this.$config.events.ROUTER_NAVIGATION_END);
+        this.$emitterNavigation.next({
+          type: this.$config.events.ROUTER_NAVIGATION_END,
+          payload: null,
+        });
       }
     });
 

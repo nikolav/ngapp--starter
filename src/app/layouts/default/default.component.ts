@@ -18,6 +18,7 @@ import {
   StoreMain,
 } from "../../stores";
 import {
+  AppConfigService,
   EmitterService,
   LocalStorageService,
   UseDisplayService,
@@ -47,10 +48,15 @@ export class DefaultComponent {
   readonly $emitter = inject(EmitterService);
   readonly $auth = inject(StoreAuth);
   readonly $userData = inject(StoreAuthProfile);
+  readonly $config = inject(AppConfigService);
 
-  readonly slot_page = contentChild("slot_page", { read: TemplateRef });
+  readonly slot_page = contentChild("slot_page", {
+    read: TemplateRef,
+    // direct child template only
+    descendants: false,
+  });
 
-  // @@
+  // [@@]
   readonly pageTitle = input<TOrNoValue<string>>(null);
 
   constructor() {

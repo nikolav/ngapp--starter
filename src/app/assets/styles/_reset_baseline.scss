@@ -1,43 +1,110 @@
 /* ==========================================================================
-   Vanilla App Baseline (reset + sensible defaults)
+   CSS Reset + Sane Safe Defaults (Merged + Deduped)
+   Combines: "Vanilla App Baseline" + Piccalilli modern reset
    ========================================================================== */
 
-/* 1) Predictable sizing */
+/* 1) Predictable box sizing */
 *,
 *::before,
 *::after {
   box-sizing: border-box;
 }
 
-/* 2) Core document defaults */
+/* 2) Remove default margins (common block elements) */
+body,
+h1,
+h2,
+h3,
+h4,
+p,
+figure,
+blockquote,
+dl,
+dd {
+  margin: 0;
+}
+
+/* 3) Core document defaults */
 html {
   line-height: 1.5;
+
+  /* Prevent font size inflation on mobile */
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
-  overflow-wrap: anywhere; /* long URLs/ids won't break layouts */
-  scrollbar-gutter: stable; /* prevents layout shift when scrollbar toggles */
-  font-synthesis: none; /* avoid fake bold/italic */
+
+  /* Typography rendering (safe, no layout risk) */
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
+
+  /* Subtle readability tweaks (optional, but safe) */
+  letter-spacing: 0.0122rem;
+  word-spacing: 0.033rem;
+
+  /* Prevent layout breaks from long strings */
+  overflow-wrap: anywhere;
+
+  /* UX choice — smooth scroll */
+  scroll-behavior: smooth;
+
+  /* Optional: prevent layout shift when scrollbar toggles */
+  /* scrollbar-gutter: stable; */
 }
 
-/* Optional for app-shell layouts */
-/* html, body { height: 100%; } */
+/* If you only want smooth scroll for keyboard focus navigation, use this instead:
+html { scroll-behavior: auto; }
+html:focus-within { scroll-behavior: smooth; }
+*/
 
+/* Optional for full-height app shells */
+/*
+html,
 body {
-  margin: 0;
-  font-family: Inter, "Open Sans", system-ui, -apple-system, "Segoe UI", Roboto,
-    Ubuntu, Cantarell, "Helvetica Neue", Arial, sans-serif;
+  height: 100%;
+}
+*/
+
+/* 4) Body defaults */
+body {
+  /* Optional: baseline for app layouts */
+  /* min-height: 100vh; */
+
+  /* Keep consistent line-height even if html is overridden elsewhere */
+  line-height: 1.5;
+
+  /* Prefer legibility over optimizeSpeed for typical apps */
+  text-rendering: optimizeLegibility;
+
+  /* Modern sans-serif stack */
+  font-family: Inter, "Open Sans", system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Helvetica Neue", Arial,
+    sans-serif;
 }
 
-/* 3) Selection (optional aesthetic) */
+/* 5) Lists: remove styles only when author opts in via role */
+ul[role="list"],
+ol[role="list"] {
+  list-style: none;
+  padding: 0;
+}
+
+/* 6) Links without a class get a sensible default */
+a:not([class]) {
+  text-decoration-skip-ink: auto;
+}
+
+/* 7) Text selection styling */
+::-moz-selection {
+  background: #b3d4fc;
+  text-shadow: none;
+}
 ::selection {
   background: #b3d4fc;
   text-shadow: none;
 }
 
-/* 4) Media behaves predictably */
+/* 8) Media elements behave predictably */
 img,
 picture,
 video,
@@ -47,7 +114,7 @@ svg {
   max-width: 100%;
 }
 
-/* 5) Forms inherit typography (but keep native controls usable) */
+/* 9) Forms inherit typography (keep native control UX) */
 input,
 button,
 textarea,
@@ -56,7 +123,7 @@ select {
   color: inherit;
 }
 
-/* 6) Better default monospace */
+/* 10) Better default monospace stack */
 code,
 pre,
 kbd,
@@ -66,14 +133,18 @@ samp {
   font-size: 1em;
 }
 
-/* 7) Accessible focus ring */
+/* 11) Accessible focus styles */
 :focus-visible {
   outline: 2px solid currentColor;
   outline-offset: 2px;
 }
 
-/* 8) Reduced motion */
+/* 12) Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
   *,
   *::before,
   *::after {
@@ -82,9 +153,4 @@ samp {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
-}
-
-/* 9) Smooth scrolling is a UX choice — enable only if you want it */
-html {
-  scroll-behavior: smooth;
 }

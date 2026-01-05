@@ -79,12 +79,12 @@
   //   )
   // );
   // // ==component:overrides card
-  // @include mat.card-overrides(
-  //   (
-  //     //
-  //     elevated-container-color: var(--mat-sys-surface-container-lowest)
-  //   )
-  // );
+  @include mat.card-overrides(
+    (
+      //
+      elevated-container-color: var(--mat-sys-surface-container-lowest)
+    )
+  );
   // ==component:overrides sidenav
   @include mat.sidenav-overrides(
     (
@@ -94,6 +94,15 @@
       content-background-color: transparent,
       scrim-color: rgba(0 0 0 / 0.33),
       container-elevation-shadow: var(--mat-sys-level3)
+    )
+  );
+}
+
+.app-mat-card-rounded-off {
+  @include mat.card-overrides(
+    (
+      elevated-container-shape: 0,
+      outlined-container-shape: 0,
     )
   );
 }

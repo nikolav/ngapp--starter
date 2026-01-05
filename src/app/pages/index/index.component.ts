@@ -2,16 +2,16 @@ import {
   Component,
   OnInit,
   OnDestroy,
-  inject,
   ChangeDetectionStrategy,
+  inject,
 } from "@angular/core";
 
+import { LayoutDefault } from "../../layouts";
 import {
   IconxModule,
   MaterialSharedModule,
   CoreModulesShared,
 } from "../../modules";
-import { LayoutDefault } from "../../layouts";
 
 import { UseUtilsService } from "../../services";
 
@@ -28,8 +28,7 @@ import { UseUtilsService } from "../../services";
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class IndexComponent implements OnInit, OnDestroy {
-  protected $$ = inject(UseUtilsService);
-
+  readonly $$ = inject(UseUtilsService);
   ok() {}
   ngOnInit() {}
   ngOnDestroy() {}
