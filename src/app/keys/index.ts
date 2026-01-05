@@ -1,6 +1,6 @@
 import { inject, InjectionToken, PLATFORM_ID } from "@angular/core";
 import { DOCUMENT, isPlatformBrowser } from "@angular/common";
-import { Subject } from "rxjs";
+import { Subject, EMPTY as EMPTY$, Observable, of } from "rxjs";
 
 import type { IEventApp } from "../types";
 import { StoreDataCache } from "../stores";
@@ -64,6 +64,13 @@ export const TOKEN_windowDefaultView = new InjectionToken<Window | null>(
   {
     providedIn: "root",
     factory: () => inject(DOCUMENT).defaultView,
+  }
+);
+export const TOKEN_onBrowser$ = new InjectionToken<Observable<boolean>>(
+  "on-browser:a867adc7-6693-5809-b78c-df05bcbb0d01",
+  {
+    providedIn: "root",
+    factory: () => of(inject(TOKEN_isPlatformBrowser)),
   }
 );
 

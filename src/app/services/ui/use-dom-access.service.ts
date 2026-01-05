@@ -26,7 +26,7 @@ export class UseDomAccessService {
   // $
   // private readonly $renderer = inject(Renderer2);
   // private readonly $isPlatformBrowser = inject(TOKEN_isPlatformBrowser);
-  private readonly $cd = inject(TOKEN_cashDom);
+  readonly $d = inject(TOKEN_cashDom);
 
   // $$
   private readonly $$ = inject(UseUtilsService);
@@ -47,15 +47,15 @@ export class UseDomAccessService {
   };
 
   // @
-  query = (sel?: TCashDomSelector, ctx?: TCashDomContext | TCashDomCash) =>
-    this.$cd.pipe(map(($c) => $c(sel, ctx).get()));
+  access = (sel?: TCashDomSelector, ctx?: TCashDomContext | TCashDomCash) =>
+    this.$d.pipe(map(($c) => $c(sel, ctx)));
 
   // @
   class = {
     ls: (sel: TCashDomSelector) =>
-      this.$cd.pipe(map((c) => Array.from(c(sel).get(0)?.classList ?? []))),
+      this.$d.pipe(map((c) => Array.from(c(sel).get(0)?.classList ?? []))),
     push: (sel: TCashDomSelector, cls: Record<string, TOrNoValue<boolean>>) =>
-      this.$cd.pipe(
+      this.$d.pipe(
         tap((c) => {
           this.$$.each(cls, (value, classNames) => {
             const col = c(sel);
@@ -70,6 +70,6 @@ export class UseDomAccessService {
         })
       ),
     has: (sel: TCashDomSelector, cls: string) =>
-      this.$cd.pipe(map((c) => c(sel).hasClass(cls))),
+      this.$d.pipe(map((c) => c(sel).hasClass(cls))),
   };
 }
