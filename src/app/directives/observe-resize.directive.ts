@@ -25,8 +25,8 @@ export class ObserveResizeDirective {
   });
 
   // [@]
-  readonly enabled = input(true, {
-    alias: "appObserveResizeEnabled",
+  readonly disabled = input(false, {
+    alias: "appObserveResizeDisabled",
     transform: booleanAttribute,
   });
 
@@ -37,7 +37,7 @@ export class ObserveResizeDirective {
 
   constructor() {
     effect((cleanup) => {
-      if (!this.browser() || !this.enabled()) return;
+      if (!this.browser() || this.disabled()) return;
       if (!this.win || !("ResizeObserver" in globalThis)) return;
 
       const el = this.hostRef.nativeElement;
