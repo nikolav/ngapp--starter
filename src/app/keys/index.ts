@@ -1,5 +1,5 @@
-import { inject, InjectionToken } from "@angular/core";
-import { DOCUMENT } from "@angular/common";
+import { inject, InjectionToken, PLATFORM_ID } from "@angular/core";
+import { DOCUMENT, isPlatformBrowser } from "@angular/common";
 import { Subject } from "rxjs";
 
 import type { IEventApp } from "../types";
@@ -13,14 +13,21 @@ export const TOKEN_localStorage = new InjectionToken<Storage>(
     factory: () => localStorage,
   }
 );
+export const TOKEN_isPlatformBrowser = new InjectionToken<boolean>(
+  "fa04dacb-39e8-51bc-8188-dcbd2d3a16b2",
+  {
+    providedIn: "root",
+    factory: () => isPlatformBrowser(inject(PLATFORM_ID)),
+  }
+);
 // export const TOKEN_google_maps = new InjectionToken<typeof google.maps | null>(
 //   "google-maps:28c94fc1-e1b4-5f16-b19c-acbdfd16b87f",
 //   {
 //     providedIn: "root",
-//     factory: () => {
-//       const platformId = inject(PLATFORM_ID);
-//       return isPlatformBrowser(platformId) ? window.google?.maps ?? null : null;
-//     },
+//     factory: () =>
+//       inject(TOKEN_isPlatformBrowser)
+//         ? (<any>inject(TOKEN_windowDefaultView)).google?.maps ?? null
+//         : null,
 //   }
 // );
 export const TOKEN_cacheDemo = new InjectionToken<StoreDataCache>(
