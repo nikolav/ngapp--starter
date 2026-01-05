@@ -4,7 +4,7 @@ import {
   Injectable,
   // Renderer2,
 } from "@angular/core";
-import { map } from "rxjs/operators";
+import { map, tap } from "rxjs/operators";
 
 import {
   TOKEN_cashDom,
@@ -50,7 +50,7 @@ export class UseDomAccessService {
       this.$cd.pipe(map((c) => Array.from(c(sel).get(0)?.classList ?? []))),
     push: (sel: TCashDomSelector, cls: Record<string, TOrNoValue<boolean>>) =>
       this.$cd.pipe(
-        map((c) => {
+        tap((c) => {
           this.$$.each(cls, (value, classNames) => {
             const col = c(sel);
             if (null != value) {
