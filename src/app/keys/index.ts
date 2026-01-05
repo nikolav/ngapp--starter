@@ -68,4 +68,4 @@ export const TOKEN_windowDefaultView = new InjectionToken<Window | null>(
 );
 
 // #
-export { TOKEN_cachDom } from "./token-cach-dom";
+export { TOKEN_cashDom } from "./token-cach-dom";
