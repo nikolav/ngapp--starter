@@ -14,6 +14,7 @@ import {
 } from "../../modules";
 
 import { UseUtilsService } from "../../services";
+import { interval } from "rxjs";
 
 @Component({
   selector: "page-index",
@@ -32,7 +33,11 @@ import { UseUtilsService } from "../../services";
 })
 export class IndexComponent implements OnInit, OnDestroy {
   readonly $$ = inject(UseUtilsService);
-  ok() {}
+  ok() {
+    interval(1000).subscribe((i) => {
+      this.$$.onDebug({ i });
+    });
+  }
   ngOnInit() {}
   ngOnDestroy() {}
 }

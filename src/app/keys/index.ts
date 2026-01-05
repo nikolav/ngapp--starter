@@ -56,9 +56,6 @@ export const TOKEN_windowDefaultView = new InjectionToken<Window | null>(
   "Window:91418ac1-46ac-5b6d-8113-a6aa5344458f",
   {
     providedIn: "root",
-    factory: () => {
-      const doc = inject(DOCUMENT);
-      return doc.defaultView;
-    },
+    factory: () => inject(DOCUMENT).defaultView,
   }
 );
