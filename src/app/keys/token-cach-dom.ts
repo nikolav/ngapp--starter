@@ -1,5 +1,6 @@
 import { InjectionToken, inject } from "@angular/core";
-import { defer, from, EMPTY as EMPTY$, Observable, shareReplay } from "rxjs";
+import { defer, from, EMPTY as EMPTY$, Observable } from "rxjs";
+import { shareReplay } from "rxjs/operators";
 
 import { TOKEN_isPlatformBrowser } from ".";
 
