@@ -1,4 +1,4 @@
-import type { Injector, ViewContainerRef } from "@angular/core";
+import type { ElementRef, Injector, ViewContainerRef } from "@angular/core";
 import type { GuardResult, MaybeAsync } from "@angular/router";
 import type { OverlayConfig } from "@angular/cdk/overlay";
 import type { Subscription } from "rxjs";
@@ -177,6 +177,10 @@ export interface INormalizedOverlayOptions
   offsetX: number;
   offsetY: number;
 }
+export type THTMLElementLike<T extends HTMLElement = HTMLElement> =
+  | T
+  | ElementRef<T>
+  | { nativeElement: T };
 
 //##
 export type { TRecordJson, TJson, TJsonLiteral, MaybeAsync as TMaybeAsync };

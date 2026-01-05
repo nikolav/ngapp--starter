@@ -4,3 +4,4 @@ export { UsePageTitleService } from "./use-page-title.service";
 export { PopupDetachedService } from "./popup-detached.service";
 export { CdkOverlayUtilsService } from "./cdk-overlay-utils.service";
 export { EventEmitterNativeService } from "./emitter-native";
+export { UseDomAccessService } from "./use-dom-access.service";
