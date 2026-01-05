@@ -17,6 +17,10 @@ import { UseToggleFlagService } from "../../services";
   templateUrl: "./demo.component.html",
   styleUrl: "./demo.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    class: "app-container-reset",
+  },
+
   animations: [
     trigger("showHide", [
       transition(

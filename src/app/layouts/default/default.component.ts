@@ -33,7 +33,7 @@ import { TOrNoValue } from "../../types";
   templateUrl: "./default.component.html",
   styleUrl: "./default.component.scss",
   host: {
-    class: "layout--default",
+    class: "app-container-reset layout--default",
   },
 })
 export class DefaultComponent {

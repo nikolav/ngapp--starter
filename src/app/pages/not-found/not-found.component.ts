@@ -7,6 +7,9 @@ import { LayoutDefault } from "../../layouts";
   imports: [MaterialSharedModule, LayoutDefault],
   templateUrl: "./not-found.component.html",
   styleUrl: "./not-found.component.scss",
+  host: {
+    class: "app-container-reset",
+  },
 })
 export class NotFoundComponent implements OnInit {
   ngOnInit() {

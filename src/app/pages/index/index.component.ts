@@ -26,6 +26,9 @@ import { UseUtilsService } from "../../services";
   templateUrl: "./index.component.html",
   styleUrl: "./index.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    class: "app-container-reset",
+  },
 })
 export class IndexComponent implements OnInit, OnDestroy {
   readonly $$ = inject(UseUtilsService);

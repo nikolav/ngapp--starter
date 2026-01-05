@@ -32,6 +32,9 @@ import { TOKEN_emitterNavigation } from "./keys";
   templateUrl: "./app.component.html",
   styleUrls: ["./app.component.scss"],
   providers: [],
+  host: {
+    class: "app-container-reset *block *h-full",
+  },
   animations: [routeTransitionBlurInOut],
 })
 export class AppComponent implements OnInit {

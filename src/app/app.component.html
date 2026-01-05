@@ -6,7 +6,10 @@
       <a routerLink="/demo">demo</a>
     </mat-toolbar-row>
   </mat-toolbar>
-  <div [@routeTransitionBlurInOut]="routeTransitionPrepareOutlet(outlet)">
+  <div
+    class="app-container-reset"
+    [@routeTransitionBlurInOut]="routeTransitionPrepareOutlet(outlet)"
+  >
     <router-outlet #outlet="outlet"></router-outlet>
   </div>
 </main>
