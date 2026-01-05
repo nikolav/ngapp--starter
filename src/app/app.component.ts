@@ -1,11 +1,4 @@
-import {
-  Component,
-  OnInit,
-  Renderer2,
-  computed,
-  effect,
-  inject,
-} from "@angular/core";
+import { Component, OnInit, computed, effect, inject } from "@angular/core";
 import {
   NavigationCancel,
   NavigationEnd,
@@ -14,7 +7,6 @@ import {
   Router,
   RouterOutlet,
 } from "@angular/router";
-import { DOCUMENT } from "@angular/common";
 
 import { CoreModulesShared, MaterialSharedModule } from "./modules";
 import {
@@ -22,6 +14,7 @@ import {
   UseUtilsService,
   LocalStorageService,
   CloudMessagingService,
+  UseDomAccessService,
 } from "./services";
 import { routeTransitionBlurInOut } from "./assets/route-transitions";
 import { TOKEN_emitterNavigation } from "./keys";
@@ -38,15 +31,14 @@ import { TOKEN_emitterNavigation } from "./keys";
   animations: [routeTransitionBlurInOut],
 })
 export class AppComponent implements OnInit {
-  private $renderer = inject(Renderer2);
   private $router = inject(Router);
-  private document = inject(DOCUMENT);
 
   private $$ = inject(UseUtilsService);
   private $config = inject(AppConfigService);
   private $storage = inject(LocalStorageService);
   private $cm = inject(CloudMessagingService);
   private $emitterNavigation = inject(TOKEN_emitterNavigation);
+  private $c = inject(UseDomAccessService);
 
   private appThemeIsDark = computed(() =>
     this.$$.parseBoolean(this.$storage.item(this.$config.key.APP_THEME_DARK))
@@ -54,16 +46,15 @@ export class AppComponent implements OnInit {
 
   constructor() {
     // toggle html.class @storage:push:[CLASS_APP_THEME_DARK]
-    effect(() => {
-      const classDark = this.$config.CLASS_APP_THEME_DARK;
-      if (!this.appThemeIsDark()) {
-        this.$renderer.removeClass(
-          this.document.querySelector("html"),
-          classDark
-        );
-      } else {
-        this.$renderer.addClass(this.document.querySelector("html"), classDark);
-      }
+    effect((cleanup) => {
+      const sbs = this.$c.class
+        .push("html", {
+          [this.$config.CLASS_APP_THEME_DARK]: this.appThemeIsDark(),
+        })
+        .subscribe();
+      cleanup(() => {
+        sbs.unsubscribe();
+      });
     });
 
     // @route:emit
