@@ -55,15 +55,15 @@ export class OverlayRefHandle {
       this.$subs = new ManageSubscriptionsService();
     });
 
-    // attach
-    this.open();
-
     // @destroy callback:onDetached
     this.$subs.push({
       detachments: this.overlayRef.detachments().subscribe(() => {
         this.onDetached(this.key);
       }),
     });
+
+    // attach
+    this.open();
 
     // @backdropClick
     if (this.optionsOverlay.closeOnBackdropClick) {
