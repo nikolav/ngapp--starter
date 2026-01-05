@@ -63,14 +63,25 @@ export const TOKEN_windowDefaultView = new InjectionToken<Window | null>(
   "Window:91418ac1-46ac-5b6d-8113-a6aa5344458f",
   {
     providedIn: "root",
-    factory: () => inject(DOCUMENT).defaultView,
+    // factory: () => inject(DOCUMENT).defaultView,
+    factory: () =>
+      inject(TOKEN_isPlatformBrowser)
+        ? inject(DOCUMENT)?.defaultView ?? null
+        : null,
   }
 );
-export const TOKEN_onBrowser$ = new InjectionToken<Observable<boolean>>(
+export const TOKEN_isBrowser$ = new InjectionToken<Observable<boolean>>(
   "on-browser:a867adc7-6693-5809-b78c-df05bcbb0d01",
   {
     providedIn: "root",
     factory: () => of(inject(TOKEN_isPlatformBrowser)),
+  }
+);
+export const TOKEN_onBrowser$ = new InjectionToken<Observable<void>>(
+  "on-browser:a867adc7-6693-5809-b78c-df05bcbb0d01",
+  {
+    providedIn: "root",
+    factory: () => (inject(TOKEN_isPlatformBrowser) ? of(void 0) : EMPTY$),
   }
 );
 

@@ -9,7 +9,7 @@ import {
 } from "@angular/core";
 import { toSignal } from "@angular/core/rxjs-interop";
 
-import { TOKEN_onBrowser$, TOKEN_windowDefaultView } from "../keys";
+import { TOKEN_isBrowser$, TOKEN_windowDefaultView } from "../keys";
 import { UseUtilsService } from "../services";
 
 @Directive({ selector: "[appObserveResize]" })
@@ -17,10 +17,12 @@ export class ObserveResizeDirective {
   private hostRef = inject<ElementRef<HTMLElement>>(ElementRef);
   private $$ = inject(UseUtilsService);
   private win = inject(TOKEN_windowDefaultView);
-  private browser = toSignal(inject(TOKEN_onBrowser$), { initialValue: false });
+  private browser = toSignal(inject(TOKEN_isBrowser$), { initialValue: false });
 
   // (@)
-  readonly resize = output<ResizeObserverEntry>({ alias: "appObserveResize" });
+  readonly resize = output<globalThis.ResizeObserverEntry>({
+    alias: "appObserveResize",
+  });
 
   // [@]
   readonly enabled = input(true, {
@@ -36,7 +38,7 @@ export class ObserveResizeDirective {
   constructor() {
     effect((cleanup) => {
       if (!this.browser() || !this.enabled()) return;
-      if (!this.win || !("ResizeObserver" in this.win)) return;
+      if (!this.win || !("ResizeObserver" in globalThis)) return;
 
       const el = this.hostRef.nativeElement;
 
