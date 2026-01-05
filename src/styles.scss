@@ -1,14 +1,14 @@
-@import "./app/assets/styles/vars";
-@import "./app/assets/styles/globals";
+@use "./app/assets/styles/vars";
+@use "./app/assets/styles/globals";
 
-@import "./app/assets/styles/base";
-@import "./app/assets/styles/reset_baseline";
-@import "./app/assets/styles/scrollbars";
-@import "./app/assets/styles/reset_custom";
+@use "./app/assets/styles/base";
+@use "./app/assets/styles/reset_baseline";
+@use "./app/assets/styles/scrollbars";
+@use "./app/assets/styles/reset_custom";
 
-@import "./app/assets/styles/tailwind";
+@use "./app/assets/styles/tailwind";
 
-@import "./app/assets/styles/material/mat";
-@import "./app/assets/styles/material/custom";
+@use "./app/assets/styles/material/mat";
+@use "./app/assets/styles/material/custom";
 
-@import "@fancyapps/ui/dist/fancybox/fancybox.css";
+@use "@fancyapps/ui/dist/fancybox/fancybox.css";
