@@ -11,7 +11,7 @@ import { toSignal } from "@angular/core/rxjs-interop";
 
 import { TOKEN_isSupported_ResizeObserver$ } from "../keys";
 import type { TOrNoValue } from "../types";
-import { UseDomAccessService } from "../services";
+import { UseDomAccessService, UseUtilsService } from "../services";
 
 @Directive({
   selector: "[appMeasureElement]",
@@ -19,6 +19,7 @@ import { UseDomAccessService } from "../services";
 })
 export class MeasureElementDirective {
   // $
+  private $$ = inject(UseUtilsService);
   private $c = inject(UseDomAccessService);
 
   // #
@@ -72,7 +73,7 @@ export class MeasureElementDirective {
       }
 
       const observer_ = new ResizeObserver((entries) => {
-        if (!entries.length) return;
+        if (this.$$.isEmpty(entries)) return;
 
         const entry = entries[0];
         const size = this.$c.sizeFromResizeObserverEntry(entry);
