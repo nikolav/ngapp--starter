@@ -9,11 +9,7 @@ import {
 } from "@angular/core";
 import { toSignal } from "@angular/core/rxjs-interop";
 
-import {
-  TOKEN_isBrowser$,
-  TOKEN_isSupported_ResizeObserver$,
-  TOKEN_windowDefaultView,
-} from "../keys";
+import { TOKEN_isSupported_ResizeObserver$ } from "../keys";
 import { UseUtilsService } from "../services";
 
 @Directive({ selector: "[appObserveResize]" })
