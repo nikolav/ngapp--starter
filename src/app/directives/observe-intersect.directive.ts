@@ -29,6 +29,21 @@ export class ObserveIntersectDirective {
   readonly intersect = output<globalThis.IntersectionObserverEntry>({
     alias: "appObserveIntersect",
   });
+  private readonly triggers = {
+    all: (entry: globalThis.IntersectionObserverEntry) => {
+      this.intersect.emit(entry);
+    },
+    enter: (entry: globalThis.IntersectionObserverEntry) => {
+      if (entry.isIntersecting) {
+        this.intersect.emit(entry);
+      }
+    },
+    exit: (entry: globalThis.IntersectionObserverEntry) => {
+      if (!entry.isIntersecting) {
+        this.intersect.emit(entry);
+      }
+    },
+  };
 
   // [@]
   readonly disabled = input(false, {
@@ -45,13 +60,18 @@ export class ObserveIntersectDirective {
   );
 
   // [@]
-  readonly rootMargin = input<string | undefined>("200px 0px", {
+  readonly rootMargin = input<string>("200px 0px", {
     alias: "appObserveIntersectRootMargin",
   });
 
   // [@]
-  readonly threshold = input<number | number[] | undefined>(0, {
+  readonly threshold = input<number | number[]>(0, {
     alias: "appObserveIntersectThreshold",
+  });
+
+  // [@] emitWhen = 'all' | 'enter' | 'exit'
+  readonly emitWhen = input<"all" | "enter" | "exit">("enter", {
+    alias: "appObserveIntersectEmitWhen",
   });
 
   // ## THRESHOLD/ROOTMARGIN SAFE DEFAULTS
@@ -80,10 +100,7 @@ export class ObserveIntersectDirective {
       let observer_: TOrNoValue<IntersectionObserver> =
         new IntersectionObserver(
           (entries) => {
-            if (this.$$.isEmpty(entries)) return;
-            for (let entry of entries) {
-              this.intersect.emit(entry);
-            }
+            this.$$.each(entries, this.triggers[this.emitWhen()]);
           },
           {
             root: (<any>r)?.nativeElement ?? (r || null),
