@@ -181,7 +181,11 @@ export type THTMLElementLike<T extends HTMLElement = HTMLElement> =
   | T
   | ElementRef<T>
   | { nativeElement: T };
-
+export interface IElementMeasurement {
+  width: TOrNoValue<number>;
+  height: TOrNoValue<number>;
+  rect: TOrNoValue<globalThis.DOMRectReadOnly>;
+}
 //##
 export type { TRecordJson, TJson, TJsonLiteral, MaybeAsync as TMaybeAsync };
 export type { ChartData, ChartOptions, ChartType } from "chart.js";

@@ -23,3 +23,7 @@ export const schemaStatusResultDump = z.object({
   error: z.unknown(),
   result: z.unknown(),
 });
+export const schemaSize = z.object({
+  width: z.number(),
+  height: z.number(),
+});

@@ -270,3 +270,5 @@ README.temp.md
 .cab
 
 # package-lock.json  # (intentionally commented out)
+page.php
+page.vue

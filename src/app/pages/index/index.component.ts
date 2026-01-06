@@ -14,6 +14,7 @@ import {
 } from "../../modules";
 
 import { UseUtilsService } from "../../services";
+import { MeasureElementDirective } from "../../directives";
 
 @Component({
   selector: "page-index",
@@ -22,6 +23,8 @@ import { UseUtilsService } from "../../services";
     MaterialSharedModule,
     LayoutDefault,
     IconxModule,
+    //
+    MeasureElementDirective
   ],
   templateUrl: "./index.component.html",
   styleUrl: "./index.component.scss",

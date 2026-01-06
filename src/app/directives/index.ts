@@ -10,6 +10,7 @@ export { HostElementDirective } from "./host-get-element.directive";
 export { LocalCacheDirective } from "./local-cache.directive";
 export { ObserveResizeDirective } from "./observe-resize.directive";
 export { ObserveIntersectDirective } from "./observe-intersect.directive";
+export { MeasureElementDirective } from "./measure-element.directive";
 
 //
 export * from "./selectable";

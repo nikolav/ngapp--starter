@@ -7,5 +7,15 @@
     >
       ok
     </button>
+    <div>
+      <pre>size: {{ `${el.width()}-${el.height()}` }}</pre>
+    </div>
+    <div
+      appMeasureElement
+      #el="appMeasureElement"
+      appMeasureElementBox="border-box"
+    >
+      foo
+    </div>
   </ng-template>
 </app-layout-default>

@@ -113,6 +113,20 @@ export const TOKEN_isSupported_ResizeObserver$ = new InjectionToken<
       ].every(Boolean)
     ).pipe(shareReplay({ bufferSize: 1, refCount: false })),
 });
+export const TOKEN_isSupported_getBoundingClientRect =
+  new InjectionToken<boolean>(
+    "isSupported:getBoundingClientRect:9476fd56-766a-58a0-8243-bcb31bfc5b47",
+    {
+      providedIn: "root",
+      factory: () =>
+        [
+          inject(TOKEN_isPlatformBrowser),
+          inject(TOKEN_windowDefaultView),
+          "function" ===
+            typeof globalThis.Element.prototype.getBoundingClientRect,
+        ].every(Boolean),
+    }
+  );
 
 // #
 export { TOKEN_cashDom } from "./token-cach-dom";
