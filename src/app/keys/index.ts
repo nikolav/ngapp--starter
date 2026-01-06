@@ -1,8 +1,9 @@
 import { inject, InjectionToken, PLATFORM_ID, signal } from "@angular/core";
 import type { Signal } from "@angular/core";
 import { DOCUMENT, isPlatformBrowser } from "@angular/common";
-import { Subject, EMPTY as EMPTY$, of } from "rxjs";
 import type { Observable } from "rxjs";
+import { Subject, EMPTY as EMPTY$, of } from "rxjs";
+import { shareReplay } from "rxjs/operators";
 
 import type { IEventApp } from "../types";
 import { StoreDataCache } from "../stores";
@@ -98,6 +99,19 @@ export const TOKEN_isSupprted_IntersectionObserver = new InjectionToken<
         "IntersectionObserver" in globalThis,
       ].every(Boolean)
     ),
+});
+export const TOKEN_isSupported_ResizeObserver$ = new InjectionToken<
+  Observable<boolean>
+>("isSupported:ResizeObserver:88714ec8-6d55-5fbe-a126-13331f1c566b", {
+  providedIn: "root",
+  factory: () =>
+    of(
+      [
+        inject(TOKEN_isPlatformBrowser),
+        inject(TOKEN_windowDefaultView),
+        "ResizeObserver" in globalThis,
+      ].every(Boolean)
+    ).pipe(shareReplay({ bufferSize: 1, refCount: false })),
 });
 
 // #

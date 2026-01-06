@@ -9,15 +9,26 @@ import {
 } from "@angular/core";
 import { toSignal } from "@angular/core/rxjs-interop";
 
-import { TOKEN_isBrowser$, TOKEN_windowDefaultView } from "../keys";
+import {
+  TOKEN_isBrowser$,
+  TOKEN_isSupported_ResizeObserver$,
+  TOKEN_windowDefaultView,
+} from "../keys";
 import { UseUtilsService } from "../services";
 
 @Directive({ selector: "[appObserveResize]" })
 export class ObserveResizeDirective {
-  private hostRef = inject<ElementRef<HTMLElement>>(ElementRef);
+  // $
   private $$ = inject(UseUtilsService);
-  private win = inject(TOKEN_windowDefaultView);
-  private browser = toSignal(inject(TOKEN_isBrowser$), { initialValue: false });
+
+  // #
+  private host = inject<ElementRef<HTMLElement>>(ElementRef);
+
+  // .
+  private readonly supported = toSignal(
+    inject(TOKEN_isSupported_ResizeObserver$),
+    { initialValue: false }
+  );
 
   // (@)
   readonly resize = output<globalThis.ResizeObserverEntry>({
@@ -31,16 +42,15 @@ export class ObserveResizeDirective {
   });
 
   // [@]
-  readonly box = input<ResizeObserverBoxOptions>("content-box", {
+  readonly box = input<globalThis.ResizeObserverBoxOptions>("content-box", {
     alias: "appObserveResizeBox",
   });
 
   constructor() {
     effect((cleanup) => {
-      if (!this.browser() || this.disabled()) return;
-      if (!this.win || !("ResizeObserver" in globalThis)) return;
+      if (this.disabled() || !this.supported()) return;
 
-      const el = this.hostRef.nativeElement;
+      const el = this.host.nativeElement;
 
       const ro = new ResizeObserver((entries) => {
         if (this.$$.isEmpty(entries)) return;
