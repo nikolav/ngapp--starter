@@ -72,7 +72,7 @@ export class ObserveIntersectDirective {
   constructor() {
     effect((cleanup) => {
       // feature detect
-      if (this.disabled() || !this.supported) return;
+      if (this.disabled() || !this.supported()) return;
 
       const r = this.root();
       const target = this.host.nativeElement;
