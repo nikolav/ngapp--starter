@@ -1,6 +1,8 @@
-import { inject, InjectionToken, PLATFORM_ID } from "@angular/core";
+import { inject, InjectionToken, PLATFORM_ID, signal } from "@angular/core";
+import type { Signal } from "@angular/core";
 import { DOCUMENT, isPlatformBrowser } from "@angular/common";
-import { Subject, EMPTY as EMPTY$, Observable, of } from "rxjs";
+import { Subject, EMPTY as EMPTY$, of } from "rxjs";
+import type { Observable } from "rxjs";
 
 import type { IEventApp } from "../types";
 import { StoreDataCache } from "../stores";
@@ -84,6 +86,19 @@ export const TOKEN_onBrowser$ = new InjectionToken<Observable<void>>(
     factory: () => (inject(TOKEN_isPlatformBrowser) ? of(void 0) : EMPTY$),
   }
 );
+export const TOKEN_isSupprted_IntersectionObserver = new InjectionToken<
+  Signal<boolean>
+>("isSupprted:IntersectionObserver:97ba7a4b-2827-5130-aeef-d4bee3856539", {
+  providedIn: "root",
+  factory: () =>
+    signal(
+      [
+        inject(TOKEN_isPlatformBrowser),
+        inject(TOKEN_windowDefaultView),
+        "IntersectionObserver" in globalThis,
+      ].every(Boolean)
+    ),
+});
 
 // #
 export { TOKEN_cashDom } from "./token-cach-dom";
