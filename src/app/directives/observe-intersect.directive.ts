@@ -8,8 +8,8 @@ import {
   output,
 } from "@angular/core";
 
-import { TOKEN_isSupprted_IntersectionObserver } from "../keys";
 import type { TOrNoValue } from "../types";
+import { TOKEN_isSupprted_IntersectionObserver } from "../keys";
 import { UseUtilsService } from "../services";
 
 @Directive({
@@ -51,8 +51,8 @@ export class ObserveIntersectDirective {
     transform: booleanAttribute,
   });
 
+  // [@]
   readonly root = input<TOrNoValue<ElementRef<Element> | Element | Document>>(
-    // [@]
     null,
     {
       alias: "appObserveIntersectRoot",
@@ -69,7 +69,7 @@ export class ObserveIntersectDirective {
     alias: "appObserveIntersectThreshold",
   });
 
-  // [@] emitWhen = 'all' | 'enter' | 'exit'
+  // [@]
   readonly emitWhen = input<"all" | "enter" | "exit">("enter", {
     alias: "appObserveIntersectEmitWhen",
   });
