@@ -36,8 +36,8 @@ export class ObserveIntersectDirective {
     transform: booleanAttribute,
   });
 
-  // [@]
   readonly root = input<TOrNoValue<ElementRef<Element> | Element | Document>>(
+    // [@]
     null,
     {
       alias: "appObserveIntersectRoot",
@@ -74,8 +74,8 @@ export class ObserveIntersectDirective {
       // feature detect
       if (this.disabled() || !this.supported) return;
 
-      const target = this.host.nativeElement;
       const r = this.root();
+      const target = this.host.nativeElement;
 
       let observer_: TOrNoValue<IntersectionObserver> =
         new IntersectionObserver(
