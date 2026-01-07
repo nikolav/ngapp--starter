@@ -1,19 +1,12 @@
 <app-layout-default class="page--index" pageTitle="🏠 page:home">
   <ng-template #slot_page let-app>
     <h2>&#64;page--index</h2>
-    <button
-      mat-button
-      (click)="app.storage.swap(app.config.key.APP_THEME_DARK, true, false)"
-    >
-      ok
-    </button>
-    <div>
-      <pre>size: {{ `${el.width()}-${el.height()}` }}</pre>
-    </div>
+    <button mat-button (click)="$id.next()">ok</button>
     <div
-      appMeasureElement
-      #el="appMeasureElement"
-      appMeasureElementBox="border-box"
+      class="bg-red-500 w-[320px] absolute"
+      animateCss="wobble"
+      [animateCssKey]="$id.ID()"
+      [animateCssDuration]="555"
     >
       foo
     </div>

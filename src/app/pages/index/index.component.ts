@@ -13,8 +13,11 @@ import {
   CoreModulesShared,
 } from "../../modules";
 
-import { UseUtilsService } from "../../services";
-import { MeasureElementDirective } from "../../directives";
+import {
+  UseUniqueIdService,
+  UseUtilsService,
+} from "../../services";
+import { AnimateCssDirective } from "../../directives";
 
 @Component({
   selector: "page-index",
@@ -23,9 +26,9 @@ import { MeasureElementDirective } from "../../directives";
     MaterialSharedModule,
     LayoutDefault,
     IconxModule,
-    //
-    MeasureElementDirective
+    AnimateCssDirective,
   ],
+  providers: [UseUniqueIdService],
   templateUrl: "./index.component.html",
   styleUrl: "./index.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -35,8 +38,11 @@ import { MeasureElementDirective } from "../../directives";
 })
 export class IndexComponent implements OnInit, OnDestroy {
   readonly $$ = inject(UseUtilsService);
+  readonly $id = inject(UseUniqueIdService);
 
-  ok(event: any) {}
+  ok() {
+    console.log("ok");
+  }
   ngOnInit() {}
   ngOnDestroy() {}
 }
